@@ -1,0 +1,29 @@
+#all_emp_tb  img {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    border: 1px solid black;
+}
+
+#all_leave_tb  img {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    border: 1px solid black;
+}
+.my_team img {
+    width: 156px;
+    height: 150px;
+    border-radius: 13%;
+    border: 3px solid black;
+}
+.my_team {
+    background-color: aqua;
+}
+#all_leave_tb #action_drop li{
+    padding: 0px 34px;
+}
+
+.app-header {
+    background-color: red;
+}
