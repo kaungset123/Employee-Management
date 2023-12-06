@@ -1,5 +1,5 @@
 @extends("layout.master")
-@section("title","Create User")
+@section("title","Edit User")
 
 @section('content')
 <div class="app-container app-theme-white body-tabs-shadow fixed-header fixed-sidebar">
@@ -28,7 +28,6 @@
                                     <div class="form-group">
                                         <select class="form-control" >
                                             <option value="male">Male</option>
-                                            <option value="female">Female</option>
                                         </select>
                                     </div>
                                 </div>
@@ -59,9 +58,7 @@
                                 <div class="col-md-6 ">                  
                                     <div class="form-group">                                       
                                         <select class="form-control" >
-                                            @foreach($dpmts as $dpmt)
-                                                <option value="{{$dpmt->id}}">{{$dpmt->name}}</option>
-                                            @endforeach
+                                                <option value=""></option>
                                         </select> 
                                     </div>
                                 </div> 
@@ -69,9 +66,7 @@
                             <div class=" mt-3">
                                     <div class="form-group " style="width: 48%;">                                       
                                         <select class="form-control" >       
-                                                <option value="{{$dpmt->id}}">manager</option>
-                                                <option value="{{$dpmt->id}}">HR</option>
-                                                <option value="{{$dpmt->id}}">employee</option>
+                                                <option value="">manager</option>
                                         </select> 
                                     </div>  
                             </div>
@@ -87,7 +82,7 @@
                                 <button type="reset" class="btn btn-sm bg-danger me-5 text-white " style="box-shadow: 1px 2px 9px black;">
                                     cancel
                                 </button>
-                                <button type="submit" class="btn btn-sm bg-primary text-white " style="box-shadow: 1px 2px 9px black;margin-left:1rem;">submit</button>
+                                <button type="submit" class="btn btn-sm bg-primary text-white " style="box-shadow: 1px 2px 9px black;margin-left:1rem;">Edit</button>
                             </div>                       
                     </form>
                 </div>

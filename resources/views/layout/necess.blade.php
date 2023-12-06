@@ -118,32 +118,8 @@
                                             <ul class="nav flex-column">
                                                 <li class="nav-item-divider mb-0 nav-item"></li>
                                             </ul>
-                                            <div class="grid-menu grid-menu-2col">
-                                                <div class="no-gutters row">
-                                                    <div class="col-sm-6">
-                                                        <button class="btn-icon-vertical btn-transition btn-transition-alt pt-2 pb-2 btn btn-outline-warning">
-                                                            <i class="pe-7s-chat icon-gradient bg-amy-crisp btn-icon-wrapper mb-2"></i>
-                                                            Message Inbox
-                                                        </button>
-                                                    </div>
-                                                    <div class="col-sm-6">
-                                                        <button class="btn-icon-vertical btn-transition btn-transition-alt pt-2 pb-2 btn btn-outline-danger">
-                                                            <i class="pe-7s-ticket icon-gradient bg-love-kiss btn-icon-wrapper mb-2"></i>
-                                                            <b>Support Tickets</b>
-                                                        </button>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <ul class="nav flex-column">
-                                                <li class="nav-item-divider nav-item">
-                                                </li>
-                                                <li class="nav-item-btn text-center nav-item">
-                                                    <button class="btn-wide btn btn-primary btn-sm">
-                                                        Open Messages
-                                                    </button>
-                                                </li>
-                                            </ul>
                                         </div>
+                                       
                                     </div>
                                 </div>
                                 <div class="widget-content-left  ml-3 header-user-info">
@@ -154,21 +130,9 @@
                                         VP People Manager
                                     </div>
                                 </div>
-                                <div class="widget-content-right header-user-info ml-3">
-                                    <button type="button" class="btn-shadow p-1 btn btn-primary btn-sm show-toastr-example">
-                                        <i class="fa text-white fa-calendar pr-1 pl-1"></i>
-                                    </button>
-                                </div>
                             </div>
                         </div>
                     </div>
-                    <div class="header-btn-lg">
-                        <button type="button" class="hamburger hamburger--elastic open-right-drawer">
-                            <span class="hamburger-box">
-                                <span class="hamburger-inner"></span>
-                            </span>
-                        </button>
-                    </div>        
                 </div>
         </div>
 </div>
@@ -466,4 +430,4 @@
                 </div>
             </div>
         </div>
-    </div> 
+</div> 

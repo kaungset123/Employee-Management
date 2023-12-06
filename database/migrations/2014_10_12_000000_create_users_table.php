@@ -18,7 +18,7 @@ return new class extends Migration
             $table->string('phone');
             $table->date('date_of_birth');
             $table->string('gender');
-            $table->string('address');
+            $table->text('address');
             $table->float('basic_salary');
             $table->float('ot_rate');
             $table->float('hourly_rate');
@@ -27,11 +27,9 @@ return new class extends Migration
             $table->string('password');
             $table->rememberToken();
             $table->timestamps();
-            $table->timestamps('created_at');
-            $table->timestamps('updated_at');
-            $table->timestamps('deleted_at');
-            $table->timestamps('created_by');
-            $table->timestamps('updated_by');
+            $table->softDeletes();
+            $table->integer('created_by')->nullable();
+            $table->integer('updated_by')->nullable();
         });
     }
 
