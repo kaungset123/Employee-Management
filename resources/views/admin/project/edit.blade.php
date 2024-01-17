@@ -1,73 +1,113 @@
 @extends("layout.master")
-@section("title","Add Project")
+@section("title",@$data['title'])
 
 @section('content')
-<div class="app-container app-theme-white body-tabs-shadow fixed-header fixed-sidebar">
-    @include('layout.necess')
-    <div class="app-main p-0">
-        @include('layout.sidebar')
-        <div class="app-main__outer">
-            <div class="card mb-3">
-                <div class="col-md-10 mt-3 offset-md-1 p-3" >
-                    <h4 class="mb-3" style="font-weight: bold;">EDIT PROJECT</h4>
-                    <form action="" method="post" >
-                            <div class="row">
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <input type="text" class="form-control" name="name" placeholder="Project Name" required>
-                                    </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <input type="text" class="form-control" name="description" placeholder="Description" required>
-                                    </div>
-                                </div>    
-                            </div>     
-                            <div class="row mt-4">
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <input type="date" class="form-control" name="startDate" placeholder="Start Date" required>
-                                    </div>
-                                </div>
-                                <div class="col-md-6 ">
-                                    <div class="form-group">
-                                        <input type="date" class="form-control" name="endDate" placeholder="End Date" required>
-                                    </div>
-                                </div>
-                            </div>  
-                            <div class="row mt-4">
-                                <div class="col-md-6 ">                  
-                                    <div class="form-group">
-                                        <label for="teamLeader">Team Leader</label>
-                                        <select class="form-control" id="teamLeader" name="teamLeader" required>
-                                            <option value="#">Crist</option>
-                                            <option value="#">Guogeor</option>
-                                            <option value="#">Saya</option>
-                                            <option value="#">Lincon</option>
-                                        </select>
-                                    </div>
-                                </div> 
-                                <div class="col-md-6 ">                  
-                                    <div class="form-group">
-                                        <label for="teamMembers">Team Members</label>
-                                        <select class="form-control" id="teamMembers" name="teamMembers[]" multiple required>
-                                            <option value="#">TeamMember1</option>
-                                        </select>
-                                    </div>
-                                </div>   
-                            </div>           
-                            <div class="d-flex justify-content-end mt-3 ">
-                                <button type="reset" class="btn btn-sm bg-danger me-5 text-white " style="box-shadow: 1px 2px 9px black;">
-                                    cancel
-                                </button>
-                                <button type="submit" class="btn btn-sm bg-primary text-white" style="box-shadow: 1px 2px 9px black;margin-left:1rem;">Edit</button>
-                            </div>                       
-                    </form>
-                </div>
+    <div class="app-main__outer">
+        <div class="card mb-3">
+            <div class="col-md-10 mt-3 offset-md-1 p-3">
+                @include('layout.flashmessage')
+                <h4 class="mb-3" style="font-weight: bold;">{{$data['header']}}</h4>
+                <form action="{{ route('project.update',$data['project']->id) }}" method="post">
+                    @csrf
+                    @method('PUT')
+                    <div class="row mt-3">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>Project Name</label>
+                                <input type="text" class="form-control" name="name" value="{{ $data['project']->name }}">
+                                @error('name')
+                                    <p class="text-danger">{{$message}}</p>
+                                @enderror
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="status">{{ __('Project Status') }}</label>
+                                <select id="status" class="form-control @error('status') is-invalid @enderror" name="status">
+                                    @foreach(\App\Constants\ProjectStatus::getConstants() as $value => $label)
+                                        <option value="{{ $value }}" {{ $data['project']->status == $value ? 'selected' : '' }}>{{ $label }}</option>
+                                    @endforeach
+                                </select>
+                                @error('status')
+                                    <p class="text-danger">{{$message}}</p>
+                                @enderror
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row mt-4">
+                        <div class="form-group col-md-6">
+                            <label for="startDate">Start Date</label>
+                            <input type="date" class="form-control" name="start_date" placeholder="Start Date" value="{{ $data['project']->start_date }}" >
+                            @error('start_date')
+                                <p class="text-danger">{{$message}}</p>
+                            @enderror
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label for="startDate">End Date</label>
+                            <input type="date" class="form-control" name="end_date" placeholder="End Date" value="{{ $data['project']->end_date }}">
+                            @error('end_date')
+                                <p class="text-danger">{{$message}}</p>
+                            @enderror
+                        </div>
+                    </div>
+                    <div class="row mt-2">
+                        <div class="form-group col-md-6">
+                            <div>
+                                <p style="font-size: 16px;">Team Leader</p>
+                            </div>
+                            <select class="form-control js-example-basic-single" name="project_manager_id">
+                                @foreach($data['users'] as $user)
+                                    <option value="{{$user->id}}" {{ old('project_manager_id', $data['project']->project_manager_id) == $user->id ? 'selected' : '' }}>{{$user->name}}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                        <div class="form-group col-md-6">
+                            <div>
+                                <p style="font-size: 16px;">Team Members</p>
+                            </div>
+                            <select class="form-control js-example-basic-multiple" name="members[]" multiple="multiple">
+                                @foreach($data['users'] as $user)
+                                    <!-- excluding the project manager's name from multiple select  -->
+                                    @if($user->id != $data['project']->project_manager_id) 
+                                        <option value="{{$user->id}}"  {{ in_array($user->id, old('members',[])) ? 'selected' : '' }} ||
+                                            {{ in_array($user->id,$data['project']->members->pluck('id')->toArray()) ? 'selected' : ''}}>
+                                            {{$user->name}}
+                                        </option>
+                                    @endif
+                                @endforeach
+                            </select>                       
+                            @error('members')
+                                <p class="text-danger">{{$message}}</p>
+                            @enderror
+                        </div>
+                    </div>
+                    <div>
+                        <div class="form-group">
+                            <label for="description">Description</label>
+                            <textarea  class="form-control" rows="5" name="description">{{ $data['project']->description }}</textarea>
+                            @error('description')
+                                <p class="text-danger">{{$message}}</p>
+                            @enderror
+                        </div>
+                    </div>
+                    <div class="d-flex justify-content-end mt-3 ">
+                        <button type="reset" class="btn btn-sm bg-danger me-5 text-white " style="box-shadow: 1px 2px 9px black;">
+                            cancel
+                        </button>
+                        <button type="submit" class="btn btn-sm bg-primary text-white" style="box-shadow: 1px 2px 9px black;margin-left:1rem;">Update</button>
+                    </div>
+                </form>
             </div>
         </div>
-</div>
+    </div>
 
-@include('layout.app_drawer_wrapper')
+<script>
+    $(document).ready(function() {
+        $('.js-example-basic-single').select2();
+    });
 
+    $(document).ready(function() {
+        $('.js-example-basic-multiple').select2();
+    });
+</script>
 @endsection

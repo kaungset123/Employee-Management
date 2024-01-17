@@ -1,3 +1,9 @@
+* {
+    a {
+        text-decoration: none;     
+    }
+}
+
 #all_emp_tb  img {
     width: 50px;
     height: 50px;
@@ -26,4 +32,182 @@
 
 .app-header {
     background-color: red;
+}
+
+/* .pagination {
+    width: 200px;
+    height: 200px;
+    background-color: red;
+} */
+
+.profile_data p{
+    font-size: 16px;
+}
+
+.rate_img {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+}
+
+.rate_img_div {
+    text-align: center;
+}
+
+
+.profile_data b{
+    font-size: 17px;
+}
+
+#my_task,#assign_task,#all_task {
+    margin-left:5px;
+    background:blueviolet;
+    padding:6px 12px;
+    border-radius:8px;
+    color:#fff;
+    text-decoration:none;
+}
+
+#project_start {
+    margin-left:5px;
+    background:green;
+    padding:6px 12px;
+    border-radius:8px;
+    color:#fff;
+    text-decoration:none;
+
+}
+
+#project_delete_list {
+    position:relative;
+    bottom:5px;left:5px;
+    background:red;
+    padding:6px 10px;
+    border-radius:17px;
+    color:#fff;
+    text-decoration:none;
+}
+
+
+/* .rating {
+    cursor: pointer;
+}
+
+.fa-star {
+    font-size: 20px;
+} */
+/* .star {
+    display: inline-block;
+    margin-right: 5px;
+} */
+
+/* .fa-star:hover ,
+.star.selected {
+    color: yellow;
+} */
+
+.rating {
+    cursor: pointer;
+    font-size: 24px;
+}
+
+.rating .star {
+    display: inline-block;
+    margin-right: 5px;
+}
+
+.rating .star:hover,
+.rating .star.selected {
+    color: gold;
+}
+
+
+/* Page Limitatin Start*/
+/* #pageLimit a {
+    text-decoration: none;
+    font-size: 20px;
+    color: #fff;
+    background-color: blue;
+    padding: 0px 10px;
+} */
+.pagination-form {
+    display: inline-block;
+    position: relative;
+    cursor: pointer;
+}
+
+.pagination-options {
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    background-color: blue;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 4px;
+    padding: 6px;
+    color: #fff;
+    z-index: 1;
+}
+
+.pagination-options .pagination-option{
+    text-decoration: none;
+    padding: 0px 5px;
+    color: yellow;
+}
+.pagination-option {
+    cursor: pointer;
+    /* padding: 8px; */
+    transition: background-color 0.3s;
+}
+
+
+
+.choosePaginate {
+    color: blue;
+    /* background-color: blue; */
+    border: 1px solid blue;
+    padding: 0px 15px;
+    border-radius: 5px;
+}
+/* Page Limitatin End*/
+
+/* Department Background */
+.expen_bar {
+    width: 0px;
+    height: 2px;
+}
+.dept_bg:hover .expen_bar{
+    width: 100%;
+    color: blue;
+    /* background: #5F8DE5; */
+    /* border-bottom: 2px solid blue; */
+    /* box-shadow: 2px 3px 9px blue; */
+    /* border-radius: 5px; */
+    /* transition: ease 0.4s; */
+    /* color: #fff; */
+    
+}
+
+.dept_bg:hover b {
+    letter-spacing: 4px;
+    transition: ease-in-out 0.4s;   
+    color: blue;
+}
+
+.manager_img {
+    width:90px; 
+    height:90px;
+    border-radius:45px;
+    text-align:center;
+}
+
+.member_img {
+    width:76px;
+    height:76px;
+    border-radius:38px;
+}
+
+/* ERROR */
+.error {
+    color: #ff0055;
 }

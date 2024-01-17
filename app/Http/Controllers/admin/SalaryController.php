@@ -2,64 +2,70 @@
 
 namespace App\Http\Controllers\admin;
 
+use Exception;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use App\Models\SalaryDetail;
+use function App\Helpers\salarySearchbar;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
+
 
 class SalaryController extends Controller
 {
+    public $data = [];
+
+    public function __construct()
+    {
+        $this->data = [
+            'title' => 'Salary Management',
+            'header' => 'Salary List',
+        ];
+    }
     /**
      * Display a listing of the resource.
      */
-    public function index()
-    {
-        return view('admin.salary.detail');
+    public function index(Request $request)
+    {  
+        $query = $request['search'];
+        $created_at = $request['created_at'];
+        $department_name = $request['department_name'];
+
+        $salaryQuery = SalaryDetail::select('id','ot_time','ot_amount','leave','dedution','salary','bonus','user_id','created_at','net_salary')
+                        ->with(['user' => function ($query) {
+                            $query->select('id', 'name', 'img', 'department_id');
+                        }]);
+        
+        $perPage = $request->input('perPage',10);
+        $salarys = salarySearchbar($salaryQuery, $query, $department_name, $created_at);
+        $salarys = $salarys->paginate($perPage)->withQueryString();
+
+        $this->data['salarys'] = $salarys;
+        $this->data['search'] = $query;
+        $this->data['departmentName'] = $department_name;
+        $this->data['created'] = $created_at;
+        return view('admin.salary.index')->with(['data' => $this->data]);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
+    public function destroy(int $id)
     {
-        //
+        $this->checkPermission('payroll delete',$id);
+
+        try {
+            $salary = SalaryDetail::findOrFail($id);
+            $salary->delete();
+            return redirect('admin/salary/index')->with('status', 'salary is deleted sucessfully');
+        }
+        catch(ModelNotFoundException $e){
+            return back()->with('error',$e->getMessage());
+        }
+        catch(Exception $e){
+            return back()->with('error',$e->getMessage());
+        }  
+  
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
+    private function checkPermission($permission,$data = null ) 
     {
-        //
-    }
-
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
-    {
-        //
+        return $this->authorize($permission,$data);
     }
 }

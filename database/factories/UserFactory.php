@@ -33,7 +33,6 @@ class UserFactory extends Factory
             'basic_salary' => '600000',
             'ot_rate' => '5000',
             'hourly_rate' => '12000',
-            'department_id' => rand(1,2)
         ];
     }
 
