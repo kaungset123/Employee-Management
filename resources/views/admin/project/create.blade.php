@@ -3,10 +3,15 @@
 
 @section('content')
 <div class="app-main__outer">
-    <div class="card mb-3 col-md-10 offset-md-1 mt-3">
-        <div class="col-md-10 mt-3 mb-3 offset-md-1 p-3">
+    <div class="card mb-3 col-md-10 offset-md-1 mt-3 p-5">
+        <div class="">
             @include('layout.flashmessage')
-            <h4 class="mb-3" style="font-weight: bold;">{{$data['header']}}</h4>
+            <div class="d-flex relative">
+                <h4 class="mb-3 text-info" style="font-weight: bold;">{{$data['header']}}</h4>
+                <a href="{{ route('project.index') }}" class="me-2 text-info" style="font-size: 28px;margin-top:-4px;position:absolute;right:43px;">
+                    <i class="fas fa-arrow-alt-circle-left"></i>
+                </a>
+            </div>
             <form action="{{ route('project.store') }}" method="post">
                 @csrf
                 <div class="row mt-3">
@@ -33,7 +38,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="row mt-4">
+                <div class="row mt-2">
                     <div class="form-group col-md-6">
                         <label for="startDate">Start Date</label>
                         <input type="date" class="form-control" name="start_date" placeholder="Start Date" value="{{ old('start_date') }}" >
@@ -54,7 +59,7 @@
                         <div>
                             <p style="font-size: 16px;">Team Leader</p>
                         </div>
-                        <select class="form-control js-example-basic-single" name="project_manager_id">
+                        <select class="form-control js-example-basic-single" name="project_manager_id" style="width:100%;height:40px;">
                             @foreach($data['users'] as $user)
                                 @if($user->getRoleNames()->first() != 'admin')
                                     <option value="{{$user->id}}" {{ old('project_manager_id', $user->id) == $user->id ? 'selected' : '' }}>{{$user->name}}</option>
@@ -66,7 +71,7 @@
                         <div>
                             <p style="font-size: 16px;">Team Members</p>
                         </div>
-                        <select class="form-control js-example-basic-multiple" name="members[]" multiple="multiple">
+                        <select class="form-control js-example-basic-multiple" name="members[]" multiple="multiple" style="width: 100%;">
                             @foreach($data['users'] as $user)
                                 @if($user->getRoleNames()->first() != 'admin')
                                     <option value="{{$user->id}}" {{ in_array($user->id, old('members',[])) ? 'selected' : '' }}>

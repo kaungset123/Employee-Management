@@ -8,6 +8,7 @@ use App\Events\RequestAccepted;
 use App\Events\RequestCreate;
 use App\Events\RequestRejected;
 use App\Events\SalaryCreate;
+use App\Events\SalaryCreateAdmin;
 use App\Events\TaskCreate;
 use App\Listeners\NotifyAttendanceCreate;
 use App\Listeners\NotifyProjectCreate;
@@ -15,7 +16,9 @@ use App\Listeners\NotifyRequestAccepted;
 use App\Listeners\NotifyRequestCreate;
 use App\Listeners\NotifyRequestRejected;
 use App\Listeners\NotifySalaryCreate;
+use App\Listeners\NotifySalaryCreateAdmin;
 use App\Listeners\NotifyTaskCreate;
+use App\Listeners\SalaryCreateAdminNotification;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
@@ -52,7 +55,7 @@ class EventServiceProvider extends ServiceProvider
         ],
         RequestCreate::class => [
             NotifyRequestCreate::class,
-        ],
+        ]
     ];
 
     /**

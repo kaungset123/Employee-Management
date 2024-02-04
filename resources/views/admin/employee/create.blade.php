@@ -3,12 +3,17 @@
 
 @section('content')
 <div class="app-main__outer">
-    <div class="card mb-3 col-md-10 offset-md-1 mt-3">
-        <div class="col-md-10 mt-3 mb-3 offset-md-1 p-3">
+    <div class="card mb-3 col-md-10 offset-md-1 mt-3 p-5">
+        <div class="">
             <div class="col-md-6 offset-md-3">
                 @include('layout.flashmessage')
-            </div>           
-            <h4 class="mb-5 " style="font-weight: bold;">CREATE EMPLOYEE</h4>
+            </div>   
+            <div class="d-flex">
+                <h4 class="mb-5 text-info" style="font-weight: bold;">CREATE EMPLOYEE</h4>
+                <a href="{{ route('user.index') }}" class="me-2 text-info" style="font-size: 28px;margin-top:-4px;position:absolute;right:43px;">
+                    <i class="fas fa-arrow-alt-circle-left"></i>
+                </a>
+            </div>        
             <form action="{{ route('user.store')}}" method="post" enctype="multipart/form-data">
                 @csrf
                 <div class="row">
@@ -24,25 +29,25 @@
                     <div class="col-md-6">
                         <div class="form-group">
                             <label for="role">Role</label>
-                            <select class="form-control" name="role">
+                            <select class="form-control js-example-basic-multiple" name="role[]" multiple="multiple" style="width: 100%;">
                                 @foreach($data['roles'] as $role)
-                                        @if(auth()->user()->getRoleNames()->first()  == 'super admin')
-                                            <option value="{{$role->name}}" {{ old('role', $role->name) == $role->name ? 'selected' : '' }}>
+                                    @if(auth()->user()->getRoleNames()->first()  == 'super admin')
+                                        <option value="{{$role->name}}" {{ in_array($role->name, old('role', [])) ? 'selected' : '' }}>
+                                            {{$role->name}}
+                                        </option>
+                                    @else
+                                        @if($role->name != 'super admin')
+                                            <option value="{{$role->name}}" >
                                                 {{$role->name}}
                                             </option>
-                                        @else
-                                            @if($role->name != 'super admin')
-                                                <option value="{{$role->name}}" {{ old('role', $role->name) == $role->name ? 'selected' : '' }}>
-                                                    {{$role->name}}
-                                                </option>
-                                            @endif
-                                        @endif                                  
+                                        @endif
+                                    @endif                                  
                                 @endforeach
                             </select>
                         </div>
                     </div>
                 </div>
-                <div class="row mt-4">
+                <div class="row mt-2">
                     <div class="col-md-6 ">
                         <div class="form-group">
                             <label for="date">Date of Birth</label>
@@ -132,7 +137,7 @@
                                 <p class="text-danger">{{$message}}</p>
                             @enderror
                         </div>
-                    </div> 
+                    </div>                   
                 </div>
                 <div class=" mt-4">
                     <div class="form-group">
@@ -174,4 +179,10 @@
         </div>
     </div>
 </div>
+
+<script>
+    $(document).ready(function() {
+        $('.js-example-basic-multiple').select2();
+    });
+</script>
 @endsection

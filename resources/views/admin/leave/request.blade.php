@@ -5,7 +5,7 @@
 <div class="app-main__outer">
     <!-- <div class="card mb-3 "> -->
     <div class="card-body" id="all_emp_tb">
-        <h4 style="font-weight: bold;" class="mt-3 mb-4">{{ $data['header'] }}</h4>
+        <h4 style="font-weight: bold;" class="mt-3 mb-4 text-info">{{ $data['header'] }}</h4>
         <form class="d-flex col-md-8 offset-md-2" action="{{ route('leave.manager') }}" method="GET">
             <a href="{{ route('leave.manager', ['perPage' => $data['leaves']->perPage()]) }}" style="color: black;">
                 <i class="fas fa-redo-alt mt-1" style="font-size: 30px;"></i>
@@ -40,8 +40,8 @@
                             <td>{{ $leave->user->name}}</td>
                             <td>{{ $leave->user->department->name}}</td>
                             <td>{{ $leave->name }}</td>
-                            <td>{{ $leave->start_date}}</td>
-                            <td>{{ $leave->end_date}}</td>
+                            <td>{{ $leave->start_date->format('F y, j')}}</td>
+                            <td>{{ $leave->end_date->format('F y, j')}}</td>
                             <td>
                                 @if($leave->total_days == 0.5)
                                 half day
@@ -52,13 +52,15 @@
                                 @endif
                             </td>
                             <td>
-                                @if($leave->status == 0)
-                                <p class="text-primary"> Pending</p>
-                                @elseif($leave->status == 1)
-                                <p class="text-success"> Accepted</p>
-                                @else
-                                <p class="text-danger"> Rejected</p>
-                                @endif
+                                <div class="mt-3">
+                                    @if($leave->status == 0)
+                                    <p class="text-primary"> Pending</p>
+                                    @elseif($leave->status == 1)
+                                    <p class="text-success"> Accepted</p>
+                                    @else
+                                    <p class="text-danger"> Rejected</p>
+                                    @endif
+                                </div>                               
                             </td>
                             <td>
                                 <div class="nav-item dropdown">

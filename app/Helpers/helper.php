@@ -14,28 +14,43 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\support\str;
 
 use App\Constants\ProjectStatus;
+use App\Models\SalaryCriteria;
 
     function calculateProgress($user_id,$project_id)
     {
-        $totalTask = Task::where(['user_id' => $user_id,'project_id' => $project_id])->count();
+        $userExist = Task::where(['user_id' => $user_id,'project_id' => $project_id])->count();
 
-        $completeTask = Task::where(['user_id' => $user_id,'project_id' => $project_id])->where('status',2)->count();
+        if($userExist < 1){
+            $user = User::findOrFail($user_id);
+            return [
+                'deadlineWarning' => null,
+                'totalTask' => 0,
+                'remainingTask' => 0,
+                'progressPercentage' => 0,
+                'user' => $user
+            ];
+        }else {
+            $totalTask = Task::where(['user_id' => $user_id,'project_id' => $project_id])->count();
 
-        $remainingTask = $totalTask - $completeTask;
+            $completeTask = Task::where(['user_id' => $user_id,'project_id' => $project_id])->where('status',2)->count();
 
-        $user = User::findOrFail($user_id);
+            $remainingTask = $totalTask - $completeTask;
 
-        $progressPercentage =  ($totalTask > 0) ? (($completeTask / $totalTask ) * 100) : 0 ;
+            $user = User::findOrFail($user_id);
 
-        $deadlineWarning = deadLineWarning($project_id,$user_id);
+            $progressPercentage =  ($totalTask > 0) ? (($completeTask / $totalTask ) * 100) : 0 ;
 
-        return [
-            'deadlineWarning' => $deadlineWarning,
-            'totalTask' => $totalTask,
-            'remainingTask' => $remainingTask,
-            'progressPercentage' => $progressPercentage,
-            'user' => $user
-        ];
+            $deadlineWarning = deadLineWarning($project_id,$user_id);
+
+            return [
+                'deadlineWarning' => $deadlineWarning,
+                'totalTask' => $totalTask,
+                'remainingTask' => $remainingTask,
+                'progressPercentage' => $progressPercentage,
+                'user' => $user
+            ];
+        }
+        
     }
 
     function calculatProjectProgress($project_id)
@@ -228,6 +243,31 @@ use App\Constants\ProjectStatus;
 
             if ($created_at) {
                 // $carbonDate =Carbon::createFromFormat('Y-m-d', $created_at);
+                $leavesQuery->whereDate('start_date', $created_at);
+            }
+
+            return  $leavesQuery;      
+        }
+    }
+
+    if(!function_exists('leaveBalanceSearchbar'))
+    {
+        function leaveBalanceSearchbar($leavesQuery,$query,$department_name,$created_at)
+        {
+            if ($query) {
+                $leavesQuery->whereHas('user', function ($subQuery) use ($query) {
+                    $subQuery->where('name', 'like', "%$query%");
+                });
+            }
+
+            if ($department_name) {
+                $leavesQuery->whereHas('user.department', function ($subQuery) use ($department_name) {
+                    $subQuery->where('name', 'like', "%$department_name%");
+                });
+            }
+
+            if ($created_at) {
+                // $carbonDate =Carbon::createFromFormat('Y-m-d', $created_at);
                 $leavesQuery->whereYear('start_date', $created_at);
             }
 
@@ -263,7 +303,7 @@ use App\Constants\ProjectStatus;
     {
         function userSearchbar($query,$department_name,$created_at)
         {
-            $usersQuery = User::orderBy('created_at', 'desc')->withTrashed('id', 'img', 'name', 'email', 'department_id', 'created_by', 'updated_by', 'created_at','deleted_at');
+            $usersQuery = User::orderBy('created_at', 'asc')->withTrashed('id', 'img', 'name', 'email', 'department_id', 'created_by', 'updated_by', 'created_at','deleted_at');
 
             if ($query) {
                 $usersQuery->where('users.name', 'like', "%$query%");
@@ -417,7 +457,7 @@ use App\Constants\ProjectStatus;
         {
             $month = $date->month;
             $year = $date->year;
-
+            
             $user = User::findOrFail($user_id);
             $basicSalary = $user->basic_salary;
             $otRate = $user->ot_rate;
@@ -450,13 +490,42 @@ use App\Constants\ProjectStatus;
             $salary = $basicSalary + $otPay ;
             $netSalary = ($basicSalary + $otPay) - $deduction;
 
-            $isGetBonus = ($annualLeave == 0 && $totalLeaveDays == 0) ;
-            $bonusAmount = ($month === 12 && $isGetBonus) ? $basicSalary : null;
-            if($bonusAmount != null){
-                $netSalary += $bonusAmount;
+          
+
+            // net salary with bonus
+            $bonusTime = ($month === 2);
+            $bonus = 0 ;
+            $averageRating = 0 ;
+            $rating_bonus = 0;
+
+            if($bonusTime) {   
+                $bonus = ($annualLeave == 0 && $totalLeaveDays == 0) ? $basicSalary : 0 ;
+                // dd($bonus);
+    
+                $averageRating = Rating::where('rated_id', $user_id)
+                    ->avg('rating');
+                $averageRating = number_format($averageRating, 1);
+                // dd($averageRating);
+    
+                $user_rating = ceil($averageRating);
+                // dd($user_rating);
+    
+                $criterias = SalaryCriteria::select('rating_point','bonus_amount')->get();
+    
+                foreach($criterias as $criteria) {
+                    if($criteria->rating_point == $user_rating) {
+                        $rating_bonus = $criteria->bonus_amount;
+                    }else {
+                        $rating_bonus = 0 ;
+                    }
+                }
+                // dd($rating_bonus);
+
+                $netSalary = $netSalary + $bonus + $rating_bonus ;
             }
         
             return [
+                'date' => $date,
                 'annual_leave' => $annualLeave,
                 'salary' => $salary,
                 'user_id' => $user_id,
@@ -465,7 +534,9 @@ use App\Constants\ProjectStatus;
                 'ot_amount' => $otPay,
                 'dedution' => $deduction,
                 'leave' => $totalLeaveDays,
-                'bonus' => $bonusAmount
+                'bonus' => $bonus,
+                'rating' => $averageRating,
+                'rating_bonus' => $rating_bonus
             ];           
         }
     }

@@ -6,9 +6,9 @@
     <div class="col-md-10 offset-md-1">
         <div class="mb-3 card">
             <div class="card-header-tab card-header">
-                <div class="card-header-title font-size-lg text-capitalize font-weight-normal"><b style="font-size: 23px;">Project Detail</b></div>
+                <div class="card-header-title font-size-lg text-capitalize font-weight-normal text-info"><b style="font-size: 23px;">Project Detail</b></div>
                 <div class="btn-actions-pane-right actions-icon-btn">
-                    @role('admin')
+                    @role('admin|super admin')
                         <div class="d-flex justify-content-between">
                             <a href="{{ route('project.edit',$data['project']->id) }}" class="col-md-5">
                                 <i class="fa-solid fa-pen-to-square text-primary"></i>
@@ -47,11 +47,12 @@
                             <p><b>Remaining tasks : {{ $data['projectProgress']['remain'] }}</b></p>
                         </div>
                         <b>Project Completion Status</b>
-                        <div class="progress ">
-                            <div class="progress-bar" role="progressbar" aria-valuenow="{{$data['projectProgress']['progress'] }}" aria-valuemin="0" aria-valuemax="100" style="width: {{$data['projectProgress']['progress'] }}%;color:black;">
+                        <div class="progress mt-2">
+                            <div class="progress-bar bg-info" role="progressbar" aria-valuenow="{{$data['projectProgress']['progress'] }}" aria-valuemin="0" aria-valuemax="100" style="width: {{$data['projectProgress']['progress'] }}%;color:black;">
                                 {{number_format($data['projectProgress']['progress'] ,1)}}%
                             </div>
                         </div>
+                        {{number_format($data['projectProgress']['progress'] ,1)}}% 
                     </div>
                 </div>
             </div>
@@ -78,7 +79,7 @@
                                         </div>
                                     </div>
                                     <div class="progress">
-                                        <div class="progress-bar " role="progressbar" aria-valuenow=" {{ $userProgress['progressPercentage'] }}" aria-valuemin="0" aria-valuemax="100" style="width: {{ $userProgress['progressPercentage'] }}%;color:black;">
+                                        <div class="progress-bar bg-info" role="progressbar" aria-valuenow=" {{ $userProgress['progressPercentage'] }}" aria-valuemin="0" aria-valuemax="100" style="width: {{ $userProgress['progressPercentage'] }}%;color:black;">
                                             {{ number_format($userProgress['progressPercentage'], 1) }}%
                                         </div>
                                     </div>

@@ -2,13 +2,14 @@
 
 namespace App\Http\Controllers\hr;
 
+use Exception;
 use App\Events\AttendanceCreate;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\AttendanceRequest;
 use App\Models\User;
 use App\Models\Attendance;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
-use Exception;
+use Carbon\Carbon;
 
 use Illuminate\Http\Request;
 
@@ -28,6 +29,8 @@ class AttendanceController extends Controller
 
     public function index(Request $request)
     {
+        $this->checkPermission('attendance view');
+        
         $query = $request['search'];
         $created_at = $request['created_at'];
 
@@ -59,13 +62,21 @@ class AttendanceController extends Controller
     }
 
     public function create(int $id)
-    {
+    {   
         $this->checkPermission('attendance create');
 
+        $today = Carbon::today();
+
         $user = User::select('id','name')->where('id',$id)->first();
-        $this->data['user'] = $user;
-        $this->data['header'] = 'Create Attendance';
-        return view('hr.attendance.create')->with(['data' => $this->data]);
+        $userAttendance = Attendance::where('user_id',$id)->whereDate('created_at',$today)->first();
+        
+        if($userAttendance != null) {
+            return back()->with('failstatus','You already made attendance for this staff today!');
+        }else {
+            $this->data['user'] = $user;
+            $this->data['header'] = 'CREATE ATTENDANCE';
+            return view('hr.attendance.create')->with(['data' => $this->data]);
+        }
     }
 
     public function store(AttendanceRequest $request)
@@ -109,7 +120,7 @@ class AttendanceController extends Controller
             // dd($attendance);
             $this->data['attendance'] = $attendance;
             $this->data['title'] = 'Attendance Edit';
-            $this->data['header'] = 'Attendance Edit';
+            $this->data['header'] = 'ATTENDANCE EDIT';
             return view('hr.attendance.edit')->with(['data' => $this->data]);
         }
         catch(ModelNotFoundException $e){
@@ -143,16 +154,54 @@ class AttendanceController extends Controller
                 'created_by' => $updated_by    
             ]);
     
-            return redirect('attendance/index')->with('status','attendance edited successfully');
+            return redirect('hr/attendance/index')->with('status','attendance edited successfully');
         }
         catch(ModelNotFoundException $e){
             return back()->with('error',$e->getMessage());
         }
         catch(Exception $e){
             return back()->with('error',$e->getMessage());
-        }
+        }      
+    }
 
-       
+    public function pdfGenerate(Request $request, $userId) 
+    {
+        $hr = auth()->user();
+        $user_id = $request->input('id');
+        $staff = User::findOrFail($user_id);
+
+        $choosedMonth = $request->input('month');
+        $choosedYear = $request->input('year');
+
+        $attendances = Attendance::where('user_id', $user_id)
+        ->whereYear('created_at', $choosedYear)
+        ->whereMonth('created_at', $choosedMonth)
+        ->get();
+
+        // dd($attendances);
+
+        $data = [
+            'hr' => $hr,
+            'staff' => $staff,
+            'title' => 'Attendance Data',
+            'attendances' => $attendances
+        ];
+        
+        $pdf = app('dompdf.wrapper');
+
+        // Pass the data directly to the loadView method
+        $pdf->loadView('hr.attendance.pdf', $data)->setOptions(['defaultFont' => 'sans-serif']);
+
+        return $pdf->download("{$staff->name}.ems.pdf");
+        return redirect()->route('attendance.pdfView', $user_id);
+        return redirect('hr/attendance/pdfView',['attendances' => $attendances]);
+        // return view('hr.attendance.pdfView', ['attendances' => $attendances]);
+
+    }
+
+    public function pdfView() 
+    {
+        return view('hr.attendance.pdfView');
     }
 
     private function checkPermission($permission,$data = null ) 

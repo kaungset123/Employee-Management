@@ -26,7 +26,7 @@
 <body>
     <div class="app-container app-theme-white body-tabs-shadow fixed-header fixed-sidebar">
         @include('layout.nav')
-        <div class="app-main ">
+        <div class="app-main bg-white">
             @include('layout.sidebar')
             @yield('content')
         </div>
@@ -37,6 +37,7 @@
         <script src="{{ asset('/js/app.js') }}"></script>
         <script type="text/javascript" src="{!! asset('/js/custom.js') !!}"></script>
     </div>
+    @yield('script')
 </body>
 
 </html>

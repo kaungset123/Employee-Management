@@ -12,7 +12,11 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule): void
     {
-        // $schedule->command('inspire')->hourly();
+        $schedule->command('app:notify-task-deadlineover')->everyMinute();
+        $schedule->command('app:remind-deadline')->dailyAt('09:00');
+        $schedule->command('app:remind-project-deadline')->dailyAt('09:00');
+        $schedule->command('app:notify-project-deadline-over')->dailyAt('09:00');
+        $schedule->command('app:notify-salary-created')->lastDayOfMonth();
     }
 
     /**

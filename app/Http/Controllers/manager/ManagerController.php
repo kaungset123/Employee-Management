@@ -17,7 +17,7 @@ class ManagerController extends Controller
     {
         $this->data = [
             'title' => 'My Department ',
-            'header' => 'MY DEPARTMENT',
+            'header' => 'My Department',
         ];
     }
 

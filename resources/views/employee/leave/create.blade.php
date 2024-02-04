@@ -7,7 +7,7 @@
         <div class="">
             @include('layout.flashmessage')
         </div>
-        <h4 class="mb-3 text-center" style="font-weight:bold;">{{$data['header']}}</h4>
+        <h4 class="mb-3 text-info" style="font-weight:bold;">{{$data['header']}}</h4>
         <form method="post" action="{{ route('leave.store') }}" enctype="multipart/form-data">
             @csrf
             <input type="hidden" name="user_id" value="{{ auth()->user()->id }}">
@@ -50,7 +50,7 @@
                 </div>
             </div>
             <div class="d-flex justify-content-end mt-3 ">
-                <button type="reset" class="btn btn-sm bg-danger me-5 text-white " style="box-shadow: 1px 2px 9px black;">
+                <button type="reset" class="btn btn-sm bg-danger me-4 text-white " style="box-shadow: 1px 2px 9px black;">
                     cancel
                 </button>
                 <button type="submit" class="btn btn-sm bg-primary text-white " style="box-shadow: 1px 2px 9px black;margin-left:1rem;">submit</button>

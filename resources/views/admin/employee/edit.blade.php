@@ -3,10 +3,15 @@
 
 @section('content')
 <div class="app-main__outer">
-    <div class="card mb-3 col-md-10 offset-md-1 mt-3">
-        <div class="col-md-10 mt-3 mb-3 offset-md-1 p-3">
+    <div class="card mb-3 col-md-10 offset-md-1 mt-3 p-5">
+        <div class="">
             @include('layout.flashmessage')
-            <h4 class="mb-4" style="font-weight: bold;">{{ $data['header'] }}</h4>
+            <div class="d-flex">
+                <h4 class="mb-4 text-info" style="font-weight: bold;">{{ $data['header'] }}</h4>
+                <a href="{{ route('user.index') }}" class="me-2 text-info" style="font-size: 28px;margin-top:-4px;position:absolute;right:43px;">
+                    <i class="fas fa-arrow-alt-circle-left"></i>
+                </a>
+            </div>
             <form action="{{route('user.update',$data['user']->id)}}" method="post" enctype="multipart/form-data">
                 @csrf
                 @method('PUT')
@@ -22,30 +27,28 @@
                     </div>
                     <div class="col-md-6">
                         <div class="form-group">
-                            <label for="role">Role</label>
-                            @foreach($data['roleName'] as $roleName)                           
-                                <select class="form-control" name="role">
-                                    @foreach($data['roles'] as $role)
-                                        @if(auth()->user()->getRoleNames()->first()  == 'super admin')
-                                            <option value="{{$role}}" 
-                                                {{ old('role', $roleName) == $role ? 'selected' : '' }}>
-                                                {{$role}}
+                            <label for="role">Role</label>     
+                            <select class="form-control js-example-basic-multiple" name="role[]" multiple="multiple" style="width: 100%;">
+                                @foreach($data['roles'] as $role)
+                                    @if(auth()->user()->getRoleNames()->first()  == 'super admin')
+                                        <option value="{{$role->name}}"                                  
+                                        {{ (old("role", $data['user']->roles->pluck('id')->first()) == $role->id) ? 'selected' : '' }}>
+                                            {{$role->name}}
+                                        </option>
+                                    @else
+                                        @if($role->name != 'super admin')
+                                            <option value="{{$role->name}}" 
+                                                {{ in_array($role->id, $data['user']->roles->pluck('id')->toArray()) ? 'selected' : '' }}>
+                                                {{$role->name}}
                                             </option>
-                                        @else
-                                            @if($role != 'super admin')
-                                                <option value="{{$role}}" 
-                                                    {{ old('role', $roleName) == $role ? 'selected' : '' }}>
-                                                    {{$role}}
-                                                </option>
-                                            @endif
                                         @endif
-                                    @endforeach
-                                </select>
-                            @endforeach
+                                    @endif
+                                @endforeach
+                            </select>
                         </div>
                     </div>
                 </div>
-                <div class="row mt-4">
+                <div class="row mt-3">
                     <div class="col-md-6 ">
                         <div class="form-group">
                             <label for="date">Date of Birth</label>
@@ -171,7 +174,10 @@
                     <div class="form-group ">
                         <input type="file" class="form-control" name="img" style="border: none;" accept="image/*" onchange="displayImage(this)">
                     </div>
-                    <img id="preview-image" src="{{ asset('storage/uploads/' . $data['user']->img) }}" style="width: 130px;height:130px;">
+                    @error('img')
+                        <p class="text-danger">{{$message}}</p>
+                    @enderror
+                    <img id="preview-image" src="{{ asset('storage/uploads/' . $data['user']->img) }}" style="width: 130px;height:130px;" alt="preview">
                 </div>
                 <div class="mt-4">
                     <div class="form-group">
@@ -183,7 +189,7 @@
                     </div>
                 </div>
                 <div class="d-flex justify-content-end mt-3 ">
-                    <button type="reset" class="btn btn-sm bg-danger me-5 text-white " style="box-shadow: 1px 2px 9px black;">
+                    <button type="reset" class="btn btn-sm bg-danger me-4 text-white " style="box-shadow: 1px 2px 9px black;">
                         cancel
                     </button>
                     <button type="submit" class="btn btn-sm bg-primary text-white " style="box-shadow: 1px 2px 9px black;margin-left:1rem;">update</button>
@@ -192,4 +198,9 @@
         </div>
     </div>
 </div>
+<script>
+    $(document).ready(function() {
+        $('.js-example-basic-multiple').select2();
+    });
+</script>
 @endsection

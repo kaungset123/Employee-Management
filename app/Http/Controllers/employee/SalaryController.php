@@ -20,6 +20,8 @@ class SalaryController extends Controller
 
     public function index(Request $request)
     {
+        $this->checkPermission('payroll view');
+
         $created_at = $request['created_at'];
 
         $salaryQuery = SalaryDetail::where('user_id',auth()->user()->id)->with('user');
@@ -34,5 +36,9 @@ class SalaryController extends Controller
         $this->data['salarys'] = $salarys;
         $this->data['created'] = $created_at;
         return view('employee.salary.index')->with(['data' => $this->data]);
+    }
+
+    private function checkPermission($permission,$data = null ) {
+        return $this->authorize($permission,$data);
     }
 }

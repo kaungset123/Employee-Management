@@ -6,16 +6,16 @@
     <div>
        @include('layout.flashmessage')
     </div>
-    <div class="card-header p-5"><b style="font-size: 23px;">Completed Projects</b>
+    <div class="card-header p-5"><b style="font-size: 23px;" class="text-info">Completed Projects</b>
         <div class="btn-actions-pane-right">
             <div class="nav">
-                <a href="{{ route('project.index') }}" class="btn-pill btn-wide  btn btn-outline-alternate btn-sm">
+                <a href="{{ route('project.index') }}" class="btn-pill btn-wide  btn btn-outline-info btn-sm">
                     Projects
                 </a>
-                <a  href="{{ route('project.progress') }}" class="btn-pill btn-wide  mr-1 ml-1  btn btn-outline-alternate btn-sm">
+                <a  href="{{ route('project.progress') }}" class="btn-pill btn-wide  mr-1 ml-1  btn btn-outline-info btn-sm">
                     Running
                 </a>
-                <a data-toggle="tab" href="#tab-eg2-2" class="btn-pill btn-wide active mr-1 ml-1  btn btn-outline-alternate btn-sm">Completed</a>
+                <a data-toggle="tab" href="#tab-eg2-2" class="btn-pill btn-wide active mr-1 ml-1  btn btn-outline-info btn-sm">Completed</a>
             </div>
         </div>
     </div>
@@ -80,18 +80,7 @@
                                                                                     <div class="btn-group dropdown">
                                                                                         <button type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="btn-icon btn-icon-only btn btn-link">
                                                                                             Project Leader
-                                                                                        </button>
-                                                                                        <div tabindex="-1" role="menu" aria-hidden="true" class="dropdown-menu-shadow dropdown-menu-hover-link dropdown-menu">
-                                                                                            <h6 tabindex="-1" class="dropdown-header">Header</h6>
-                                                                                            <button type="button" tabindex="0" class="dropdown-item"><i class="dropdown-icon lnr-inbox"> </i><span>Menus</span></button>
-                                                                                            <button type="button" tabindex="0" class="dropdown-item"><i class="dropdown-icon lnr-file-empty"> </i><span>Settings</span></button>
-                                                                                            <button type="button" tabindex="0" class="dropdown-item"><i class="dropdown-icon lnr-book"> </i><span>Actions</span></button>
-                                                                                            <div tabindex="-1" class="dropdown-divider"></div>
-                                                                                            <div class="p-1 text-right">
-                                                                                                <button class="mr-2 btn-shadow btn-sm btn btn-link">View Details</button>
-                                                                                                <button class="mr-2 btn-shadow btn-sm btn btn-primary">Action</button>
-                                                                                            </div>
-                                                                                        </div>
+                                                                                        </button>                                                                                     
                                                                                         <div class="main-card mb-3 card">
                                                                                         </div>
                                                                                     </div>
@@ -119,17 +108,6 @@
                                                                                         <button type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="btn-icon btn-icon-only btn btn-link">
                                                                                             Team Member
                                                                                         </button>
-                                                                                        <div tabindex="-1" role="menu" aria-hidden="true" class="dropdown-menu-shadow dropdown-menu-hover-link dropdown-menu">
-                                                                                            <h6 tabindex="-1" class="dropdown-header">Header</h6>
-                                                                                            <button type="button" tabindex="0" class="dropdown-item"><i class="dropdown-icon lnr-inbox"> </i><span>Menus</span></button>
-                                                                                            <button type="button" tabindex="0" class="dropdown-item"><i class="dropdown-icon lnr-file-empty"> </i><span>Settings</span></button>
-                                                                                            <button type="button" tabindex="0" class="dropdown-item"><i class="dropdown-icon lnr-book"> </i><span>Actions</span></button>
-                                                                                            <div tabindex="-1" class="dropdown-divider"></div>
-                                                                                            <div class="p-1 text-right">
-                                                                                                <button class="mr-2 btn-shadow btn-sm btn btn-link">View Details</button>
-                                                                                                <button class="mr-2 btn-shadow btn-sm btn btn-primary">Action</button>
-                                                                                            </div>
-                                                                                        </div>
                                                                                     </div>                                              
                                                                                 </div>
                                                                             </div>     

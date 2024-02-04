@@ -43,7 +43,7 @@ class HrController extends Controller
         $users = $userQuery->paginate($perPage)->withQueryString();
         $rating = [];
         foreach($users as $member){
-                $rating[] = calculateAverageRating($member->id);       
+            $rating[] = calculateAverageRating($member->id);       
         }
         
         $this->data['users'] = $users;

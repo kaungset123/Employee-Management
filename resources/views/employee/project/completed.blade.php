@@ -6,11 +6,11 @@
             <div>
                 @include('layout.flashmessage')
             </div>
-            <div class="card-header p-5"><b style="font-size: 23px;">{{ $data['header'] }}</b>
+            <div class="card-header p-5 text-info"><b style="font-size: 23px;">{{ $data['header'] }}</b>
                 <div class="btn-actions-pane-right">
                     <div class="nav">
-                        <a  href="{{ route('project.myproject') }}" class="btn-pill btn-wide  btn btn-outline-alternate btn-sm">Running</a>
-                        <a data-toggle="tab" href="#tab-eg2-1" class="btn-pill btn-wide active mr-1 ml-1  btn btn-outline-alternate btn-sm">Completed</a>
+                        <a  href="{{ route('project.myproject') }}" class="btn-pill btn-wide  btn btn-outline-info btn-sm">Running</a>
+                        <a data-toggle="tab" href="#tab-eg2-1" class="btn-pill btn-wide active mr-1 ml-1  btn btn-outline-info btn-sm">Completed</a>
                     </div>
                 </div>
             </div>
@@ -21,10 +21,10 @@
                         <i class="fas fa-redo-alt mt-1" style="font-size: 30px;"></i>
                     </a>
                     <input type="hidden" name="perPage" value="{{ $data['completed']->perPage() }}">
-                    <input class="form-control me-2" type="text" name="search" value="{{ $data['search'] }}" placeholder="Search by name" aria-label="Search">
-                    <input class="form-control me-2" type="text" name="member_name" value="{{ $data['search'] }}" placeholder="member name" aria-label="Search">
+                    <input class="form-control" type="text" name="search" value="{{ $data['search'] }}" placeholder="Search by name" aria-label="Search">
+                    <input class="form-control" type="text" name="member_name" value="{{ $data['search'] }}" placeholder="member name" aria-label="Search">
                     <input type="date" class="form-control" name="created_at" value="{{ $data['created'] }}" >
-                    <button class="btn btn-outline-success " type="submit">Search</button>
+                    <button class="btn btn-outline-info " type="submit">Search</button>
                 </form>
                 <div class="">
                     @include('layout.projectPageLimit')

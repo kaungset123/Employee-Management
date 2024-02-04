@@ -4,6 +4,9 @@
     }
 }
 
+.dashboard {
+    font-size: 16px;
+}
 #all_emp_tb  img {
     width: 50px;
     height: 50px;
@@ -61,7 +64,7 @@
 
 #my_task,#assign_task,#all_task {
     margin-left:5px;
-    background:blueviolet;
+    /* background:#0dcaf0; */
     padding:6px 12px;
     border-radius:8px;
     color:#fff;
@@ -69,22 +72,19 @@
 }
 
 #project_start {
-    margin-left:5px;
-    background:green;
-    padding:6px 12px;
-    border-radius:8px;
-    color:#fff;
-    text-decoration:none;
-
+    margin-left: 5px;
+    color: #fff;
+    padding: 6px 25px;
+    border-radius: 7px;
+    text-decoration: none;
 }
 
 #project_delete_list {
     position:relative;
-    bottom:5px;left:5px;
-    background:red;
+    bottom:5px;
+    left:5px;
     padding:6px 10px;
     border-radius:17px;
-    color:#fff;
     text-decoration:none;
 }
 
@@ -141,7 +141,7 @@
     position: absolute;
     top: 100%;
     left: 0;
-    background-color: blue;
+    background-color: #0dcaf0;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     border-radius: 4px;
     padding: 6px;
@@ -163,10 +163,10 @@
 
 
 .choosePaginate {
-    color: blue;
+    color: #0dcaf0;
     /* background-color: blue; */
-    border: 1px solid blue;
-    padding: 0px 15px;
+    border: 1px solid #0dcaf0;
+    padding: 6px 12px;
     border-radius: 5px;
 }
 /* Page Limitatin End*/
@@ -178,7 +178,7 @@
 }
 .dept_bg:hover .expen_bar{
     width: 100%;
-    color: blue;
+    color: #0dcaf0;
     /* background: #5F8DE5; */
     /* border-bottom: 2px solid blue; */
     /* box-shadow: 2px 3px 9px blue; */
@@ -191,7 +191,7 @@
 .dept_bg:hover b {
     letter-spacing: 4px;
     transition: ease-in-out 0.4s;   
-    color: blue;
+    color: #0dcaf0;
 }
 
 .manager_img {
@@ -207,7 +207,64 @@
     border-radius:38px;
 }
 
-/* ERROR */
+/*JQUERY ERROR WARNING*/
 .error {
     color: #ff0055;
 }
+
+/* SELECT2 BOX */
+
+
+
+.select2-container .select2-selection--single .select2-selection__rendered {
+    margin-top: 2px;
+}
+
+.select2-container .select2-selection--single {
+    height: 36px;
+}
+
+.select2-container--default .select2-selection--single .select2-selection__arrow {
+    height: 30px;
+}
+
+.select2-container .select2-selection--multiple {
+    min-height: 36px;
+}
+
+/* NAVIGATION BAR */
+.hamburger-inner, .hamburger-inner::before, .hamburger-inner::after {
+    background-color: #fff;
+}
+
+.hamburger.is-active .hamburger-inner, 
+.hamburger.is-active .hamburger-inner::before,
+.hamburger.is-active .hamburger-inner::after {
+    background-color: #fff;
+}
+
+.vertical-nav-menu i.metismenu-icon {
+    opacity:1;
+    font-size: 1.2rem;
+}
+
+.dropdown-menu.dropdown-menu-lg {
+    min-width: 23rem;
+}
+ 
+
+/* PROJECT BUTTON */
+
+/* .btn-outline-alternate:not(:disabled):not(.disabled).active {
+    color: #fff;
+    background:#0dcaf0 ;
+    border-color:#0dcaf0 ;
+} */
+
+/* a.bg-info:hover {
+    color: yellow;
+} */
+
+/* a.bg-info:hover, a.bg-info:focus, button.bg-info:hover, button.bg-info:focus {
+    background-color: yellow !important;
+} */

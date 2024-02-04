@@ -5,7 +5,7 @@
     <div class="app-main__outer">
             <div class="card-body" id="all_leave_tb">
                 @include('layout.flashmessage')
-                <h4 style="font-weight: bold;" class="mt-4">{{$data['header']}}</h4>
+                <h4 style="font-weight: bold;" class="mt-4 text-info">{{$data['header']}}</h4>
                 <form class="d-flex col-md-6 offset-md-3 mt-4"  action="{{ route('employee.salary.index') }}" method="GET" >
                     @csrf
                     <a href="{{ route('employee.salary.index', ['perPage' => $data['salarys']->perPage()]) }}" style="color: black;">
@@ -13,12 +13,12 @@
                     </a>
                     <input type="hidden" name="perPage" value="{{ $data['salarys']->perPage() }}">
                     <input type="date" class="form-control" name="created_at" value="{{ $data['created'] }}" >
-                    <button class="btn btn-outline-success " type="submit">Search</button>
+                    <button class="btn btn-outline-info " type="submit">Search</button>
                 </form>
-                <div class="mt-3">
+                <div class="">
                     @include('layout.pageLimit')
                 </div>
-                <table style="width: 100%;"  class="table table-hover table-striped table-bordered mt-4">
+                <table style="width: 100%;"  class="table table-hover table-bordered mt-4">
                     @if(count($data['salarys']) > 0 )
                         <thead>
                             <tr class="text-center">
@@ -41,7 +41,13 @@
                                             <img style="width:50px; height:50px;border-radius:25px;" src="{{ asset('storage/uploads/' . $salary->user->img)}}">     
                                         </td>
                                         <td>{{ $salary->user->name }}</td>                                   
-                                        <td>{{ $salary->ot_time }} Hrs</td>
+                                        <td>
+                                            @if($salary->ot_time <= 1)
+                                                {{ $salary->ot_time }} Hr
+                                            @else
+                                                {{ $salary->ot_time }} Hrs
+                                            @endif
+                                        </td>
                                         <td>{{ $salary->ot_amount }}</td>
                                         <td>{{ $salary->dedution }}</td>
                                         <td>{{ $salary->leave }}</td>

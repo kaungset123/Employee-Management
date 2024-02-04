@@ -3,11 +3,11 @@
 
 @section('content')
         <div class="app-main__outer">
-            <div class="card-header p-5"><b style="font-size: 23px;">{{ $data['header'] }}</b>
+            <div class="card-header p-5 text-info"><b style="font-size: 23px;">{{ $data['header'] }}</b>
                 <div class="btn-actions-pane-right">
                     <div class="nav">
-                        <a data-toggle="tab" href="#tab-eg2-0" class="btn-pill btn-wide active btn btn-outline-alternate btn-sm">Running</a>
-                        <a  href="{{ route('project.completed') }}" class="btn-pill btn-wide mr-1 ml-1  btn btn-outline-alternate btn-sm">Completed</a>
+                        <a data-toggle="tab" href="#tab-eg2-0" class="btn-pill btn-wide bg-info active btn btn-outline-info btn-sm">Running</a>
+                        <a  href="{{ route('project.completed') }}" class="btn-pill btn-wide  mr-1 ml-1  btn btn-outline-info btn-sm">Completed</a>
                         <!-- <a data-toggle="tab" href="#tab-eg2-2" class="btn-pill btn-wide  btn btn-outline-alternate btn-sm"></a>     -->
                     </div>
                 </div>
@@ -19,10 +19,10 @@
                         <i class="fas fa-redo-alt mt-1" style="font-size: 30px;"></i>
                     </a>
                     <input type="hidden" name="perPage" value="{{ $data['projects']->perPage() }}">
-                    <input class="form-control me-2" type="text" name="search" value="{{ $data['search'] }}" placeholder="Search by name" aria-label="Search">
-                    <input class="form-control me-2" type="text" name="member_name" value="{{ $data['memberName'] }}" placeholder="member name" aria-label="Search">
-                    <input type="date" class="form-control" name="created_at" value="{{ $data['created'] }}" >
-                    <button class="btn btn-outline-success " type="submit">Search</button>
+                    <input class="form-control border-info" type="text" name="search" value="{{ $data['search'] }}" placeholder="Search by name" aria-label="Search">
+                    <input class="form-control border-info" type="text" name="member_name" value="{{ $data['memberName'] }}" placeholder="member name" aria-label="Search">
+                    <input type="date" class="form-control border-info" name="created_at" value="{{ $data['created'] }}" >
+                    <button class="btn btn-outline-info " type="submit">Search</button>
                 </form>
                 <div class="">
                     @include('layout.projectPageLimit')
@@ -44,41 +44,36 @@
                                                             {{$progress['project']->name}} 
                                                         </div>
                                                         <div class="btn-actions-pane-right actions-icon-btn">
-                                                            @if($progress['project']->status != 0)
                                                                 <a href="{{route('project.detail',$progress['project']->id)}}" style="text-decoration: none;">View</a>
-                                                            @else
-                                                                not started
-                                                            @endif
-                                                            <a href="{{ route('project.mytask',$progress['project']->id) }}" id="my_task" >
+                                                            <a href="{{ route('project.mytask',$progress['project']->id) }}" class="bg-info" id="my_task" >
                                                                 My Tasks
                                                             </a>
                                                             @if(auth()->user()->id == $progress['project']->project_manager_id )
-                                                                <a href="{{ route('task.create',$progress['project']->id ) }}"  id="assign_task" >
+                                                                <a href="{{ route('task.create',$progress['project']->id ) }}" class="bg-info" id="assign_task" >
                                                                     Assign Tasks
                                                                 </a>  
-                                                                <a href="{{ route('task.index',$progress['project']->id) }}" id="all_task" >
+                                                                <a href="{{ route('task.index',$progress['project']->id) }}" class="bg-info" id="all_task" >
                                                                     All Tasks
                                                                 </a>
                                                                 @if($progress['project']->status == 0)
-                                                                    <a href="{{ route('project.start',$progress['project']->id) }}" id="project_start">
-                                                                        Let Start!
+                                                                    <a href="{{ route('project.start',$progress['project']->id) }}" id="project_start" class="bg-success">
+                                                                        Start
                                                                     </a>
                                                                 @endif
-
                                                             @endif
                                                         </div>
                                                     </div>
                                                     <div class="widget-chart widget-chart2 text-left p-0">
                                                         <div class="widget-chat-wrapper-outer">
                                                             <div class="widget-chart-content widget-chart-content-lg">
-                                                                <b>Start Date :  <i style="color:blue;">{{ $progress['project']->start_date }}</i></b>
-                                                                <b>End Date : <i style="color:red;"> {{ $progress['project']->end_date }} </i> </b>
-                                                                <b>Period : <i style="color:red;"> {{ $progress['project']->projectPeriod}} </i> </b>                                                               
+                                                                <b style="margin-bottom: 8px;">Start Date :  <i>{{ $progress['project']->start_date }}</i></b>
+                                                                <b style="margin-bottom: 8px;">End Date : <i> {{ $progress['project']->end_date }} </i> </b>
+                                                                <b>Period : <i> {{ $progress['project']->projectPeriod}} </i> </b>                                                               
                                                             </div>
                                                         </div>
                                                     </div>
                                                     <div class="pt-2 pb-0 card-body">
-                                                        <h6 class="text-muted text-uppercase font-size-md opacity-9 mb-2 font-weight-normal">Developers</h6>
+                                                        <h6 class="text-muted text-uppercase font-size-md opacity-9 mb-2 font-weight-normal ">Team Members</h6>
                                                         <div class="scroll-area-md shadow-overflow">
                                                             <div class="scrollbar-container">
                                                                 <ul class="rm-list-borders rm-list-borders-scroll list-group list-group-flush">
@@ -165,7 +160,7 @@
                                                         </div>
                                                     </div>
                                                     <div class="progress">
-                                                        <div class="progress-bar" role="progressbar" aria-valuenow="{{$progress['progress']}}" aria-valuemin="0" aria-valuemax="100" style="width: {{$progress['progress']}}%;">
+                                                        <div class="progress-bar bg-info" role="progressbar" aria-valuenow="{{$progress['progress']}}" aria-valuemin="0" aria-valuemax="100" style="width: {{$progress['progress']}}%;">
                                                             {{number_format($progress['progress'],1)}}%
                                                         </div>
                                                     </div>  
@@ -177,7 +172,7 @@
                             </div>
                         </div>
                     @else
-                        <h3 class="text-danger text-center mt-5">no project!</h3>
+                        <h4 class="text-danger text-center mt-5">no project!</h4>
                     @endif
                     <div id="pagination">
                         {{ $data['projects']->links() }}

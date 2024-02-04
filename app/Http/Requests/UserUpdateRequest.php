@@ -32,9 +32,9 @@ class UserUpdateRequest extends FormRequest
             'password' => 'string|nullable|min:6|confirmed:password_confirmation',
             'gender' => 'required|in:male,female',
             'address' => 'required|string|max:255',
-            'basic_salary' => 'required|numeric|min:0',
-            'ot_rate' => 'required|numeric|min:0',
-            'hourly_rate' => 'required|numeric|min:0',
+            'basic_salary' => 'nullable|numeric|min:0',
+            'ot_rate' => 'nullable|numeric|min:0',
+            'hourly_rate' => 'nullable|numeric|min:0',
             'department_id' => 'nullable',
             'img' => 'image|mimes:jpeg,png,jpg,gif|max:2048'
         ];

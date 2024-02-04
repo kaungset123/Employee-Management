@@ -50,6 +50,10 @@ class DashboardController extends Controller
         $this->data['active'] = 'project';
 
         switch ($user->getRoleNames()->first()) {
+            case 'super admin':
+                return redirect()->route('superadmin.dashboard')->with(['data' => $this->data]);
+                break;
+
             case 'admin':
                 return redirect()->route('admin.dashboard')->with(['data' => $this->data]);
                 break;

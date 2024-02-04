@@ -11,8 +11,10 @@ use function App\Helpers\deadLineWarning;
 use function App\Helpers\taskDeadLine;
 use App\Constants\TaskStatus;
 use App\Events\TaskCreate;
+use App\Http\Requests\TaskAssignEditRequest;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
+use Carbon\Carbon;
 
 class TaskController extends Controller
 {
@@ -28,6 +30,8 @@ class TaskController extends Controller
 
     public function index(int $project_id,Request $request)
     {
+        $this->checkPermission('task view');
+
         $query = $request['search'];
 
         $tasksQuery = Task::select('id','name','description','start_date','end_date','project_id','user_id','status')->where('project_id',$project_id)->with('user');
@@ -54,6 +58,8 @@ class TaskController extends Controller
 
     public function create(int $id)
     {
+        $this->checkPermission('task create',$id);
+
         $project = Project::findOrFail($id); 
         $this->data['title'] = 'Assign Task'; 
         $this->data['header'] = 'TASK ASSIGNING';
@@ -63,53 +69,107 @@ class TaskController extends Controller
 
     public function store(TaskAssignRequest $request)
     {
+        $this->checkPermission('task create');
+
         $project_id = $request->project_id;
+        // $start_date = Carbon::parse($request->input('start_date'))->setTimezone('UTC');
+        // $end_date = Carbon::parse($request->input('end_date'))->setTimezone('UTC');
 
-        $task =  Task::create([
-            'name' => $request->input('name'),
-            'description' => $request->input('description'),
-            'project_id' => $request->input('project_id'),
-            'user_id' => $request->input('user_id'),
-            'start_date' => $request->input('start_date'),
-            'end_date' => $request->input('end_date'),
-            'created_by' => $request->input('created_by')
-        ]);
+            $task =  Task::create([
+                'name' => $request->input('name'),
+                'description' => $request->input('description'),
+                'project_id' => $request->input('project_id'),
+                'user_id' => $request->input('user_id'),
+                'start_date' =>$request->input('start_date'),
+                'end_date' => $request->input('end_date'),
+                // 'start_date' => $start_date,
+                // 'end_date' => $end_date,
+                'created_by' => $request->input('created_by')
+            ]);
 
-        // TaskCreate::dispatch($task);
+            // TaskCreate::dispatch($task);
 
-        return redirect()->route('task.index',['id' => $project_id])->with('status','task assigned successfully');
+            return redirect()->route('task.index',['id' => $project_id])->with('status','task assigned successfully');
+      
     }
 
     public function edit(int $id)
     {
-        $task = Task::where('id',$id)->select('id','project_id','name','description','start_date','end_date','project_id','user_id','status','created_by')->first();
-        // dd($task->project_id);
-        $project = Project::findOrFail($task->project_id);
-        $this->data['task'] = $task;
-        $this->data['project'] = $project;
-        $this->data['title'] = 'Edit Task';
-        $this->data['header'] = 'Task Edit Form';
-        return view('employee.task.edit')->with(['data' => $this->data]);
+        $this->checkPermission('task update',$id);
+
+        try {
+            $task = Task::where('id',$id)->select('id','project_id','name','description','start_date','end_date','project_id','user_id','status','created_by')->first();
+            // dd($task->project_id);
+            $project = Project::findOrFail($task->project_id);
+            $this->data['task'] = $task;
+            $this->data['project'] = $project;
+            $this->data['title'] = 'Edit Task';
+            $this->data['header'] = 'TASK EDITION';
+            return view('employee.task.edit')->with(['data' => $this->data]);
+        }
+        catch(ModelNotFoundException $e){
+            return back()->with('error',$e->getMessage());
+        }
+        catch(Exception $e){
+            return back()->with('error',$e->getMessage());
+        }  
     }
 
-    public function update(TaskAssignRequest $request,int $id)
+    public function update(TaskAssignEditRequest $request,int $id)
     {
-        $task = Task::findOrFail($id);
-        $project_id = $request->project_id;
-        $task->update([
-            'name' => $request->input('name'),
-            'description' => $request->input('description'),
-            'project_id' => $request->input('project_id'),
-            'user_id' => $request->input('user_id'),
-            'start_date' => $request->input('start_date'),
-            'end_date' => $request->input('end_date'),
-            'created_by' => $request->input('created_by'),
-            'updated_by' => $request->input('updated_by')
-        ]);
+        $this->checkPermission('task update',$id);
 
-        return redirect()->route('task.index',['id' => $project_id])->with('status','Task Updated successfully');
+        try{
+            $task = Task::findOrFail($id);
+            $project_id = $request->project_id;
+            // $start_date = Carbon::parse($request->input('start_date'))->setTimezone('UTC');
+            // $end_date = Carbon::parse($request->input('end_date'))->setTimezone('UTC');
+
+            $task->update([
+                'name' => $request->input('name'),
+                'description' => $request->input('description'),
+                'project_id' => $request->input('project_id'),
+                'user_id' => $request->input('user_id'),
+                'start_date' => $request->input('start_date'),
+                'end_date' => $request->input('end_date'),
+                // 'start_date' => $start_date,
+                // 'end_date' => $end_date,
+                'created_by' => $request->input('created_by'),
+                'updated_by' => $request->input('updated_by')
+            ]);
+    
+            return redirect()->route('task.index',['id' => $project_id])->with('status','Task Updated successfully');
+        }
+        catch(ModelNotFoundException $e){
+            return back()->with('error',$e->getMessage());
+        }
+        catch(Exception $e){
+            return back()->with('error',$e->getMessage());
+        }    
     }
 
+    public function deleteList(Request $request,int $project_id)
+    {
+        $query = $request['search'];
+
+        $tasksQuery = Task::onlyTrashed()->select('id','name','description','start_date','end_date','project_id','user_id','status')->where('project_id',$project_id)->with('user');
+        // dd($tasksQuery);
+        if($query) {
+            $tasksQuery->whereHas('user', function ($subQuery) use ($query) {
+                $subQuery->where('name', 'like', "%$query%");
+            });
+        }
+
+        $perPage = $request->input('perPage',5);
+        $tasks = $tasksQuery->paginate($perPage)->withQueryString();
+
+        // dd($tasks);
+        $this->data['header'] = 'Deleted Task List';
+        $this->data['project_id'] = $project_id;
+        $this->data['tasks'] = $tasks;
+        $this->data['search'] = $query;
+        return view('employee.task.deleteList')->with(['data' => $this->data]);
+    }
 
     public function start(int $id)
     {
@@ -129,6 +189,8 @@ class TaskController extends Controller
     
     public function destroy(int $id)
     {
+        $this->checkPermission('task delete',$id);
+
         try{
             $task=Task::findOrFail($id);    
             // dd($task);
@@ -143,10 +205,32 @@ class TaskController extends Controller
         }  
     }
 
+    public function restore(int $id)
+    {
+        $this->checkPermission('task restore',$id); 
+
+        try{
+            $project_id = Task::onlyTrashed()->where('id',$id)->pluck('project_id')->first();
+            // dd($project_id);
+            $task=Task::onlyTrashed($id);    
+            // dd($task);
+            $task->restore();
+            return redirect()->route('task.index',['id' => $project_id])->with('status','Task restored successfully');  
+        }
+        catch(ModelNotFoundException $e){
+            return back()->with('error',$e->getMessage());
+        }
+        catch(Exception $e){
+            return back()->with('error',$e->getMessage());
+        }  
+    }
+
     public function force_delete(int $id)
     {
+        $this->checkPermission('task delete',$id);
+
         try{
-            $task=Task::withTrashed($id);    
+            $task=Task::onlyTrashed()->find($id);    
             // dd($task);
             $task->forceDelete();
             return back()->with('status','Task force deleted successfully');  
@@ -158,6 +242,7 @@ class TaskController extends Controller
             return back()->with('error',$e->getMessage());
         }   
     }
+
     private function checkPermission($permission,$data = null ) {
         return $this->authorize($permission,$data);
     }

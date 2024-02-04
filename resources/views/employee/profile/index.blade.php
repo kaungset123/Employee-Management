@@ -4,10 +4,10 @@
 @section('content')
     <div class="app-main__outer">
         <!-- <div class="card "> -->
-            <div class="col-md-12 ">
+            <div class="col-md-12 mt-2">
                 <div class="card-hover-shadow profile-responsive card-border border-success mb-3 card">
                     <div class="dropdown-menu-header">
-                        <div class="dropdown-menu-header-inner bg-success">
+                        <div class="dropdown-menu-header-inner bg-info">
                             <div class="menu-header-content mt-4">
                                 <div class="avatar-icon-wrapper btn-hover-shine mb-2 avatar-icon-xl">
                                     <div class="">
@@ -37,18 +37,34 @@
                             <div class="tab-pane active show" id="tab-2-eg1">
                                 <ul class="list-group list-group-flush">  
                                     <div class="mt-4 mb-4 " style="text-align:left;width:50%;margin:0 auto;" id="profile_data">
-                                        <p><b>Role </b>{{ $data['user']['user']->getRoleNames()->first() }}</p>
-                                        <p><b>Rating </b>{{ $data['user']['rating']}}</p>                                       
-                                        <p><b>Email </b>{{ $data['user']['user']->email }}</p>
-                                        <p><b>Phone </b>{{ $data['user']['user']->phone }}</p>
-                                        <p><b>Address </b>{{ $data['user']['user']->address }}</p>
-                                        <p><b>Basic Salary </b>{{ $data['user']['user']->basic_salary }}</p>
-                                        <p><b>OT Rate </b>{{ $data['user']['user']->ot_rate }}</p>
-                                        <p><b>Hourly Rate   </b>{{ $data['user']['user']->hourly_rate }}</p>
-                                        <p><b>Participated Projects</b> 
-                                            @foreach($data['user']['user']->projects as $project) 
-                                                {{ $project->name }} ,
+                                        <p><b>Role&nbsp;&nbsp; </b>
+                                            @foreach($data['user']['user']->getRoleNames() as $role)
+                                                {{ $role }}
+                                                @if(!$loop->last) 
+                                                ,
+                                                @endif
                                             @endforeach
+                                        </p>
+                                        @if($data['user']['user']->getRoleNames()->first() != 'super admin')
+                                            <p><b>Rating&nbsp;&nbsp; </b>{{ $data['user']['rating']}}</p>
+                                        @endif                                       
+                                        <p><b>Email&nbsp;&nbsp; </b>{{ $data['user']['user']->email }}</p>
+                                        <p><b>Phone&nbsp;&nbsp; </b>{{ $data['user']['user']->phone }}</p>
+                                        <p><b>Address&nbsp;&nbsp; </b>{{ $data['user']['user']->address }}</p>
+                                        <p><b>Basic Salary&nbsp;&nbsp; </b>{{ $data['user']['user']->basic_salary }}</p>
+                                        <p><b>OT Rate&nbsp;&nbsp; </b>{{ $data['user']['user']->ot_rate }}</p>
+                                        <p><b>Hourly Rate&nbsp;&nbsp;   </b>{{ $data['user']['user']->hourly_rate }}</p>
+                                        <p><b>Participated Projects&nbsp;&nbsp; </b> 
+                                            @if(count($data['user']['user']->projects) > 0)
+                                                @foreach($data['user']['user']->projects as $project) 
+                                                    {{ $project->name }} 
+                                                    @if(!$loop->last) 
+                                                    ,
+                                                    @endif
+                                                @endforeach
+                                            @else
+                                                N/A
+                                            @endif
                                         </p>
                                     </div>                                                                   
                                 </ul>

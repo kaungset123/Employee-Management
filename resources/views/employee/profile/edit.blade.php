@@ -3,9 +3,9 @@
 
 @section('content')
     <div class="app-main__outer">
-        <div class="col-md-10 mt-3 offset-md-1 p-3">
+        <div class="card col-md-10 mt-4 mb-4 p-5 offset-md-1 p-3">
             @include('layout.flashmessage')
-            <h4 class="mb-3" style="font-weight: bold;">{{ $data['header'] }}</h4>
+            <h4 class="mb-4 text-info" style="font-weight: bold;">{{ $data['header'] }}</h4>
             <form action="{{route('profile.update',$data['user']->id)}}" method="post" enctype="multipart/form-data">
                 @csrf
                 @method('PATCH')
@@ -69,14 +69,18 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-md-6 p-0">
+                <div class=" p-0">
                     <div class="form-group mt-4">
                         <input type="file" class="form-control" name="img" style="border: none;" value="{{ old('img') }}"  accept="image/*" onchange="displayImage(this)">
+                        @error('img')
+                            <p class="text-danger">{{ $message }}</p>
+                        @enderror
                     </div>
                     <img id="preview-image" src="{{ asset('storage/uploads/' . $data['user']->img) }}" style="width: 130px;height:130px;" alt="Preview">
                 </div>
                 <div class="mt-3">
                     <div class="form-group">
+                        <label>Address</label>  
                         <textarea class="form-control" name="address" rows="5" placeholder="Address">{{ $data['user']->address }}</textarea>
                         @error('address')
                             <p class="text-danger">{{$message}}</p>
@@ -84,7 +88,7 @@
                     </div>
                 </div>
                 <div class="d-flex justify-content-end mt-3 ">
-                <button type="reset" class="btn btn-sm bg-danger me-5 text-white " style="box-shadow: 1px 2px 9px black;">
+                <button type="reset" class="btn btn-sm bg-danger me-4 text-white " style="box-shadow: 1px 2px 9px black;">
                     cancel
                 </button>
                 <button type="submit" class="btn btn-sm bg-primary text-white " style="box-shadow: 1px 2px 9px black;margin-left:1rem;">update</button>

@@ -2,10 +2,15 @@
 @section("title",$data['title'])
 
 @section('content')
-        <div class="app-main__outer">
-            <div class="col-md-10 mt-3 offset-md-1 p-3">
+        <div class="app-main__outer mt-5">
+            <div class="card col-md-10 offset-md-1 p-5" style="flex: none;">
                 @include('layout.flashmessage')
-                <h4 class="mb-3" style="font-weight: bold;">{{$data['header']}}</h4>
+                <div class="" style="position: relative;">
+                    <h4 class="mb-3 text-info" style="font-weight: bold;">{{$data['header']}}</h4>
+                    <a href="{{ route('attendance.index') }}" class="me-2 text-info" style="font-size: 28px;margin-top:-43px;position:absolute;right:0px;">
+                        <i class="fas fa-arrow-alt-circle-left"></i>
+                    </a>
+                </div>
                 <form action="{{ route('attendance.update',$data['attendance']->id) }}" method="post">
                     @csrf
                     @method('PUT')
@@ -45,13 +50,12 @@
                                 <p class="text-danger">{{$message}}</p>
                             @enderror
                         </div>
-                    </div>
-                    <div class=" mt-4">                
+                    </div>               
                     <div class="d-flex justify-content-end mt-3 ">
                         <button type="reset" class="btn btn-sm bg-danger me-5 text-white " style="box-shadow: 1px 2px 9px black;">
                             cancel
                         </button>
-                        <button type="submit" class="btn btn-sm bg-primary text-white" style="box-shadow: 1px 2px 9px black;margin-left:1rem;">Edit</button>
+                        <button type="submit" class="btn btn-sm bg-primary text-white" style="box-shadow: 1px 2px 9px black;margin-left:1rem;">Update</button>
                     </div>
                 </form>
             </div>

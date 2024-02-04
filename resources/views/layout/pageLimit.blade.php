@@ -1,5 +1,5 @@
-<div class="pagination-form mb-3" onclick="togglePaginationOptions()">
-    <div class="choosePaginate mb-1">
+<div class="pagination-form mb-3 " onclick="togglePaginationOptions()">
+    <div class="choosePaginate mb-1 ">
         Page Limit
     </div>
     <div class="pagination-options">

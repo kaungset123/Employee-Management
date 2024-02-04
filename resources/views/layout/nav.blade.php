@@ -1,5 +1,5 @@
-<div class="app-header header-shadow" >
-            <div class="app-header__logo">
+<div class="app-header header-shadow bg-info" >
+            <div class="app-header__logo bg-info">
                 <div class="logo-src"></div>
                 <div class="header__pane ml-auto">
                     <div>
@@ -29,43 +29,45 @@
                     </button>
                 </span>
             </div>    
-            <div class="app-header__content">
-                <div class="app-header-left">
-                    <div class="search-wrapper">
-                        <div class="input-holder">
-                            <input type="text" class="search-input" placeholder="Type to search">
-                            <button class="search-icon"><span></span></button>
-                        </div>
-                        <button class="close"></button>
-                    </div>       
-                </div>
+            <div class="app-header__content p-5">
                 <div class="app-header-right">                   
-                    <div class="header-btn-lg pr-0">
+                    <div class="header-btn-lg pr-0 p-0">
                         <div class="widget-content p-0">
                             <div class="widget-content-wrapper">
                                 <div class="widget-content-left">
                                     <div class="btn-group">
-                                        <a data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="p-0 btn">
+                                        <a data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="p-0 btn text-white">
                                             <!-- <img width="42" class="rounded-circle" src="" alt=""> -->
                                             <i class="fa fa-angle-down ml-2 opacity-8"></i>
                                         </a>
-                                        <div tabindex="-3" role="menu" aria-hidden="true" class="p-0 rm-pointers dropdown-menu-lg dropdown-menu dropdown-menu-right">
+                                        <div tabindex="" role="menu" aria-hidden="true" class="p-0 bg-white rm-pointers me-2 dropdown-menu-lg dropdown-menu dropdown-menu-right" style="position:absolute;top:11px;left:-23px;">
                                             <div class="dropdown-menu-header">
-                                                <div class="dropdown-menu-header-inner bg-info p-3" >
+                                                <div class="dropdown-menu-header-inner p-3 bg-info" style="box-shadow: 0px -2px 7px black;">
                                                     <div class="menu-header-content text-left">
                                                         <div class="widget-content p-0">
                                                             <div class="widget-content-wrapper">
                                                                 <div class="widget-content-left mr-3">
-                                                                    <a href="{{ route('user.profile',auth()->user()->id) }}">
-                                                                        <img style="width:56px; height:56px;border-radius:28px;"
-                                                                            src="{{ asset('storage/uploads/' . auth()->user()->img) }}"
-                                                                            alt="">
-                                                                    </a>
+                                                                    @if(!empty(auth()->user()->img))
+                                                                        <a href="{{ route('profile.index',auth()->user()->id) }}">
+                                                                            <img style="width:56px; height:56px;border-radius:28px;"
+                                                                                src="{{ asset('storage/uploads/' . auth()->user()->img) }}"
+                                                                                alt="">
+                                                                        </a>
+                                                                    @else
+                                                                        <b class="text-warning">No img</b>
+                                                                    @endif
                                                                 </div>
                                                                 <div class="widget-content-left">
-                                                                    <div class="widget-heading">{{auth()->user()->name}}
+                                                                    <div class="widget-heading">
+                                                                        {{auth()->user()->name}}
                                                                     </div>
-                                                                    <div class="widget-subheading opacity-8">Role : {{ auth()->user()->getRoleNames()->first() }}
+                                                                    <div class="widget-subheading opacity-8" >
+                                                                        Role : @foreach(auth()->user()->getRoleNames() as $role)
+                                                                                    {{ $role }}
+                                                                                    @if(!$loop->last) 
+                                                                                    ,
+                                                                                    @endif
+                                                                                @endforeach
                                                                     </div>
                                                                     <div class="widget-subheading opacity-8">
                                                                         @if(auth()->user()->department != null)
@@ -90,38 +92,18 @@
                                                             </li>
                                                     </div>
                                                 </div>
-                                            </div>
-                                            <!-- <div class="scroll-area-xs" style="height: 40px;">
-                                                <div class="scrollbar-container ps">
-                                                    
-                                                </div>
-                                            </div>                                           -->
+                                            </div>                                          
                                         </div>
                                     </div>
                                 </div>
                                 <div class="widget-content-left  ml-3 header-user-info">
-                                    <div class="widget-heading">
+                                    <div class="widget-heading text-white" >
                                         {{auth()->user()->name}}
                                     </div>
-                                    <div class="widget-subheading">
-                                        
-                                    </div>
-                                </div>
-                                <div class="widget-content-right header-user-info ml-3">
-                                    <button type="button" class="btn-shadow p-1 btn btn-primary btn-sm show-toastr-example">
-                                        <i class="fa text-white fa-calendar pr-1 pl-1"></i>
-                                    </button>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                    <div class="header-btn-lg">
-                        <button type="button" class="hamburger hamburger--elastic open-right-drawer">
-                            <span class="hamburger-box">
-                                <span class="hamburger-inner"></span>
-                            </span>
-                        </button>
-                    </div>        
+                    </div>       
             </div>
         </div>
  </div>

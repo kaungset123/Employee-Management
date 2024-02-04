@@ -119,22 +119,31 @@ class ProjectController extends Controller
     {
         $this->checkPermission('project create');
 
-        // omitting the user who taking part in two running projects
-        $users = User::whereDoesntHave('projects', function ($query) {
-            $query->where('status', 1) && 
-            $query->groupBy('user_id')
-            ->havingRaw('COUNT(user_id) > 1'); 
-        })->whereDoesntHave('roles', function ($query) {
-            $query->where('name', 'HR');
-        })->get();
+        try {
+            // omitting the user who taking part in two running projects
+            $users = User::whereDoesntHave('projects', function ($query) {
+                $query->where('status', 1) && 
+                $query->groupBy('user_id')
+                ->havingRaw('COUNT(user_id) > 1'); 
+            })->whereDoesntHave('roles', function ($query) {
+                $query->where('name', 'HR');
+            })->whereNotNull('department_id')
+            ->get();
 
-        // dd($users);  
-        $this->data['users'] = $users;
-        $this->data['header'] = 'Create Project';
-        $this->data['title'] = 'Project Create';
-        return view('admin.project.create')->with(['data' => $this->data]);
+            $this->data['users'] = $users;
+            $this->data['header'] = 'CREATE PROJECT';
+            $this->data['title'] = 'Project Create';
+            return view('admin.project.create')->with(['data' => $this->data]);
+            }
+            catch(ModelNotFoundException $e){
+                return back()->with('error',$e->getMessage());
+            }
+            catch(Exception $e){
+                return back()->with('error',$e->getMessage());
+            }
+           
     }
-
+         
     public function store(ProjectRequest $request)
     {
         $this->checkPermission('project create');
@@ -172,7 +181,6 @@ class ProjectController extends Controller
         $this->data['header'] = 'EDIT PROJECT';
         return view('admin.project.edit')->with(['data' => $this->data]);
     }
-
 
     public function update(ProjectRequest $request,int $id)
     {
@@ -284,7 +292,7 @@ class ProjectController extends Controller
 
             $project->forceDelete();
 
-            return redirect('admin/project/index')->with('status', 'Project permanently deleted successfully');
+            return redirect('admin/project')->with('status', 'Project permanently deleted successfully');
  
     }
     

@@ -4,15 +4,15 @@
 @section('content')
 <div class="app-main__outer">
     <div class="card-body" id="all_leave_tb">
-        <h4 style="font-weight: bold;" class="mt-3">{{$data['header']}}</h4>
+        <h4 style="font-weight: bold;" class="mt-3 text-info">{{$data['header']}}</h4>
         <form class="d-flex col-md-8 offset-md-2 mt-3" action="{{ route('user.leave.index') }}" method="GET">
             @csrf
             <a href="{{ route('user.leave.index',['perPage' => $data['leaves']->perPage()]) }}" style="color: black;">
                 <i class="fas fa-redo-alt mt-1" style="font-size: 30px;"></i>
             </a>
             <input type="hidden" name="perPage" value="{{ $data['leaves']->perPage() }}">
-            <input type="date" class="form-control" name="created_at" value="{{ $data['created'] }}">
-            <button class="btn btn-outline-success " type="submit">Search</button>
+            <input type="date" class="form-control border-info" name="created_at" value="{{ $data['created'] }}">
+            <button class="btn btn-outline-info " type="submit">Search</button>
         </form>
         <div class="">
             @include('layout.pageLimit')
@@ -48,7 +48,7 @@
                             @endif
                         </td>
                         <td>
-                            <div class="mt-2">
+                            <div class="mt-3">
                                 @if($leave->status == 0)
                                     <p class="text-primary"> Pending</p>
                                 @elseif($leave->status == 1)

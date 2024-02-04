@@ -62,6 +62,10 @@ class User extends Authenticatable
         return $this->hasMany(Attendance::class, 'user_id');
     }
 
+    public function hrResponsible(){
+        return $this->belongsTo(Department::class, 'responsible_dpt_id');
+    }
+
     public function salarys(){
         return $this->hasMany(SalaryDetail::class, 'user_id');
     }

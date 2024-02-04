@@ -23,6 +23,8 @@ class RoleController extends Controller
 
     public function index()
     {  
+        $this->checkPermission('role view');
+
         $roles = Role::get();
         $this->data['roles'] = $roles;
         return view('admin.role.index')->with(['data' => $this->data]);      
@@ -30,6 +32,8 @@ class RoleController extends Controller
 
     public function edit(string $id)
     {
+        // $this->checkPermission('role update');
+
         try{
             $permissions = Permission::get();
             $this->data['permissions'] = $permissions;

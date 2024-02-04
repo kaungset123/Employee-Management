@@ -38,8 +38,7 @@ class AttendanceCreateNotification extends Notification
                     ->subject('Attendance Notification!')
                     ->greeting('Hello '.$this->data['name'].',')
                     ->line('Your today attendance is submitted.')
-                    ->action('Check now', url('/attendance/index'))
-                    ->line('Thank you for using our application!');
+                    ->action('Check now', url('/attendance/index'));
     }
 
     /**

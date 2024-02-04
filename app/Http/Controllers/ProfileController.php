@@ -6,7 +6,7 @@ use App\Http\Requests\ProfileUpdateRequest;
 use App\Models\User;
 use Illuminate\Http\Request;
 use function App\Helpers\imgChecker;
-
+use function App\Helpers\calculateAverageRating;
 
 class ProfileController extends Controller
 {
@@ -16,12 +16,23 @@ class ProfileController extends Controller
     {
         $this->data = [
             'title' => 'Profile Management',
-            'header' => 'Edit Profile',
+            'header' => 'EDIT PROFILE',
         ];
+    }
+
+    public function index(int $id)
+    {
+        $this->checkPermission('profile view',$id);
+
+        $user = calculateAverageRating($id);
+        $this->data['user'] = $user;
+        return view('employee.profile.index')->with(['data' => $this->data]);
     }
 
     public function edit(int $id)
     {
+        $this->checkPermission('profile update',$id);
+
         $user = User::select('id','name','email','phone','address','password','img','date_of_birth')->where('id',$id)->first();
         // dd($user); 
         $this->data['user'] = $user;
@@ -30,9 +41,11 @@ class ProfileController extends Controller
 
     public function update(ProfileUpdateRequest $request,int $id)
     {
-        // dd($request);
+        $this->checkPermission('profile update',$id);
+
         $user = User::findOrFail($id);
         $updated_by = auth()->user()->id;
+        $direct = auth()->user()->getRoleNames()->first();
         $old_img = $user->img;
         $imgFile = $request->file('img');
         $img = imgChecker($user,$imgFile,$old_img);
@@ -54,6 +67,20 @@ class ProfileController extends Controller
             'img' => $img,
             'updated_by' => $updated_by,
         ]);
-        return back()->with('status','profile updated successfully');
+
+        if($direct == 'super admin') {
+            return redirect('superadmin/dashboard')->with('status','profile updated successfully');
+        }elseif($direct == 'admin') {
+            return redirect('admin/dashboard')->with('status','profile updated successfully');
+        }elseif($direct == 'HR') {
+            return redirect('hr/dashboard')->with('status','profile updated successfully');
+        }else{
+            return redirect('employee/dashboard')->with('status','profile updated successfully');
+        }
+}
+
+    private function checkPermission($permission,$data = null ) 
+    {
+        return $this->authorize($permission,$data);
     }
 }

@@ -25,8 +25,10 @@ class RatingController extends Controller
         ];
     }
 
-    public function index(int $id)
+    public function create(int $id)
     {
+        $this->checkPermission('rating create');
+
         $rater_id = auth()->user()->id;
         $rated_id = $id;
         $rating = ratingAvailableCheck($rater_id,$rated_id);
@@ -48,6 +50,8 @@ class RatingController extends Controller
 
     public function store(Request $request)
     {
+        $this->checkPermission('rating create');
+
         try{          
             $validated =  $request->validate([
                 'rater_id' => 'required',
@@ -60,5 +64,10 @@ class RatingController extends Controller
         }catch(Exception $e) {
             return response()->json(['error' => 'Error saving rating. Please try again.'], 500);
         }
-    }   
+    }  
+    
+    private function checkPermission($permission,$id = null) 
+    {
+        return $this->authorize($permission,$id);
+    }
 }

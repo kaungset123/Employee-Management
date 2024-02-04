@@ -4,7 +4,7 @@
 @section('content')
 <div class="app-container app-theme-white body-tabs-shadow fixed-header fixed-sidebar">
     @include('layout.nav')
-    <div class="app-main ">
+    <div class="app-main bg-white">
         @include('layout.sidebar')
         <div class="app-main__outer">
             <div class="card-body " id="all_emp_tb" style="position: relative;">
@@ -14,8 +14,8 @@
                 <div class="col-md-8 offset-md-2">
                     <div id="response"></div>
                 </div>
-                <h4 style="font-weight: bold;" class="mb-5">{{$data['header']}}</h4>
-                <a href="javascript:void(0)" id="create-dept-btn" class="text-end" style="position: absolute;right:1.5rem;top:76px;">
+                <h4 style="font-weight: bold;" class="mb-5 text-info" >{{$data['header']}}</h4>
+                <a href="javascript:void(0)" id="create-dept-btn" class="text-end text-info" style="position: absolute;right:1.5rem;top:76px;">
                     <i class="fa fa-plus-circle" style="font-size:30px;" aria-hidden="true"></i>
                 </a>
                 <table style="width: 100%;" class="table table-hover table-bordered mt-5 ">
@@ -29,34 +29,40 @@
                         @foreach($data['departments'] as $department)
                             @if($department->deleted_at != null)
                                 <tr class="text-center" style="line-height: 40px;background:pink;opacity:0.6;">
-                                    <td>{{$department->name}}</td>
-                                    <td>
-                                        @if($department->managerName != null)
-                                            {{ $department->managerName->value('name') }}
-                                        @else
-                                            not yet
-                                        @endif
-                                    </td>
-                                    <td>{{ @count($department->users) }} </td>
-                                    <td class=" " style="border:none;margin-top:13px;">
-                                        <div class="d-flex justify-content-center">                                                        
-                                            <a href="{{ route('department.restore',$department->id) }}" style="text-decoration:none;" class="col-md-2 offset-md-2">
-                                                Restore
-                                            </a>
-                                            <form method="post" action="{{ route('department.force_delete',$department->id) }}">
-                                                @csrf
-                                                @method('DELETE')
-                                                <button type="submit" style="border:none;cursor:pointer;background:none;line-height:10px;" 
-                                                class="text-danger" onclick="return confirm('Are you sure to permanently delete this department?')">
-                                                    Permanent Delete
-                                                </button>
-                                            </form>
-                                        </div>  
-                                    </td>
+                                    <a href="{{ route('department.show',$department->id) }}" style="text-decoration:none;cursor:pointer;">
+                                        <td>{{$department->name}}</td>
+                                        <td>
+                                            @if($department->managerName != null)
+                                                {{ $department->managerName->value('name') }}
+                                            @else
+                                                not yet
+                                            @endif
+                                        </td>
+                                        <td>{{ @count($department->users) }} </td>
+                                        <td class=" " style="border:none;margin-top:13px;">
+                                            <div class="d-flex justify-content-center">                                                        
+                                                <a href="{{ route('department.restore',$department->id) }}" style="text-decoration:none;" class="col-md-2 offset-md-2">
+                                                    Restore
+                                                </a>
+                                                <form method="post" action="{{ route('department.force_delete',$department->id) }}">
+                                                    @csrf
+                                                    @method('DELETE')
+                                                    <button type="submit" style="border:none;cursor:pointer;background:none;line-height:10px;" 
+                                                    class="text-danger" onclick="return confirm('Are you sure to permanently delete this department?')">
+                                                        Permanent Delete
+                                                    </button>
+                                                </form>
+                                            </div>  
+                                        </td>
+                                    </a>
                                 </tr>
                             @else
                                 <tr class="text-center" style="line-height: 40px;">
-                                    <td>{{$department->name}}</td>
+                                    <td>
+                                        <a href="{{ route('department.show',$department->id) }}" style="text-decoration:none;cursor:pointer;color:#000;">
+                                            {{$department->name}}
+                                        </a>
+                                    </td>
                                     <td>
                                         @if($department->managerName != null)
                                             {{ $department->managerName->value('name') }}

@@ -5,17 +5,17 @@
 <div class="app-main__outer">
     <!-- <div class="card mb-3 "> -->
     <div class="card-body" id="all_emp_tb">
-        <h4 style="font-weight: bold;" class="mt-3 mb-4">{{ $data['header'] }}</h4>
+        <h4 style="font-weight: bold;" class="mt-3 mb-4 text-info">{{ $data['header'] }}</h4>
         <form class="d-flex col-md-8 offset-md-2" action="{{ route('leave.balance',['perPage' => $data['leaves']->perPage()]) }}" method="GET">
             <a href="{{ route('leave.balance', ['perPage' => $data['leaves']->perPage()]) }}" style="color: black;">
                 <i class="fas fa-redo-alt mt-1" style="font-size: 30px;"></i>
             </a>
             @csrf
-            <input class="form-control me-2" type="text" name="search" value="{{ $data['search'] }}" placeholder="Search by name" aria-label="Search">
-            <input class="form-control me-2" type="text" name="department_name" value="{{ $data['departmentName'] }}" placeholder="Search by department" aria-label="Search">
+            <input class="form-control " type="text" name="search" value="{{ $data['search'] }}" placeholder="Search by name" aria-label="Search">
+            <input class="form-control " type="text" name="department_name" value="{{ $data['departmentName'] }}" placeholder="Search by department" aria-label="Search">
             <!-- <input type="date" class="form-control" name="created_at" value="{{ $data['created'] }}" > -->
-            <input type="number" class="form-control" name="year" placeholder="search by year" value="{{ $data['created'] }}" min="2000" max="9999">
-            <button class="btn btn-outline-success " type="submit">Search</button>
+            <input type="number" class="form-control" name="year" placeholder="search by year" value="{{ $data['created'] }}" min="2020" max="2050">
+            <button class="btn btn-outline-info " type="submit">Search</button>
         </form>
         <div class="">
             @include('layout.pageLimit')

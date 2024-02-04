@@ -12,7 +12,6 @@ use App\Http\Requests\UserUpdateRequest;
 use Illuminate\Http\Request;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 
-use function App\Helpers\calculateAverageRating;
 use function App\Helpers\imgChecker;
 use function App\Helpers\imgExtension;
 use function App\Helpers\userSearchbar;
@@ -49,13 +48,6 @@ class UserController extends Controller
         return view('admin.employee.index')->with(['data' => $this->data]);      
     }
 
-    public function profile(int $id)
-    {
-       $user = calculateAverageRating($id);
-       $this->data['user'] = $user;
-        return view('admin.employee.profile')->with(['data' => $this->data]);
-    }
-
     public function create()
     {       
         $this->checkPermission('user create');
@@ -81,7 +73,7 @@ class UserController extends Controller
     public function store(RegistrationRequest $request)
     {
         $this->checkPermission('user create');
-
+        // dd($request);
         try{
             $created_by = auth()->user()->id;
             // dd($created_by); 
@@ -101,6 +93,7 @@ class UserController extends Controller
                 'ot_rate' => $request->input('ot_rate'),
                 'hourly_rate' => $request->input('hourly_rate'),
                 'department_id' => $request->input('department_id'),
+                'responsible_dpt_id' => $request->input('responsible_dpt_id'),
                 'img' => $img,
                 'created_by' => $created_by ,
             ]);
@@ -126,7 +119,8 @@ class UserController extends Controller
             $user = User::findOrFail($id);
             // dd($user);
             $roleName = $user->getRoleNames()->toArray();
-            $roles = Role::pluck('name')->toArray();
+            $roles = Role::select('id','name')->get();
+            // dd($roles);
             $dpmts = Department::all();
             $this->data['title'] = 'Edit User';
             $this->data['header'] = 'EDIT USER';
@@ -211,6 +205,11 @@ class UserController extends Controller
             if($status) {
                 return back()->with('failstatus','you can\'t delete ,this employee\'s project is in progress');
             }else{
+                // $salarys = $user->salarys;
+                // foreach($salarys as $salary) {
+                //     $salary->delete();
+                // }
+                // dd($salarys);
                 $user->delete();
                 return redirect('admin/user')->with('status','User deleted successfully');
             }          
@@ -258,7 +257,7 @@ class UserController extends Controller
             }
             $user->forceDelete();
             if($user){
-                return redirect('admin/users/index')->with('status','user forced deleted successfully');
+                return redirect('admin/users')->with('status','user forced deleted successfully');
             }
      
         // dd($id);

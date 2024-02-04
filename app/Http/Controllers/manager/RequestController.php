@@ -25,6 +25,8 @@ class RequestController extends Controller
 
     public function index(Request $request)
     {
+        $this->checkPermission('leave view');
+        
         $query = $request['search'];
         $created_at = $request['created_at'];
 
@@ -54,7 +56,7 @@ class RequestController extends Controller
         $this->data['leaves'] = $leaves;
         $this->data['search'] = $query;
         $this->data['created'] = $created_at;
-
+        $this->data['header'] = 'Department Leave Request';
         return view('manager.leave.index')->with(['data' => $this->data]);
     }
 

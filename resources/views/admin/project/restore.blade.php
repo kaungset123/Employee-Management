@@ -7,7 +7,7 @@
             <!-- <div class="main-card mb-3 mt-3 card col-md-10 offset-md-1 "> -->
                 @if(count($data['projects']) > 0)
                     <div class="card-header p-5">
-                        <b style="font-size: 23px;">{{ $data['header'] }}</b>
+                        <b style="font-size: 23px;" class="text-info">{{ $data['header'] }}</b>
                     </div>
                     <div class="card-body">
                         <div class="tab-content">
@@ -30,7 +30,7 @@
                                                                 <form method="post" action="{{ route('project.force_delete',$project->id) }}">
                                                                     @csrf
                                                                     @method('DELETE')
-                                                                    <button type="submit" style="border:none;cursor:pointer;background:none;" class="text-danger">
+                                                                    <button type="submit" style="border:none;cursor:pointer;background:none;" class="text-danger" onclick="return confirm('Are you sure you want to permanently delete this item?')">
                                                                         <!-- <i class="fa-solid fa-trash text-danger"></i> -->
                                                                         <b>ForceDelete</b>
                                                                     </button>
@@ -137,7 +137,6 @@
                                                 </div>
                                             @endforeach
                                         </div>
-
                                     </div>
                                 </div>
                             </div>
@@ -147,14 +146,14 @@
                     </div>
                 @else
                     <div class="card-header">
-                        <b style="font-size: 23px;">{{ $data['header'] }}</b>
+                        <b style="font-size: 23px;" class="text-info">{{ $data['header'] }}</b>
                     </div>
                     <div class="card-body">
                         <div class="tab-content">
                             <div class="tab-pane active" id="tab-eg2-0" role="tabpanel">
                                 <div class="app-main__inner">
                                     <div class="app-inner-layout">
-                                            <h3 style="text-align: center;color:red;" class="mt-5">There is no deleted item</h3>
+                                            <h4 style="text-align: center;color:red;" class="mt-5">There is no deleted item!</h4>
                                     </div>
                                 </div>
                             </div>

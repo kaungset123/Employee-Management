@@ -29,7 +29,9 @@ class ProjectController extends Controller
     }
 
     public function index(Request $request)
-    {
+    {   
+        $this->checkPermission('project view');
+
         $query = $request['search'];
         $member_name = $request['member_name'];
         $created_at = $request['created_at'];
@@ -61,6 +63,8 @@ class ProjectController extends Controller
 
     public function complete(Request $request)
     {
+        $this->checkPermission('project view');
+        
         $query = $request['search'];
         $member_name = $request['member_name'];
         $created_at = $request['created_at'];
@@ -96,7 +100,7 @@ class ProjectController extends Controller
         $projectProgress = calculatProjectProgress($id);
         // dd($projectProgress);
         foreach($users as $user){
-            $taskProgress[$user->id] = calculateProgress($user->id,$id);
+            $taskProgress[] = calculateProgress($user->id,$id);
         }
         // dd($taskProgress);
         $this->data['taskProgress'] = $taskProgress;
@@ -108,6 +112,8 @@ class ProjectController extends Controller
 
     public function task(int $project_id)
     {
+        $this->checkPermission('task view');
+      
         $user_id = auth()->user()->id;
         $tasks = Task::where(['project_id'=>$project_id,'user_id'=>$user_id])->get();
         foreach ($tasks as $task) {
@@ -116,7 +122,7 @@ class ProjectController extends Controller
         }
         
         $this->data['title'] = 'My Task';
-        $this->data['header'] = 'MY TASK';
+        $this->data['header'] = 'My Task';
         $this->data['tasks'] = $tasks;
         return view('employee/project/mytask')->with(['data' => $this->data]);
     }
@@ -132,7 +138,6 @@ class ProjectController extends Controller
         if($task_count >= $member_count){
             $project->status = ProjectStatus::IN_PROGRESS;
             $project->save();
-            // TaskCreate::dispatch($project);
             return back()->with('status',"Your project is start!");
         }else {
             return back()->with('failstatus',"You can't start ! task assigning is not completed.");

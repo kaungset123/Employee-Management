@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\admin;
 
+use Exception;
 use App\Models\Leave;
 use Illuminate\Http\Request;
 use Spatie\Permission\Models\Role;
@@ -10,6 +11,9 @@ use App\Constants\LeaveRequestStatus;
 use function App\Helpers\leaveSearchbar;
 use function App\Helpers\leaveBalanceCount;
 use function App\Helpers\leaveBalanceQuery;
+use function App\Helpers\leaveBalanceSearchbar;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
+
 use Carbon\Carbon;
 use App\Events\RequestAccepted;
 use App\Events\RequestRejected;
@@ -22,18 +26,17 @@ class LeaveRequestController extends Controller
     {
         $this->data = [
             'title' => 'Leave Management',
-            'header' => 'LEAVE LIST',
+            'header' => 'Leave List',
             'paginate' => 5,
         ];
     }
 
     public function index(Request $request)
     {
+        $this->checkPermission('leave view');
+
         $query = $request['search'];
-        $created_at = $request['year'];
-        // $created_at = $request->validate([
-        //     'created_at' => 'required|integer|min:2000|max:2100'
-        // ]);
+        $created_at = $request['created_at'];
         $department_name = $request['department_name'];
 
         $leavesQuery = Leave::select('id', 'name', 'start_date', 'end_date', 'total_days', 'status', 'user_id')
@@ -41,7 +44,7 @@ class LeaveRequestController extends Controller
                 $query->select('id', 'name', 'img', 'department_id');
             }]);
 
-        $perPage = $request->input('perPage',10);
+        $perPage = $request->input('perPage',5);
         $leaves = leaveSearchbar($leavesQuery, $query, $department_name, $created_at);
         $leaves = $leaves->paginate($perPage)->withQueryString();
 
@@ -62,7 +65,7 @@ class LeaveRequestController extends Controller
 
         $leavesQuery = Leave::with(['user', 'user.department']);  
 
-        $leavesQuery = leaveSearchbar($leavesQuery, $query, $department_name, $created_at);
+        $leavesQuery = leaveBalanceSearchbar($leavesQuery, $query, $department_name, $created_at);
       
         // dd($leavesQuery);
         $user_ids = $leavesQuery->distinct('user_id')->pluck('user_id')->toArray();
@@ -88,6 +91,8 @@ class LeaveRequestController extends Controller
 
     public function show(Request $request)
     {
+        $this->checkPermission('leave view');
+
         $query = $request['search'];
         $created_at = $request['created_at'];
         $department_name = $request['department_name'];
@@ -115,6 +120,29 @@ class LeaveRequestController extends Controller
         return view('admin.leave.request')->with(['data' => $this->data]);
     }
 
+    public function deleteList(Request $request)
+    {
+        $query = $request['search'];
+        $created_at = $request['created_at'];
+        $department_name = $request['department_name'];
+
+        $leavesQuery = Leave::onlyTrashed()->select('id', 'name', 'start_date', 'end_date', 'total_days', 'status', 'user_id')
+            ->with(['user' => function ($query) {
+                $query->select('id', 'name', 'img', 'department_id');
+            }]);
+
+        $perPage = $request->input('perPage',5);
+        $leaves = leaveSearchbar($leavesQuery, $query, $department_name, $created_at);
+        $leaves = $leaves->paginate($perPage)->withQueryString();
+
+        $this->data['leaves'] = $leaves;
+        $this->data['search'] = $query;
+        $this->data['departmentName'] = $department_name;
+        $this->data['created'] = $created_at;
+        $this->data['header'] = 'Deleted Leave List';
+        return view('admin.leave.deleteList')->with(['data' => $this->data]);
+    }
+    
     public function accept(int $id)
     {
         $leave = Leave::findOrFail($id);
@@ -135,9 +163,36 @@ class LeaveRequestController extends Controller
   
     public function destroy(int $id)
     {
-        $leave = Leave::findOrFail($id);
-        $leave->delete();
-        return back()->with('status','leave record deleted successfully!');
+        $this->checkPermission('leave delete',$id);
+
+        try {
+            $leave = Leave::findOrFail($id);
+            $leave->delete();
+            return back()->with('status','leave record deleted successfully!');
+        }
+        catch(ModelNotFoundException $e){
+            return back()->with('error',$e->getMessage());
+        }
+        catch(Exception $e){
+            return back()->with('error',$e->getMessage());
+        } 
+    }
+
+    public function restore(int $id)
+    {
+        $this->checkPermission('leave restore',$id);
+
+        try {
+            $leave = Leave::onlyTrashed($id);
+            $leave->restore();
+            return redirect('admin/leave/index')->with('status','leave record restored sucessfully');
+        }
+        catch(ModelNotFoundException $e){
+            return back()->with('error',$e->getMessage());
+        }
+        catch(Exception $e){
+            return back()->with('error',$e->getMessage());
+        } 
     }
 
     private function checkPermission($permission,$data = null ) 

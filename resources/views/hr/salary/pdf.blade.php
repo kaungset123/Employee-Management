@@ -10,6 +10,11 @@
         <h2 style="text-align: center;">{{ $title }}</h2>
         <p>Date: {{  $date->format('F j, Y') }}</p>
         <p>Staff Name: {{ $user->name }}</p>
+        @if(now()->month == 12)
+            <p>Rating : {{ $salary['rating'] }}</p>
+        @endif
+        <p>Role: {{ $user->getRoleNames()->first() }}</p>
+        <p>Department: {{ $user->department->name }}</p>
         <p>Basic Salary : {{ $user->basic_salary }}</p>
         <p>OT Rate : {{ $user->ot_rate }}</p>
         <p>Hourly Rate : {{ $user->hourly_rate }}</p>
@@ -18,17 +23,13 @@
         <p>Other Leave : {{ $salary['leave'] }}</p>
         <p>OT Time : {{ $salary['ot_time'] }}</p>
         <p>OT Amount : {{ $salary['ot_amount'] }}</p>
+        @if(now()->month == 12)
+                <p>Leave Bonus : {{ $salary['bonus'] }} (basic salary)</p>
+                <p>Rating Bonus : {{ $salary['rating_bonus'] }}</p>
+            @endif
         <p>Salary : {{ $salary['salary'] }}</p>
         <p>Dedution : {{ $salary['dedution'] }}</p>
-        <p>Net Salary : {{ $salary['net_salary'] }}</p>
-        <p>
-            @if($salary['bonus'] != null)
-                Bonus : {{ $salary['bonus'] }}
-            @else
-                Bonus : 0
-            @endif
-        </p>
-       
+        <p>Net Salary : {{ $salary['net_salary'] }}</p>      
     </div>
 </body>
 </html>

@@ -5,7 +5,7 @@
         <div class="app-main__outer">
             <div class="card mb-3 " style="height: 100vh;">
                 <div class="card-body" id="all_emp_tb">
-                    <b style="font-size: 23px;" class="mt-4">{{ $data['header'] }}</b>
+                    <b style="font-size: 23px;" class="mt-4 text-info">{{ $data['header'] }}</b>
                     @if(count($data['tasks']) > 0 )
                         <table style="width: 100%;"  class="table table-hover table-striped table-bordered mt-5 ">
                             <thead class="text-center">
@@ -23,19 +23,21 @@
                                             <td>{{ $task->project->name }}</td>
                                             <td>{{ $task->name }}</td>
                                             <td>{{ $task->description }}</td>
-                                            <td>{{ $task->start_date }}</td>
-                                            <td>{{ $task->end_date }}</td>
+                                            <td>{{ $task->start_date->format('F j, Y H:m s') }}</td>
+                                            <td>{{ $task->end_date->format('F j, Y H:m s') }}</td>
                                             <td>                                          
-                                                {{ $task->deadlineWarning['difference_in_days']}}                                          
+                                                {{ $task->deadlineWarning['difference_in_days'] }}                                         
                                             </td>
                                             <td>
-                                                @if($task->status == 0)
-                                                    <p class="text-danger">Not Started</p>
-                                                @elseif($task->status == 1)
-                                                    <p class="text-primary">In Progress</p>
-                                                @elseif($task->status == 2)
-                                                    <p class="text-success">Completed</p>
-                                                @endif
+                                                <div class="mt-3">
+                                                    @if($task->status == 0)
+                                                        <p class="text-danger">Not Started</p>
+                                                    @elseif($task->status == 1)
+                                                        <p class="text-primary">In Progress</p>
+                                                    @elseif($task->status == 2)
+                                                        <p class="text-success">Completed</p>
+                                                    @endif
+                                                </div>
                                             </td>
                                             <td>
                                                 @if($task->status == 0)

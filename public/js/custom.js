@@ -1,11 +1,11 @@
-// Page Limitation Request
+//////////////// Page Limitation Request //////////////////////
 function changePerPage(perPage) {
     const currentUrl = new URL(window.location.href);
     currentUrl.searchParams.set('perPage', perPage);
     window.location.href = currentUrl.toString();
 }
 
-// Pgae Limitation Blade View
+///////////////// Pgae Limitation Blade View //////////////
 
 function togglePaginationOptions() {
     const paginationOptions = document.querySelector('.pagination-options');
@@ -23,7 +23,7 @@ function changePerPage(perPage) {
    
 } 
 
-// rating
+/////////////// rating /////////////////
 $(document).ready(function() {
     const stars = $('.rating .star');
     const ratingValueInput = $('#ratingValue');
@@ -89,15 +89,6 @@ $(document).ready(function() {
     });
 });
 
-
-// department create modal
-
-// $.ajaxSetup({
-//     headers: {
-//         "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr("content")
-//     }
-// });
-
 $(document).ready(function() {
 
     $('#create-dept-btn').click(function() {
@@ -109,14 +100,12 @@ $(document).ready(function() {
         rules: {
             name: {
                 required : true ,
-                minlength : 3 ,
                 maxlength : 50
             }
         },
         messages: {
             name: {
                 required : 'Please enter department name!',
-                minlength : 'Department name must be longer 2 characters!',
                 maxlength : 'Department name mustn\'t be longer 50 characters!'
             }
         },
@@ -173,8 +162,7 @@ $(document).ready(function() {
 
 });
 
-// department edit modal
-
+//////////// department edit modal //////////////////
 $.ajaxSetup({
     headers: {
         "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr("content")
@@ -195,14 +183,12 @@ $(document).ready(function() {
         rules: {
             name: {
                 required: true,
-                minlength : 3 ,
                 maxlength : 50
             }
         },
         messages: {
             name: {
                 required : 'Please enter department name!',
-                minlength : 'Department name must be longer 2 characters!',
                 maxlength : 'Department name mustn\'t be longer 50 characters!'
             }
         },
@@ -256,8 +242,223 @@ $(document).ready(function() {
 });
 
 
-// PREVIEW IMAGE
+///////////////// criterai edit modal //////////////////
+$.ajaxSetup({
+    headers: {
+        "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr("content")
+    }
+})
 
+$('.criteria-edit-btn').on('click', function() {
+    var criteriaId = $(this).data('criteria-id');
+    var criteriaAmount = $(this).data('criteria-amount');
+
+    $('#criteriaId').val(criteriaId);
+    $('#criteriaAmount').val(criteriaAmount);
+    $('#updateSalarycriteriaModal').modal('toggle');
+});
+
+$('#criteria-edit-form').validate({
+    rules: {
+        bonus_amount: {
+            required: true,
+            maxlength : 8
+        }
+    },
+    messages: {
+        bonus_amount: {
+            required : 'Please enter amount!',
+            maxlength : 'Please check your amount!'
+        }
+    },
+    submitHandler: function(form) {
+        $('#response').empty();
+        const formData = $(form).serialize();
+        $.ajax({
+            type: 'PUT',
+            url: '/salarycriteria/' + $('#criteriaId').val(),
+            data: formData,
+           
+            success: function(response) {
+                $('#updateSalarycriteriaModal').modal('hide');
+
+                if(response.status === 'success') {
+                    $('#response').html(
+                        `<p class="alert alert-success text-center" x-data="{show: true}" x-init="setTimeout(() => show = false, 2000)" x-show="show">
+                            ${response.message}
+                        </p>`
+                    );
+                    setTimeout(function() {
+                        window.location.reload();
+                    }, 500);
+                    
+                }   
+                elseif(response.status === 'failed')
+                 {
+                    $('#response').html(
+                        `<div class="alert alert-danger alert-dismissible">
+                            ${response.messages}
+                            <button type="button" class="btn-colse" data-bs-dismiss='alert'></button>
+                        </div>`
+                    );
+                }
+
+                console.log('res', response);
+            },
+            error: function(error) {
+                $('#response').html(
+                    `<p class="alert alert-success text-center" x-data="{show: true}" x-init="setTimeout(() => show = false, 2000)" x-show="show">
+                    ${response.message}
+                </p>`
+                );
+            }
+        })
+    }
+});
+
+///////////////// Attendance Pdf Generate //////////////////
+$(document).ready(function() {
+    $('.attendance-btn').on('click', function() {
+        var userId = $(this).data('user-id');
+
+        $('#userId').val(userId);
+        $('#choosedMonth').val();
+        $('#choosedYear').val();
+        $('#attendancePdfModal').modal('toggle');
+    });
+
+    $('#attendance-pdf-form').validate({
+        rules: {
+            year: {
+                required: true,
+            }
+        },
+        messages: {
+            year: {
+                required : 'Please choose year!',
+            }
+        },
+        submitHandler: function(form) {
+            $('#response').empty();
+            const formData = $(form).serialize();
+            $.ajax({
+                type: 'POST',
+                url: '/attendance/pdfgenerate/' + $('#userId').val(),
+                data: formData,
+               
+                success: function(response) {
+                    // $("#dept-edit-form")[0].reset();
+                    $('#attendancePdfModal').modal('hide');
+                    // $('#dept-create-modal').modal('toggle');
+
+                    if(response.status === 'success') {
+                        $('#response').html(
+                            `<p class="alert alert-success text-center" x-data="{show: true}" x-init="setTimeout(() => show = false, 2000)" x-show="show">
+                                ${response.message}
+                            </p>`
+                        );
+                        setTimeout(function() {
+                            window.location.reload();
+                        }, 500);
+                        
+                    }   
+                    elseif(response.status === 'failed')
+                     {
+                        $('#response').html(
+                            `<div class="alert alert-danger alert-dismissible">
+                                ${response.messages}
+                                <button type="button" class="btn-colse" data-bs-dismiss='alert'></button>
+                            </div>`
+                        );
+                    }
+
+                    console.log('res', response);
+                },
+                error: function(error) {
+                    $('#response').html(
+                        `<div class="alert alert-danger alert-dismissible">
+                            ${response.messages}
+                            <button type="button" class="btn-colse" data-dismiss='alert'></button>
+                        </div>`
+                    )
+                }
+            })
+        }
+    });
+});
+
+///////////////// Leave Pdf Generate //////////////////
+$(document).ready(function() {
+    $('.leave-btn').on('click', function() {
+        var leaveId = $(this).data('user-id');
+
+        $('#leaveId').val(leaveId);
+        $('#choosedMonth').val();
+        $('#choosedYear').val();
+        $('#leavePdfModal').modal('toggle');
+    });
+
+    $('#leave-pdf-form').validate({
+        rules: {
+            year: {
+                required: true,
+            }
+        },
+        messages: {
+            year: {
+                required : 'Please choose year!',
+            }
+        },
+        submitHandler: function(form) {
+            $('#response').empty();
+            const formData = $(form).serialize();
+            $.ajax({
+                type: 'POST',
+                url: '/leave/pdfgenerate/' + $('#leaveId').val(),
+                data: formData,
+               
+                success: function(response) {
+                    // $("#dept-edit-form")[0].reset();
+                    $('#leavePdfModal').modal('hide');
+                    // $('#dept-create-modal').modal('toggle');
+
+                    if(response.status === 'success') {
+                        $('#response').html(
+                            `<p class="alert alert-success text-center" x-data="{show: true}" x-init="setTimeout(() => show = false, 2000)" x-show="show">
+                                ${response.message}
+                            </p>`
+                        );
+                        setTimeout(function() {
+                            window.location.reload();
+                        }, 500);
+                        
+                    }   
+                    elseif(response.status === 'failed')
+                     {
+                        $('#response').html(
+                            `<div class="alert alert-danger alert-dismissible">
+                                ${response.messages}
+                                <button type="button" class="btn-colse" data-bs-dismiss='alert'></button>
+                            </div>`
+                        );
+                    }
+
+                    console.log('res', response);
+                },
+                error: function(error) {
+                    $('#response').html(
+                        `<div class="alert alert-danger alert-dismissible">
+                            ${response.messages}
+                            <button type="button" class="btn-colse" data-dismiss='alert'></button>
+                        </div>`
+                    )
+                }
+            })
+        }
+    });
+});
+
+// PREVIEW IMAGE
 function displayImage(input) {
     var preview = document.getElementById('preview-image');
     var file = input.files[0];
@@ -272,6 +473,41 @@ function displayImage(input) {
         reader.readAsDataURL(file);
     }
 }
+
+// SELECTING ALL CHECKBOX 
+$(document).ready(function() {
+    // Array to store the previously checked checkboxes
+    var previouslyChecked = [];
+
+    // When the "Select All" checkbox is clicked
+    $('#selectAllCheckbox').on('change', function() {
+        if ($(this).prop('checked')) {
+            // Save the state of all checkboxes before checking them all
+            $('.checkbox').each(function() {
+                if ($(this).prop('checked')) {
+                    previouslyChecked.push($(this).val());
+                }
+            });
+            // Check all checkboxes
+            $('.checkbox').prop('checked', true);
+        } else {
+            // Uncheck all checkboxes and restore the previously checked ones
+            $('.checkbox').prop('checked', false);
+            $.each(previouslyChecked, function(index, value) {
+                $('.checkbox[value="' + value + '"]').prop('checked', true);
+            });
+            // Clear the previouslyChecked array
+            previouslyChecked = [];
+        }
+    });
+
+    // When any checkbox is clicked
+    $('.checkbox').on('change', function() {
+        // Update the "Select All" checkbox state based on the checkboxes
+        $('#selectAllCheckbox').prop('checked', $('.checkbox:checked').length === $('.checkbox').length);
+    });
+});
+
 
 
 

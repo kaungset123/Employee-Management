@@ -3,10 +3,10 @@
 
 @section('content')
     <div class="app-main__outer">
-        <div class="card mb-3">
-            <div class="col-md-10 mt-3 offset-md-1 p-3">
+        <div class="card mt-3 mb-3 col-md-10 offset-md-1 p-5">
+            <!-- <div class="mt-3  p-3"> -->
                 @include('layout.flashmessage')
-                <h4 class="mb-3" style="font-weight: bold;">{{$data['header']}}</h4>
+                <h4 class="mb-3 text-info" style="font-weight: bold;">{{$data['header']}}</h4>
                 <form action="{{ route('project.update',$data['project']->id) }}" method="post">
                     @csrf
                     @method('PUT')
@@ -18,7 +18,7 @@
                                 @error('name')
                                     <p class="text-danger">{{$message}}</p>
                                 @enderror
-                            </div>
+                            </div>  
                         </div>
                         <div class="col-md-6">
                             <div class="form-group">
@@ -97,7 +97,7 @@
                         <button type="submit" class="btn btn-sm bg-primary text-white" style="box-shadow: 1px 2px 9px black;margin-left:1rem;">Update</button>
                     </div>
                 </form>
-            </div>
+            <!-- </div> -->
         </div>
     </div>
 

@@ -17,12 +17,13 @@ class EmployeeController extends Controller
     {
         $this->data = [
             'title' => 'My Department ',
-            'header' => 'MY DEPARTMENT',
+            'header' => 'My Department',
         ];
     }
 
     public function index(Request $request)
     {
+        
         $query = $request['search'];
         $created_at = $request['created_at'];
 

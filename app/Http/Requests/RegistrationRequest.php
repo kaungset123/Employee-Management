@@ -36,6 +36,7 @@ class RegistrationRequest extends FormRequest
             'ot_rate' => 'required|numeric|min:0',
             'hourly_rate' => 'required|numeric|min:0',
             'department_id' => 'nullable|exists:departments,id',
+            'responsible_dpt_id' => 'nullable|exists:departments,id',
             'img' => 'image|mimes:jpeg,png,jpg,gif|max:2048'
         ];
          

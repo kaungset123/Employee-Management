@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers\hr;
 
+use App\Events\CreateSalaryAdmin;
 use Exception;
 use Carbon\Carbon;
 use App\Models\User;
 use App\Events\SalaryCreate;
+use App\Events\SalaryCreateAdmin;
 use App\Models\SalaryDetail;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -27,6 +29,8 @@ class SalaryController extends Controller
 
     public function index(Request $request)
     {
+        $this->checkPermission('payroll view');
+
         $query = $request['search'];
         $created_at = $request['created_at'];
 
@@ -49,7 +53,7 @@ class SalaryController extends Controller
         $perPage = $request->input('perPage');
         $salarys = $salaryQuery->paginate($perPage)->withQueryString();
         // dd($salarys);
-        $this->data['header'] = 'DEPARTMENT SALARY'; 
+        $this->data['header'] = 'Department Salary'; 
         $this->data['salarys'] = $salarys;
         $this->data['search'] = $query;
         $this->data['created'] = $created_at;
@@ -58,6 +62,8 @@ class SalaryController extends Controller
 
     public function create(int $id)
     {
+        $this->checkPermission('payroll create',$id);
+
         $user = User::select('id','name','img','basic_salary','ot_rate','hourly_rate')->where('id',$id)->first();
         // dd($user);
         $date = Carbon::now();
@@ -71,7 +77,7 @@ class SalaryController extends Controller
 
     public function pdfGenerate(int $id)
     {
-        $user = User::select('id', 'name','basic_salary', 'ot_rate', 'hourly_rate')->where('id', $id)->first();
+        $user = User::select('id', 'name','basic_salary', 'ot_rate', 'hourly_rate','department_id')->where('id', $id)->first();
         $date = Carbon::now();
         $salary = salaryCalculation($id, $date);
 
@@ -87,8 +93,9 @@ class SalaryController extends Controller
         // Pass the data directly to the loadView method
         $pdf->loadView('hr.salary.pdf', $data)->setOptions(['defaultFont' => 'sans-serif']);
 
-        return $pdf->download('webappfix.pdf');
+        return $pdf->download('ems.pdf');
     }
+
     public function show()
     {
 
@@ -105,8 +112,7 @@ class SalaryController extends Controller
             $salarys = salaryCalculation($user->id,$date);
             // dd($salarys);
             $salary = SalaryDetail::create($salarys);
-            SalaryCreate::dispatch($salary);
-            
+            // SalaryCreate::dispatch($salary);
             // dd($salary);
             return back()->with('status','salary calculated successfully');
         }

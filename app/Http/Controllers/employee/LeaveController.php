@@ -9,6 +9,9 @@ use Illuminate\Http\Request;
 use App\Http\Requests\LeaveRequest;
 use App\Http\Controllers\Controller;
 use App\Models\Leave;
+use App\Models\User;
+use Svg\Tag\Rect;
+
 use function App\Helpers\leaveLimitCalculation;
 use function App\Helpers\leaveBalanceQuery;
 
@@ -28,6 +31,8 @@ class LeaveController extends Controller
      */
     public function index(Request $request)
     {
+        $this->checkPermission('leave view');
+        
         $created_at = $request['created_at'];
 
         $user_id = auth()->user()->id;
@@ -57,42 +62,82 @@ class LeaveController extends Controller
     {
         $this->checkPermission('leave create'); 
 
-        try {
+        // try {
             $user_id = $request->user_id;
-            $start_date = $request->start_date;
-            $end_date = $request->end_date;
-            $half_day = $request->is_half_day;
-           
-            $limitTotalDay = leaveLimitCalculation( $user_id,$start_date, $end_date,$half_day );
-     
-            $totalNewDay = $limitTotalDay['totalNewDay'];
-    
-            if($limitTotalDay['limitTotalDay'] > 10 && $request->input('name') == 'annual leave'){
-                return back()->with('failstatus','your annual leave limit is already used');
-            }else{
-                $leave = Leave::create([
-                'name' => $request->input('name'),
-                'user_id' => $request->input('user_id'),
-                'start_date' => $request->input('start_date'),
-                'end_date' => $request->input('end_date'),
-                'total_days' => $totalNewDay
-                ]);
-                // RequestCreate::dispatch($leave);
-                return back()->with('status','leave request sumitted sucessfully');
-            }  
-        }
-        catch(ModelNotFoundException $e){
-            return back()->with('error',$e->getMessage());
-        }
-        catch(Exception $e){
-            return back()->with('error',$e->getMessage());
-        }   
+            $user = User::findOrFail($user_id);
+            $projects = $user->projects;
+            $status = false;
+            foreach($projects as $project){
+                if($project->status == 1) {
+                    $status = true ;
+                }
+            }
+
+            if($status) {
+                return back()->with('failstatus','You are now in project period . you can\'t make leave request');
+            }else {
+                $user_id = $request->user_id;
+                $start_date = $request->start_date;
+                $end_date = $request->end_date;
+                $half_day = $request->is_half_day;
+               
+                $limitTotalDay = leaveLimitCalculation( $user_id,$start_date, $end_date,$half_day );
+         
+                $totalNewDay = $limitTotalDay['totalNewDay'];
+        
+                if($limitTotalDay['limitTotalDay'] > 10 && $request->input('name') == 'annual leave'){
+                    return back()->with('failstatus','your annual leave limit is already used');
+                }else{
+                    $leave = Leave::create([
+                    'name' => $request->input('name'),
+                    'user_id' => $request->input('user_id'),
+                    'start_date' => $request->input('start_date'),
+                    'end_date' => $request->input('end_date'),
+                    'total_days' => $totalNewDay
+                    ]);
+                    // RequestCreate::dispatch($leave);
+                    return back()->with('status','leave request sumitted sucessfully');
+                } 
+            }
+             
+        // }
+        // catch(ModelNotFoundException $e){
+        //     return back()->with('error',$e->getMessage());
+        // }
+        // catch(Exception $e){
+        //     return back()->with('error',$e->getMessage());
+        // }   
        
     }
 
-    public function balance(int $id)
+    public function pdfGenerate(Request $request, $userId) 
     {
+        $hr = auth()->user();
+        // dd($hr);
+        $user_id = $request->input('id');
+        $staff = User::findOrFail($user_id);
 
+        $choosedMonth = $request->input('month');
+        $choosedYear = $request->input('year');
+
+        $leaves = Leave::where('user_id', $user_id)
+        ->whereYear('created_at', $choosedYear)
+        ->whereMonth('created_at', $choosedMonth)
+        ->get();
+
+        $data = [
+            'hr' => $hr,
+            'staff' => $staff,
+            'title' => 'Attendance Data',
+            'leaves' => $leaves
+        ];
+        
+        $pdf = app('dompdf.wrapper');
+
+        // Pass the data directly to the loadView method
+        $pdf->loadView('hr.leave.pdf', $data)->setOptions(['defaultFont' => 'sans-serif']);
+
+        return $pdf->download('ems.pdf');
     }
 
     private function checkPermission($permission,$data = null )
