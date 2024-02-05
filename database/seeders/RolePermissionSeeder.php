@@ -21,20 +21,6 @@ class RolePermissionSeeder extends Seeder
     {
         app()[PermissionRegistrar::class]->forgetCachedPermissions();
 
-        // $permissions = [
-        //     'edit project',
-        //     'delete project',
-        //     'edit user',
-        //     'delete user',
-        //     'view user info'
-        // ];
-
-        // foreach ($permissions as $permission){
-        //     Permission::create([
-        //         'name' => $permission
-        //     ]);
-        // }
-
         $role1 = Role::create(['name'=> 'Super Admin']);
 
         $role2 = Role::create(['name' => 'Admin']);
@@ -42,29 +28,7 @@ class RolePermissionSeeder extends Seeder
         $role4 = Role::create(['name' => 'HR']);
         $role5 = Role::create(['name' => 'Employee']);
 
-        // $role2->givePermissionTo('edit user');
-        // $role2->givePermissionTo('delete user');
-        // $role2->givePermissionTo('view user info');
-
-        
-        // $role3->givePermissionTo('edit user');
-        // $role3->givePermissionTo('delete user');
-
-        // $role4->givePermissionTo('view user info');
-
-        // $adminPermissions = [
-        //     'edit project',
-        //     'delete project',
-        //     'edit user',
-        //     'delete user',
-        //     'view user info'
-        // ];
-
-        // foreach($adminPermissions as $permission){
-        //     $role1->givePermissionTo($permission);
-        // }
-       
-
+    
         $user1 = \App\Models\User::factory()->create([
             'name' => 'Mr.Georg',
             'email' => 'superadmin@gmail.com',
@@ -91,6 +55,5 @@ class RolePermissionSeeder extends Seeder
         ]);
         $user2->syncRoles($role2);
 
-        // gets all permissions via Gate::before rule; see AuthServiceProvider
     }
 }
