@@ -193,10 +193,6 @@ class AttendanceController extends Controller
         $pdf->loadView('hr.attendance.pdf', $data)->setOptions(['defaultFont' => 'sans-serif']);
 
         return $pdf->download("{$staff->name}.ems.pdf");
-        return redirect()->route('attendance.pdfView', $user_id);
-        return redirect('hr/attendance/pdfView',['attendances' => $attendances]);
-        // return view('hr.attendance.pdfView', ['attendances' => $attendances]);
-
     }
 
     public function pdfView() 

@@ -64,15 +64,22 @@ class SalaryController extends Controller
     {
         $this->checkPermission('payroll create',$id);
 
-        $user = User::select('id','name','img','basic_salary','ot_rate','hourly_rate')->where('id',$id)->first();
-        // dd($user);
-        $date = Carbon::now();
-        $salary = salaryCalculation($id,$date);
+        $date = Carbon::today();
+        $salary = SalaryDetail::where('user_id',$id)->whereDate('created_at',$date)->first();
 
-        $this->data['header'] = 'salary detail';
-        $this->data['salary'] = $salary;
-        $this->data['user'] = $user;
-        return view('hr.salary.create')->with(['data' => $this->data]);
+        if($salary){
+            return redirect('hr/dashboard')->with('failstatus','This staff\'s salary is created for this month');
+        }else{
+            $user = User::select('id','name','img','basic_salary','ot_rate','hourly_rate')->where('id',$id)->first();
+            // dd($user);
+            $date = Carbon::now();
+            $salary = salaryCalculation($id,$date);
+    
+            $this->data['header'] = 'salary detail';
+            $this->data['salary'] = $salary;
+            $this->data['user'] = $user;
+            return view('hr.salary.create')->with(['data' => $this->data]);
+        }
     }
 
     public function pdfGenerate(int $id)
@@ -98,15 +105,15 @@ class SalaryController extends Controller
 
     public function show()
     {
-
     }
+
     public function store(int $id)
     {  
         try {
             $this->checkPermission('payroll create');
       
             $date = Carbon::now();
-    
+
             $user = User::select('id')->where('id',$id)->first();
     
             $salarys = salaryCalculation($user->id,$date);
@@ -114,7 +121,7 @@ class SalaryController extends Controller
             $salary = SalaryDetail::create($salarys);
             // SalaryCreate::dispatch($salary);
             // dd($salary);
-            return back()->with('status','salary calculated successfully');
+            return redirect('hr/dashboard')->with('status','salary calculated successfully');
         }
         catch(ModelNotFoundException $e){
             return back()->with('error',$e->getMessage());
