@@ -1,22 +1,22 @@
 <?php
 
-use App\Http\Controllers\admin\LeaveRequestController;
-use App\Http\Controllers\admin\AttendanceController;
-use App\Http\Controllers\admin\ProjectController;
-use App\Http\Controllers\admin\RoleController;
-use App\Http\Controllers\hr\SalaryController;
-use App\Http\Controllers\admin\UserController;
+use App\Http\Controllers\Admin\LeaveRequestController;
+use App\Http\Controllers\Admin\AttendanceController;
+use App\Http\Controllers\Admin\ProjectController;
+use App\Http\Controllers\Admin\RoleController;
+use App\Http\Controllers\HR\SalaryController;
+use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\DashboardController;
-use App\Http\Controllers\admin\DepartmentController;
+use App\Http\Controllers\Admin\DepartmentController;
 use App\Http\Controllers\loginController;
-use App\Http\Controllers\employee\EmployeeController;
-use App\Http\Controllers\employee\LeaveController;
-use App\Http\Controllers\employee\RatingController;
-use App\Http\Controllers\employee\TaskController;
-use App\Http\Controllers\hr\HrController;
-use App\Http\Controllers\manager\ManagerController;
-use App\Http\Controllers\manager\RequestController;
+use App\Http\Controllers\Employee\EmployeeController;
+use App\Http\Controllers\Employee\LeaveController;
+use App\Http\Controllers\Employee\RatingController;
+use App\Http\Controllers\Employee\TaskController;
+use App\Http\Controllers\HR\HrController;
+use App\Http\Controllers\Manager\ManagerController;
+use App\Http\Controllers\Manager\RequestController;
 use App\Http\Controllers\PdfGenerationController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\SalaryCriteriaController;
@@ -46,7 +46,6 @@ Route::post('/users/logout',[UserValidationController::class, 'logout'])->name('
 Route::get('/superAdmin/dashboard',[SuperAdminController::class, 'index'])->name('superAdmin.dashboard');
 
 Route::middleware(['auth'])->group(function () {
-
     Route::get('/user/profile/{id}',[ProfileController::class, 'index'])->name('profile.index');
     Route::get('/user/profile/edit/{id}',[ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/user/profile/edit/{id}',[ProfileController::class, 'update'])->name('profile.update');

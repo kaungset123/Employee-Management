@@ -71,8 +71,8 @@
                                 </li>
                             @endrole  
                             @hasanyrole('manager|employee')                                     
-                                <li class="{{ request()->routeIs('project.myproject')  ? 'mm-active'  : '' }}">
-                                    <a  href="{{route('project.myproject')}}">
+                                <li class="{{ request()->routeIs('project.myProject')  ? 'mm-active'  : '' }}">
+                                    <a  href="{{route('project.myProject')}}">
                                         <i class="metismenu-icon">
                                         </i>My Project
                                     </a>
@@ -113,7 +113,6 @@
                         Leave Management
                     </a>
                     <ul>  
-
                         @role('admin')
                             <li class=" {{ request()->routeIs('leave.manager')  ? 'mm-active'  : '' }}">
                                 <a href="{{route('leave.manager')}}">

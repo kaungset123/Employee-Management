@@ -41,7 +41,7 @@ class PdfGenerationController extends Controller
         $this->data['users'] = $users;
         $this->data['search'] = $query;
         $this->data['created'] = $created_at;
-        return view('hr.pdfgenerate.index')->with(['data' => $this->data]);
+        return view('hr.pdfGenerate.index')->with(['data' => $this->data]);
     }
 
     private function checkPermission($permission,$data = null ) {

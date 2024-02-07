@@ -12,7 +12,7 @@
                         <i class="fas fa-redo-alt mt-1" style="font-size: 30px;"></i>
                     </a>
                     <input type="hidden" name="perPage" value="{{ $data['salaries']->perPage() }}">
-                    <input type="date" class="form-control" name="created_at" value="{{ $data['created'] }}" >
+                    <input type="date" class="form-control border-info" name="created_at" value="{{ $data['created'] }}" >
                     <button class="btn btn-outline-info " type="submit">Search</button>
                 </form>
                 <div class="">
