@@ -12,7 +12,7 @@ use Illuminate\Http\Request;
 use App\Models\User;
 use Illuminate\Database\DeadlockException;
 use function App\Helpers\calculateProgress;
-use function App\Helpers\calculatProjectProgress;
+use function App\Helpers\calculateProjectProgress;
 use function App\Helpers\deadLineWarning;
 use function App\Helpers\projectSearchbar;
 
@@ -36,10 +36,8 @@ class ProjectController extends Controller
         $member_name = $request['member_name'];
         $created_at = $request['created_at'];
 
-        // dd($member_name);
         $user = User::findOrFail(auth()->user()->id);
         $projects = $user->projects;
-        // dd($projects);
 
         $projectQuery = Project::whereIn('id', $projects->pluck('id'))->with('members');
 
@@ -50,7 +48,7 @@ class ProjectController extends Controller
 
         $projectProgress = [];
         foreach($projects as $project){
-            $projectProgress[$project->id] = calculatProjectProgress($project->id);
+            $projectProgress[$project->id] = calculateProjectProgress($project->id);
         }
 
         $this->data['search'] = $query;
@@ -79,7 +77,6 @@ class ProjectController extends Controller
         $perPage = $request->input('perPage',4);
         $completed = $projectQuery->paginate($perPage)->withQueryString();
        
-        // $this->data['completed'] = $completed;
         $this->data['search'] = $query;
         $this->data['created'] = $created_at;
         $this->data['memberName'] = $member_name;
@@ -93,16 +90,15 @@ class ProjectController extends Controller
         $this->checkPermission('project view',$id);
 
         $project = Project::findOrFail($id);
-        // dd($project);
         $users = $project->members;
-        // dd($users);
+
         $taskProgress = [];
-        $projectProgress = calculatProjectProgress($id);
-        // dd($projectProgress);
+        $projectProgress = calculateProjectProgress($id);
+
         foreach($users as $user){
             $taskProgress[] = calculateProgress($user->id,$id);
         }
-        // dd($taskProgress);
+
         $this->data['taskProgress'] = $taskProgress;
         $this->data['projectProgress'] = $projectProgress;
         $this->data['project'] = $project;
@@ -124,25 +120,16 @@ class ProjectController extends Controller
         $this->data['title'] = 'My Task';
         $this->data['header'] = 'My Task';
         $this->data['tasks'] = $tasks;
-        return view('employee/project/mytask')->with(['data' => $this->data]);
+        return view('employee/project/myTask')->with(['data' => $this->data]);
     }
 
     public function start(int $id)
     {
         $project = Project::findOrFail($id);
-        $task_count = Task::where('project_id',$id)->count();
-        // dd($task_count);
-        $member_count = $project->members->count();
-        // dd($member_count);
-        
-        if($task_count >= $member_count){
-            $project->status = ProjectStatus::IN_PROGRESS;
-            $project->save();
-            return back()->with('status',"Your project is start!");
-        }else {
-            return back()->with('failstatus',"You can't start ! task assigning is not completed.");
-        }
-     
+
+        $project->status = ProjectStatus::IN_PROGRESS;
+        $project->save();
+        return back()->with('status',"Your project is start!");   
     }
 
     private function checkPermission($permission,$data = null ) {

@@ -1,4 +1,4 @@
-@extends("layout.simplemaster")
+@extends("layout.simpleMaster")
 @section('title','Login')
 
 @section('content')
@@ -50,8 +50,6 @@
                                         </div>
                                     </div>
                                 </form>
-                                <!-- <div class="divider"></div> -->
-                                <!-- <h6 class="mb-0">No account? <a href="javascript:void(0);" class="text-primary">Sign up now</a></h6> -->
                             </div>
 
                         </div>

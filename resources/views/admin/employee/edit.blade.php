@@ -5,7 +5,7 @@
 <div class="app-main__outer">
     <div class="card mb-3 col-md-10 offset-md-1 mt-3 p-5">
         <div class="">
-            @include('layout.flashmessage')
+            @include('layout.flash_message')
             <div class="d-flex">
                 <h4 class="mb-4 text-info" style="font-weight: bold;">{{ $data['header'] }}</h4>
                 <a href="{{ route('user.index') }}" class="me-2 text-info" style="font-size: 28px;margin-top:-4px;position:absolute;right:43px;">
@@ -63,16 +63,16 @@
                             <label class="department">Department</label>
                             <select class="form-control" name="department_id"> 
                                         <option value="" selected>Default</option>                               
-                                @foreach($data['dpmts'] as $dpmt)   
+                                @foreach($data['departments'] as $department)   
                                     @if($data['user']->department_id !== null)                              
-                                        <option value="{{$dpmt->id}}" 
-                                                {{ old('department_id', $data['user']->department->id) == $dpmt->id ? 'selected' : '' }} 
+                                        <option value="{{$department->id}}" 
+                                                {{ old('department_id', $data['user']->department->id) == $department->id ? 'selected' : '' }} 
                                             >
-                                            {{$dpmt->name}}
+                                            {{$department->name}}
                                         </option>
                                     @else
-                                        <option value="{{$dpmt->id}}">
-                                            {{$dpmt->name}}
+                                        <option value="{{$department->id}}">
+                                            {{$department->name}}
                                         </option>
                                     @endif
                                 @endforeach
@@ -112,7 +112,7 @@
                     </div>
                     <div class="col-md-6">
                         <div class="form-group">
-                            <label for="hourly_rate">Horuly Rate</label>
+                            <label for="hourly_rate">Hourly Rate</label>
                             <input type="text" class="form-control" name="hourly_rate" value="{{$data['user']->hourly_rate }}">
                             @error('hourly_rate')
                             <p class="text-danger">{{$message}}</p>
@@ -143,9 +143,9 @@
                 <div class="row mt-4">
                     <div class="col-md-6">
                         <div class="form-group">
-                            <label for="conrirmpass">Confirmed Password</label>
+                            <label for="confirm_pass">Confirmed Password</label>
                             <input type="password" class="form-control" name="password_confirmation">
-                            @error('password_contirmation')
+                            @error('password_confirmation')
                             <p class="text-danger">{{$message}}</p>
                             @enderror
                         </div>

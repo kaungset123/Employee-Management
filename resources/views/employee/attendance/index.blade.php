@@ -4,7 +4,7 @@
 @section('content')
     <div class="app-main__outer">
             <div class="card-body" id="all_leave_tb">
-                @include('layout.flashmessage')
+                @include('layout.flash_message')
                 <h4 style="font-weight: bold;" class="mt-3 text-info">{{$data['header']}}</h4>
                 <form class="d-flex col-md-6 offset-md-3 mt-4"  action="{{ route('employee.attendance.index') }}" method="GET" >
                     @csrf
@@ -54,7 +54,7 @@
                         <h4 class="text-danger text-center mt-5">no attendance yet!</h4>
                     @endif
                 </table>
-                <div id="paginagtion">
+                <div id="pagination">
                     {{$data['attendances']->links()}}
                 </div>
             </div>

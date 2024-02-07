@@ -9,7 +9,7 @@
         <div class="app-main__outer">
             <div class="card-body " id="all_emp_tb" style="position: relative;">
                 <div class="mb-3">
-                    @include('layout.flashmessage')
+                    @include('layout.flash_message')
                 </div>
                 <div class="col-md-8 offset-md-2">
                     <div id="response"></div>
@@ -45,6 +45,6 @@
             </div>
         </div>
     </div>
-    @include('modal.salarycriteria.edit')
+    @include('modal.salaryCriteria.edit')
 </div>
 @endsection

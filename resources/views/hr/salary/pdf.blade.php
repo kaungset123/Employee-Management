@@ -28,7 +28,7 @@
                 <p>Rating Bonus : {{ $salary['rating_bonus'] }}</p>
             @endif
         <p>Salary : {{ $salary['salary'] }}</p>
-        <p>Dedution : {{ $salary['dedution'] }}</p>
+        <p>Deduction : {{ $salary['deduction'] }}</p>
         <p>Net Salary : {{ $salary['net_salary'] }}</p>      
     </div>
 </body>

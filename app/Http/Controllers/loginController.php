@@ -2,9 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
-
-class IndexController extends Controller
+class loginController extends Controller
 {
     public function index(){
         return redirect('users/login');

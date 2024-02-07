@@ -21,7 +21,7 @@ class SalaryDetail extends Model
         'ot_time',
         'ot_amount',
         'leave',
-        'dedution',
+        'deduction',
         'bonus'
     ];
 

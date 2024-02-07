@@ -4,12 +4,12 @@
 @section('content')
         <div class="app-main__outer">
             <div>
-                @include('layout.flashmessage')
+                @include('layout.flash_message')
             </div>
             <div class="card-header p-5 text-info"><b style="font-size: 23px;">{{ $data['header'] }}</b>
                 <div class="btn-actions-pane-right">
                     <div class="nav">
-                        <a  href="{{ route('project.myproject') }}" class="btn-pill btn-wide  btn btn-outline-info btn-sm">Running</a>
+                        <a  href="{{ route('project.myProject') }}" class="btn-pill btn-wide  btn btn-outline-info btn-sm">Running</a>
                         <a data-toggle="tab" href="#tab-eg2-1" class="btn-pill btn-wide active mr-1 ml-1  btn btn-outline-info btn-sm">Completed</a>
                     </div>
                 </div>
@@ -41,13 +41,12 @@
                                                         <div class="mb-3 card p-3">
                                                             <div class="card-header-tab card-header">
                                                                 <div class="card-header-title font-size-lg text-capitalize font-weight-normal">
-                                                                    <!-- <i class="header-icon lnr-shirt mr-3 text-muted opacity-6"> </i> -->
                                                                     <i class="fa fa-check-square-o" aria-hidden="true"></i>
                                                                     {{$complete->name}} 
                                                                 </div>
                                                                 <div class="btn-actions-pane-right actions-icon-btn">
                                                                     <a href="{{route('project.detail',$progress['project']->id)}}" style="text-decoration: none;" >View</a>
-                                                                    <a href="{{ route('project.mytask',$progress['project']->id) }}"  style="position:relative;left:5px;background:blueviolet;padding:6px 18px;border-radius:17px;color:#fff;text-decoration:none;">
+                                                                    <a href="{{ route('project.myTask',$progress['project']->id) }}"  style="position:relative;left:5px;background:blueviolet;padding:6px 18px;border-radius:17px;color:#fff;text-decoration:none;">
                                                                         My Tasks
                                                                     </a>
                                                                     @if(auth()->user()->id == $complete->project_manager_id )

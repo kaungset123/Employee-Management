@@ -2,9 +2,7 @@
 
 namespace Database\Seeders;
 
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
-use Spatie\Permission\Models\Permission;
 use Spatie\Permission\Models\Role;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
@@ -21,16 +19,16 @@ class RolePermissionSeeder extends Seeder
     {
         app()[PermissionRegistrar::class]->forgetCachedPermissions();
 
-        $role1 = Role::create(['name'=> 'Super Admin']);
+        $role1 = Role::create(['name'=> 'super admin']);
 
-        $role2 = Role::create(['name' => 'Admin']);
-        $role3 = Role::create(['name' => 'Manager']);
+        $role2 = Role::create(['name' => 'admin']);
+        $role3 = Role::create(['name' => 'manager']);
         $role4 = Role::create(['name' => 'HR']);
-        $role5 = Role::create(['name' => 'Employee']);
+        $role5 = Role::create(['name' => 'employee']);
 
     
         $user1 = \App\Models\User::factory()->create([
-            'name' => 'Mr.Georg',
+            'name' => 'Mr.George',
             'email' => 'superadmin@gmail.com',
             'email_verified_at' => now(),
             'password' => static::$password ??= Hash::make('password'),

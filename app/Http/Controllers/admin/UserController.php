@@ -54,10 +54,10 @@ class UserController extends Controller
 
         try {
             $roles = Role::select('id','name')->get();
-            $dpmts = Department::select('id','name')->get();
+            $departments = Department::select('id','name')->get();
 
             $this->data['title'] = 'Create User';
-            $this->data['dpmts'] = $dpmts;
+            $this->data['departments'] = $departments;
             $this->data['roles'] = $roles;
 
             return view('admin/employee/create')->with(['data' => $this->data] );
@@ -117,17 +117,16 @@ class UserController extends Controller
 
         try{
             $user = User::findOrFail($id);
-            // dd($user);
             $roleName = $user->getRoleNames()->toArray();
             $roles = Role::select('id','name')->get();
-            // dd($roles);
-            $dpmts = Department::all();
+
+            $departments = Department::all();
             $this->data['title'] = 'Edit User';
             $this->data['header'] = 'EDIT USER';
             $this->data['roleName'] = $roleName;
             $this->data['user'] = $user;
             $this->data['roles'] = $roles;
-            $this->data['dpmts'] = $dpmts;
+            $this->data['departments'] = $departments;
 
             return view('admin.employee.edit')->with(['data' => $this->data]);
         }

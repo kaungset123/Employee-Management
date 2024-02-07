@@ -35,10 +35,8 @@ class PdfGenerationController extends Controller
             $userQuery->whereDate('created_at',$created_at);
         }
         
-        // dd($users);
         $perPage = $request->input('perPage',5);
         $users = $userQuery->paginate($perPage)->withQueryString();
-        // dd($users);
 
         $this->data['users'] = $users;
         $this->data['search'] = $query;

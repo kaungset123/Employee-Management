@@ -4,14 +4,14 @@
 @section('content')
     <div class="app-main__outer">
             <div class="card-body" id="all_leave_tb">
-                @include('layout.flashmessage')
+                @include('layout.flash_message')
                 <h4 style="font-weight: bold;" class="mt-3 text-info">{{$data['header']}}</h4>
                 <form class="d-flex col-md-8 offset-md-2 mt-4"  action="{{ route('salary.index') }}" method="GET" >
                     @csrf
-                    <a href="{{ route('salary.index', ['perPage' => $data['salarys']->perPage()]) }}" style="color: black;">
+                    <a href="{{ route('salary.index', ['perPage' => $data['salaries']->perPage()]) }}" style="color: black;">
                         <i class="fas fa-redo-alt mt-1" style="font-size: 30px;"></i>
                     </a>
-                    <input type="hidden" name="perPage" value="{{ $data['salarys']->perPage() }}">
+                    <input type="hidden" name="perPage" value="{{ $data['salaries']->perPage() }}">
                     @include('layout.searchbar')
                 </form>
                 <div class="" style="position: relative;">
@@ -23,14 +23,14 @@
                     </div>
                 </div>
                 <table style="width: 100%;"  class="table table-hover table-bordered mt-4">
-                    @if(count($data['salarys']) > 0 )
+                    @if(count($data['salaries']) > 0 )
                         <thead>
                             <tr class="text-center">
                                 <th>Name</th>
                                 <th>Department</th>
                                 <th>OT</th>
                                 <th>OT Amount</th>
-                                <th>Dedution</th>
+                                <th>Deduction</th>
                                 <th>Leave</th>
                                 <th>Salary</th>
                                 <th>Net Salary</th>
@@ -40,7 +40,7 @@
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach($data['salarys'] as $salary)
+                            @foreach($data['salaries'] as $salary)
                                 <tr class="text-center">
                                     <td>{{ $salary->user->name }}</td> 
                                     <td>{{ $salary->user->department->name }}</td>                                  
@@ -84,8 +84,8 @@
                         <h4 class="text-danger text-center mt-5">no salary result!</h4>
                     @endif
                 </table>
-                <div id="paginagtion">
-                    {{$data['salarys']->links()}}
+                <div id="pagination">
+                    {{$data['salaries']->links()}}
                 </div>
             </div>
     </div>

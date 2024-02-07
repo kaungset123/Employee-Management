@@ -1,9 +1,8 @@
 <?php
 
-namespace App\Http\Controllers\superadmin;
+namespace App\Http\Controllers\Superadmin;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
 use function App\Helpers\admin_dash;
 
 class SuperAdminController extends Controller
@@ -14,15 +13,15 @@ class SuperAdminController extends Controller
     public function __construct()
     {
         $this->data = [
-            'title' => 'Admin Home',
+            'title' => 'SuperAdmin Home',
             'header' => 'Project List',
         ];
     }
 
     public function index(){
        $status =  admin_dash();
-    //    dd($status);
+
         $this->data['status'] = $status;
-        return view('superadmin.dashboard')->with(['data' => $this->data]);
+        return view('superAdmin.dashboard')->with(['data' => $this->data]);
     }
 }

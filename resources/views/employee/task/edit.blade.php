@@ -5,7 +5,7 @@
 <div class="app-main__outer">
     <div class="card mb-3 col-md-10 offset-md-1 mt-3 p-5">
         <!-- <div class="mt-3 p-3"> -->
-            @include('layout.flashmessage')
+            @include('layout.flash_message')
             <h4 class="mb-3 text-info " style="font-weight: bold;">{{ $data['header'] }}</h4>
             <h5>{{ $data['task']->project->name }}</h5>
             <form class="mt-4" action="{{ route('task.update',$data['task']->id) }}" method="post">
@@ -58,7 +58,7 @@
                 </div>
                 <div class="d-flex justify-content-end mt-3  offset-md-2">
                     <button type="reset" class="btn btn-sm bg-danger me-4 text-white " style="box-shadow: 1px 2px 9px black;">
-                        cancle
+                        cancel
                     </button>
                     <button type="submit" class="btn btn-sm bg-primary text-white " style="box-shadow: 1px 2px 9px black;margin-left:1rem;">update</button>
                 </div>

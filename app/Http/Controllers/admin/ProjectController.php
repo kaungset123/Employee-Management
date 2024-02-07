@@ -9,10 +9,8 @@ use App\Http\Requests\ProjectRequest;
 use App\Models\Project;
 use App\Models\Task;
 use App\Models\User;
-use function App\Helpers\calculateProgress;
-use function App\Helpers\calculatProjectProgress;
+use function App\Helpers\calculateProjectProgress;
 use function App\Helpers\projectSearchbar;
-use Spatie\Permission\Models\Role;
 
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Exception;
@@ -46,7 +44,7 @@ class ProjectController extends Controller
     
         $projectProgress = [];
         foreach($projects as $project){
-            $projectProgress[$project->id] = calculatProjectProgress($project->id);
+            $projectProgress[$project->id] = calculateProjectProgress($project->id);
         }
 
         $this->data['search'] = $query;
@@ -74,7 +72,7 @@ class ProjectController extends Controller
         
         $projectProgress = [];
         foreach($projects as $project){
-            $projectProgress[$project->id] = calculatProjectProgress($project->id);
+            $projectProgress[$project->id] = calculateProjectProgress($project->id);
         }
 
         $this->data['search'] = $query;
@@ -103,7 +101,7 @@ class ProjectController extends Controller
         
         $projectProgress = [];
         foreach($projects as $project){
-            $projectProgress[$project->id] = calculatProjectProgress($project->id);
+            $projectProgress[$project->id] = calculateProjectProgress($project->id);
         }
 
         $this->data['search'] = $query;
@@ -163,7 +161,7 @@ class ProjectController extends Controller
            $project->members()->attach($team_member);
         }
 
-        // ProjectCreate::dispatch($project);
+        ProjectCreate::dispatch($project);
 
         return redirect('admin/project')->with('status','Project created successfully');
     }
@@ -173,7 +171,7 @@ class ProjectController extends Controller
         $this->checkPermission('project update',$id);
 
         $project = Project::findOrFail($id);
-        // dd($project);
+
         $user = User::select('id','name')->get();
         $this->data['users'] = $user;
         $this->data['project'] = $project;
@@ -197,8 +195,6 @@ class ProjectController extends Controller
                 'status' => $request->input('status'),
                 'project_manager_id' => $request->input('project_manager_id'),
             ]);
-    
-            // ProjectCreate::dispatch($project);
         
             $teamMembers = $request->input('members', []);
     
@@ -226,12 +222,10 @@ class ProjectController extends Controller
         try{
             $project = Project::findOrFail($id);
             $tasks = Task::where('project_id',$id)->get();
-            // dd($tasks);
             foreach($tasks as $task){
                 $task->delete();
             }
             $project->delete();
-            // $project->members()->detach($id);
             return redirect('admin/project')->with('status','Project deleted successfully');
         }
         catch(ModelNotFoundException $e){
@@ -246,7 +240,7 @@ class ProjectController extends Controller
     public function deleteList()
     {
         $projects = Project::onlyTrashed()->get();
-        // dd($projects);
+
         $this->data['projects'] = $projects;
         $this->data['title'] = 'Deleted List';
         $this->data['header'] = 'DELETED LISTS';
@@ -260,12 +254,12 @@ class ProjectController extends Controller
         try{
         $project = Project::withTrashed()->findOrFail($id);
         $tasks = Task::withTrashed()->where('project_id', $id)->get();
-        // dd($tasks);
+
         foreach($tasks as $task){
             $task->restore();
         }
         $project->restore();
-        // $project->members()->attach($project->project_manager_id);
+
         return redirect('admin/project')->with('status','Project restore successfully');
         }
         catch(ModelNotFoundException $e){
@@ -281,9 +275,8 @@ class ProjectController extends Controller
         $this->checkPermission('project delete',$id);
 
             $project = Project::withTrashed()->find($id);
-            // dd($project);
             $tasks = Task::withTrashed()->where('project_id',$id)->get();
-            // dd($tasks);
+
             foreach($tasks as $task){
                 $task->forceDelete();
             }
@@ -293,7 +286,6 @@ class ProjectController extends Controller
             $project->forceDelete();
 
             return redirect('admin/project')->with('status', 'Project permanently deleted successfully');
- 
     }
     
     private function checkPermission($permission,$data = null ) {

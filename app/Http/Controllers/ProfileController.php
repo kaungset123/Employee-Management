@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\ProfileUpdateRequest;
 use App\Models\User;
-use Illuminate\Http\Request;
 use function App\Helpers\imgChecker;
 use function App\Helpers\calculateAverageRating;
 
@@ -33,8 +32,7 @@ class ProfileController extends Controller
     {
         $this->checkPermission('profile update',$id);
 
-        $user = User::select('id','name','email','phone','address','password','img','date_of_birth')->where('id',$id)->first();
-        // dd($user); 
+        $user = User::select('id','name','email','phone','address','password','img','date_of_birth')->where('id',$id)->first(); 
         $this->data['user'] = $user;
         return view('employee.profile.edit')->with(['data' => $this->data]);
     }
@@ -69,7 +67,7 @@ class ProfileController extends Controller
         ]);
 
         if($direct == 'super admin') {
-            return redirect('superadmin/dashboard')->with('status','profile updated successfully');
+            return redirect('superAdmin/dashboard')->with('status','profile updated successfully');
         }elseif($direct == 'admin') {
             return redirect('admin/dashboard')->with('status','profile updated successfully');
         }elseif($direct == 'HR') {

@@ -28,19 +28,15 @@ class DepartmentController extends Controller
         $this->checkPermission('department view');
 
         $departments = Department::withTrashed()->select('id','name','deleted_at')->get();
-        // dd($departments);
+
         $this->data['departments'] = $departments;
         return view('admin.department.index')->with(['data' => $this->data]);
-    }
-
-    public function create()
-    {
     }
 
     public function store(Request $request)
     {
         $this->checkPermission('department create');
-        // dd($request->all());
+
         $validated = $request->validate([
             'name' => 'required'
         ]);
@@ -55,16 +51,10 @@ class DepartmentController extends Controller
         }
     }
 
-    public function edit(int $id)
-    {
-    }
-
     public function update(Request $request, int $id)
     {
         $this->checkPermission('department update');
-        // dd($id);
         try {
-            // dd($id);
             $department = Department::findOrFail($id);
             $validated = $request->validate([
                 'name' => 'required'
@@ -95,7 +85,6 @@ class DepartmentController extends Controller
         foreach($users as $user){
             $members[] = calculateAverageRating($user->id);
         }
-        // dd($members);
         $this->data['department'] = $department;
         $this->data['members'] = $members;
         return view('admin.department.show')->with(['data' => $this->data]);
@@ -104,11 +93,17 @@ class DepartmentController extends Controller
     public function destroy(int $id)
     {
         $this->checkPermission('department delete');
-    
+
         try {
             $department = Department::findOrFail($id);
-            $department->delete();
-            return back()->with('status','department deleted sucessfully');
+            $count = $department->users->count();
+
+            if($count > 0){
+                return back()->with('fail_status','Empty this department first!');
+            }else {
+                $department->delete();
+                return back()->with('status','department deleted successfully');
+            }
         }
         catch(ModelNotFoundException $e){
             return back()->with('error',$e->getMessage());
@@ -124,9 +119,8 @@ class DepartmentController extends Controller
         
         try {
             $department = Department::withTrashed()->find($id);
-            // dd($department);
             $department->forceDelete();
-            return back()->with('status','department permanently deleted sucessfully');
+            return back()->with('status','department permanently deleted successfully');
         }
         catch(ModelNotFoundException $e){
             return back()->with('error',$e->getMessage());
@@ -142,9 +136,8 @@ class DepartmentController extends Controller
 
         try {
             $department = Department::withTrashed($id);
-            // dd($department);
             $department->restore();
-            return back()->with('status','department restore sucessfully');
+            return back()->with('status','department restore successfully');
         }
         catch(ModelNotFoundException $e){
             return back()->with('error',$e->getMessage());

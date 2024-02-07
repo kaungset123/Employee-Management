@@ -32,7 +32,7 @@ class RoleController extends Controller
 
     public function edit(string $id)
     {
-        // $this->checkPermission('role update');
+        $this->checkPermission('role update');
 
         try{
             $permissions = Permission::get();
@@ -55,12 +55,12 @@ class RoleController extends Controller
             $role = $role;
             $permissions = Permission::all()->pluck('name')->toArray();
             $groupedPermissions = [];
-            // dd($permissions);
+
             foreach ($permissions as $permission) {
                 $groupName = explode(' ', $permission)[0];
                 $groupedPermissions[$groupName][] = $permission;
-                // dd($groupedPermissions);
              }
+             
              $this->data['roles'] = $roles;
              $this->data['role'] = $role;
              $this->data['groupedPermissions'] = $groupedPermissions;
@@ -76,7 +76,7 @@ class RoleController extends Controller
 
     }
 
-    public function setpermission(Request $request,Role $role)
+    public function set_permission(Request $request,Role $role)
     {             
         try{
             $newPermissions = $request->input('permission', []);

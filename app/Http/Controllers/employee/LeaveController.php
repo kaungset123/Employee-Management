@@ -10,6 +10,7 @@ use App\Http\Requests\LeaveRequest;
 use App\Http\Controllers\Controller;
 use App\Models\Leave;
 use App\Models\User;
+use Carbon\Carbon;
 use Svg\Tag\Rect;
 
 use function App\Helpers\leaveLimitCalculation;
@@ -62,7 +63,7 @@ class LeaveController extends Controller
     {
         $this->checkPermission('leave create'); 
 
-        // try {
+        try {
             $user_id = $request->user_id;
             $user = User::findOrFail($user_id);
             $projects = $user->projects;
@@ -74,7 +75,7 @@ class LeaveController extends Controller
             }
 
             if($status) {
-                return back()->with('failstatus','You are now in project period . you can\'t make leave request');
+                return back()->with('fail_status','You are now in project period . you can\'t make leave request');
             }else {
                 $user_id = $request->user_id;
                 $start_date = $request->start_date;
@@ -86,7 +87,7 @@ class LeaveController extends Controller
                 $totalNewDay = $limitTotalDay['totalNewDay'];
         
                 if($limitTotalDay['limitTotalDay'] > 10 && $request->input('name') == 'annual leave'){
-                    return back()->with('failstatus','your annual leave limit is already used');
+                    return back()->with('fail_status','your annual leave limit is already used');
                 }else{
                     $leave = Leave::create([
                     'name' => $request->input('name'),
@@ -95,49 +96,53 @@ class LeaveController extends Controller
                     'end_date' => $request->input('end_date'),
                     'total_days' => $totalNewDay
                     ]);
-                    // RequestCreate::dispatch($leave);
-                    return back()->with('status','leave request sumitted sucessfully');
+                    RequestCreate::dispatch($leave);
+                    return back()->with('status','leave request submitted successfully');
                 } 
-            }
-             
-        // }
-        // catch(ModelNotFoundException $e){
-        //     return back()->with('error',$e->getMessage());
-        // }
-        // catch(Exception $e){
-        //     return back()->with('error',$e->getMessage());
-        // }   
-       
+            }           
+        }
+        catch(ModelNotFoundException $e){
+            return back()->with('error',$e->getMessage());
+        }
+        catch(Exception $e){
+            return back()->with('error',$e->getMessage());
+        }         
     }
 
     public function pdfGenerate(Request $request, $userId) 
     {
         $hr = auth()->user();
-        // dd($hr);
+
         $user_id = $request->input('id');
         $staff = User::findOrFail($user_id);
+        $released_date = Carbon::now();
 
-        $choosedMonth = $request->input('month');
-        $choosedYear = $request->input('year');
+        $choseMonth = $request->input('month');
+        $choseYear = $request->input('year');
 
-        $leaves = Leave::where('user_id', $user_id)
-        ->whereYear('created_at', $choosedYear)
-        ->whereMonth('created_at', $choosedMonth)
+        $leaves = Leave::select('name','created_at','start_date','end_date','total_days','status')->where('user_id',$user_id)
+        ->where('status', '!=', 0)
+        ->whereYear('created_at', $choseYear)
+        ->whereMonth('created_at', $choseMonth)
         ->get();
 
-        $data = [
-            'hr' => $hr,
-            'staff' => $staff,
-            'title' => 'Attendance Data',
-            'leaves' => $leaves
-        ];
-        
-        $pdf = app('dompdf.wrapper');
+        if($leaves->isEmpty()) {
+            return response()->json(['status' => 'failed', 'message' => 'There is no leave request-data for this year and month !']);
+        }else {
+            $data = [
+                'released_date' => $released_date,
+                'hr' => $hr,
+                'staff' => $staff,
+                'title' => 'Attendance Data',
+                'leaves' => $leaves
+            ];
+            
+            $pdf = app('dompdf.wrapper');
 
-        // Pass the data directly to the loadView method
-        $pdf->loadView('hr.leave.pdf', $data)->setOptions(['defaultFont' => 'sans-serif']);
+            $pdf->loadView('hr.leave.pdf', $data)->setOptions(['defaultFont' => 'sans-serif']);
 
-        return $pdf->download('ems.pdf');
+            return $pdf->download('ems.pdf');
+        }
     }
 
     private function checkPermission($permission,$data = null )

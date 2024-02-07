@@ -5,7 +5,7 @@
     <div class="app-main__outer">
         <div class="card-body" id="all_emp_tb">
             <div class="">
-                @include('layout.flashmessage')
+                @include('layout.flash_message')
             </div>
             <b style="font-size: 23px;" class="mt-4 text-info">{{ $data['header'] }}</b>
             <form class="d-flex col-md-8 offset-md-2 mt-3" action="{{ route('request.index') }}" method="GET">
@@ -63,7 +63,6 @@
                                             <td class="p-0">
                                                 <div class="nav-item dropdown p-1 ">
                                                     <a class="nav-link dropdown-toggle text-black ms-4" role="button" data-bs-toggle="dropdown" aria-expanded="false" >
-                                                        <!-- <i class="fa fa-ellipsis-v" aria-hidden="true"></i> -->
                                                     </a>
                                                     <ul id="action_drop" class="dropdown-menu">
                                                         <li>

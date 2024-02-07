@@ -5,8 +5,6 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
-use Illuminate\Support\Facades\Session;
-
 
 class UserValidationController extends Controller
 {
@@ -49,7 +47,6 @@ class UserValidationController extends Controller
 
     public function authenticate(Request $request) 
     {
-        // dd($request);
         $formFields = $request->validate([
             'email' => ['required', 'email'],
             'password' => 'required'
@@ -58,7 +55,6 @@ class UserValidationController extends Controller
         if(auth()->attempt($formFields)) {
             $request->session()->regenerate();
             $user = auth()->user();
-            // Session::put('user_image', $user->img);
             return redirect('dashboard');
         }
         return back()->withErrors(['email' => 'Invalid Credentials'])->onlyInput('email');

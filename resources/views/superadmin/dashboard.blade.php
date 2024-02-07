@@ -1,5 +1,5 @@
 @extends("layout.master")
-@section("title",'SuperAdmin Home')
+@section("title",$data['title'])
 
 @section('content')
 <div class="app-main__outer mt-5 col-md-10 offset-md-1">

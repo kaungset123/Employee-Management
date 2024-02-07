@@ -65,7 +65,7 @@
                 <h4 class="text-danger text-center mt-5">no leave!</h4>
             @endif
         </table>
-        <div id="paginagtion">
+        <div id="pagination">
            {{ $data['leaves']->links() }}
         </div>
     </div>

@@ -8,14 +8,13 @@
                     <div class="nav">
                         <a data-toggle="tab" href="#tab-eg2-0" class="btn-pill btn-wide bg-info active btn btn-outline-info btn-sm">Running</a>
                         <a  href="{{ route('project.completed') }}" class="btn-pill btn-wide  mr-1 ml-1  btn btn-outline-info btn-sm">Completed</a>
-                        <!-- <a data-toggle="tab" href="#tab-eg2-2" class="btn-pill btn-wide  btn btn-outline-alternate btn-sm"></a>     -->
                     </div>
                 </div>
             </div>
             <div class="card-body">
-                <form class="d-flex col-md-8 offset-md-2"  action="{{ route('project.myproject') }}" method="GET" >
+                <form class="d-flex col-md-8 offset-md-2"  action="{{ route('project.myProject') }}" method="GET" >
                     @csrf
-                    <a href="{{ route('project.myproject', ['perPage' => $data['projects']->perPage()]) }}" style="color: black;">
+                    <a href="{{ route('project.myProject', ['perPage' => $data['projects']->perPage()]) }}" style="color: black;">
                         <i class="fas fa-redo-alt mt-1" style="font-size: 30px;"></i>
                     </a>
                     <input type="hidden" name="perPage" value="{{ $data['projects']->perPage() }}">
@@ -27,7 +26,7 @@
                 <div class="">
                     @include('layout.projectPageLimit')
                 </div>
-                @include('layout.flashmessage')
+                @include('layout.flash_message')
                 <div class="tab-content">
                     @if(count($data['projectProgress']) > 0)
                         <div class="tab-pane active" id="tab-eg2-0" role="tabpanel">
@@ -39,13 +38,12 @@
                                                 <div class="mb-3 card p-3">
                                                     <div class="card-header-tab card-header">
                                                         <div class="card-header-title font-size-lg text-capitalize font-weight-normal">
-                                                            <!-- <i class="header-icon lnr-shirt mr-3 text-muted opacity-6"> </i> -->
                                                             <i class="fa fa-check-square-o" aria-hidden="true"></i>
                                                             {{$progress['project']->name}} 
                                                         </div>
                                                         <div class="btn-actions-pane-right actions-icon-btn">
                                                                 <a href="{{route('project.detail',$progress['project']->id)}}" style="text-decoration: none;">View</a>
-                                                            <a href="{{ route('project.mytask',$progress['project']->id) }}" class="bg-info" id="my_task" >
+                                                            <a href="{{ route('project.myTask',$progress['project']->id) }}" class="bg-info" id="my_task" >
                                                                 My Tasks
                                                             </a>
                                                             @if(auth()->user()->id == $progress['project']->project_manager_id )

@@ -8,25 +8,31 @@
 </head>
 
 <body>
-    <b>HR :</b> {{ $hr->name }}<br>
-    <b>Staff : </b> {{ $staff->name }}<br>
-    <b>Department :</b> {{ $staff->department->name }} department
+    <div style="margin-bottom:10px;">
+        <b>HR :</b> {{ $hr->name }}<br>
+        <b>Staff : </b> {{ $staff->name }}<br>
+        <b>Department :</b> {{ $staff->department->name }} department <br>
+        <b>Released Date : </b> {{ $released_date->format('F j, Y') }}
+    </div>
+
     <table style="width: 100%;" class="table table-hover table-bordered mt-4">
         <thead>
             <tr class="text-center">
                 <th>Date</th>
                 <th>From</th>
                 <th>To</th>
+                <th>Leave Type</th>
                 <th>Total Day</th>
                 <th>Status</th>
             </tr>
         </thead>
         <tbody>
             @foreach($leaves as $leave)
-                <tr class="text-center">
+                <tr style="text-align:center;">
                     <td>{{ $leave->created_at->format('F j, Y ') }}</td>
                     <td>{{ $leave->start_date->format('F j, Y ')}}</td>
                     <td>{{ $leave->end_date->format('F j, Y ')}}</td>
+                    <td>{{ $leave->name }}</td>
                     <td>{{ $leave->total_days }}</td>
                     <td>
                         @if($leave->status == 1)

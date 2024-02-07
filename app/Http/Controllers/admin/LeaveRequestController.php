@@ -13,8 +13,6 @@ use function App\Helpers\leaveBalanceCount;
 use function App\Helpers\leaveBalanceQuery;
 use function App\Helpers\leaveBalanceSearchbar;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
-
-use Carbon\Carbon;
 use App\Events\RequestAccepted;
 use App\Events\RequestRejected;
 
@@ -61,13 +59,10 @@ class LeaveRequestController extends Controller
         $created_at = $request['year'];
         $department_name = $request->input('department_name');
 
-        // dd($request);
-
         $leavesQuery = Leave::with(['user', 'user.department']);  
 
         $leavesQuery = leaveBalanceSearchbar($leavesQuery, $query, $department_name, $created_at);
       
-        // dd($leavesQuery);
         $user_ids = $leavesQuery->distinct('user_id')->pluck('user_id')->toArray();
 
         $perPage = $request->input('perPage');
@@ -78,7 +73,7 @@ class LeaveRequestController extends Controller
         foreach ($leaves as $leave) {
             $leaveCounts[] = leaveBalanceCount($leave->user_id,$created_at);
         }
-        // dd($leaveCounts);
+
         $this->data['search'] = $query;
         $this->data['departmentName'] = $department_name;
         $this->data['created'] = $created_at;
@@ -99,7 +94,6 @@ class LeaveRequestController extends Controller
 
         $managerRole = Role::where('name', 'manager')->first();
         $userIdsWithManagerRole = $managerRole->users()->pluck('id')->toArray();
-        // dd($userIdsWithManagerRole);
 
         $leavesQuery = Leave::select('id', 'name', 'start_date', 'end_date', 'total_days', 'status', 'user_id')
             ->whereIn('user_id', $userIdsWithManagerRole)
@@ -148,7 +142,7 @@ class LeaveRequestController extends Controller
         $leave = Leave::findOrFail($id);
         $leave->status = LeaveRequestStatus::ACCEPTED;
         $leave->save();
-        // RequestAccepted::dispatch($leave);
+        RequestAccepted::dispatch($leave);
         return back()->with('status', 'leave accepted successfully');
     }
 
@@ -157,7 +151,7 @@ class LeaveRequestController extends Controller
         $leave = Leave::findOrFail($id);
         $leave->status = LeaveRequestStatus::REJECTED;
         $leave->save();
-        // RequestRejected::dispatch($leave);
+        RequestRejected::dispatch($leave);
         return back()->with('status', 'leave rejected successfully');
     }
   
@@ -183,9 +177,9 @@ class LeaveRequestController extends Controller
         $this->checkPermission('leave restore',$id);
 
         try {
-            $leave = Leave::onlyTrashed($id);
+            $leave = Leave::onlyTrashed()->where('id',$id)->get();
             $leave->restore();
-            return redirect('admin/leave/index')->with('status','leave record restored sucessfully');
+            return redirect('admin/leave/index')->with('status','leave record restored successfully');
         }
         catch(ModelNotFoundException $e){
             return back()->with('error',$e->getMessage());

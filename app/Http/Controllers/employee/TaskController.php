@@ -7,14 +7,12 @@ use App\Models\Task;
 use App\Models\Project;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\TaskAssignRequest;
-use function App\Helpers\deadLineWarning;
 use function App\Helpers\taskDeadLine;
 use App\Constants\TaskStatus;
 use App\Events\TaskCreate;
 use App\Http\Requests\TaskAssignEditRequest;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
-use Carbon\Carbon;
 
 class TaskController extends Controller
 {
@@ -44,12 +42,12 @@ class TaskController extends Controller
 
         $perPage = $request->input('perPage');
         $tasks = $tasksQuery->paginate($perPage)->withQueryString();
-        // dd($tasks);
+
         foreach ($tasks as $task) {
             $deadlineWarning = taskDeadLine($task->project_id, $task->user_id);
             $task->deadlineWarning = $deadlineWarning;
         }
-        // dd($tasks);
+
         $this->data['project_id'] = $project_id;
         $this->data['tasks'] = $tasks;
         $this->data['search'] = $query;
@@ -72,8 +70,6 @@ class TaskController extends Controller
         $this->checkPermission('task create');
 
         $project_id = $request->project_id;
-        // $start_date = Carbon::parse($request->input('start_date'))->setTimezone('UTC');
-        // $end_date = Carbon::parse($request->input('end_date'))->setTimezone('UTC');
 
             $task =  Task::create([
                 'name' => $request->input('name'),
@@ -82,15 +78,12 @@ class TaskController extends Controller
                 'user_id' => $request->input('user_id'),
                 'start_date' =>$request->input('start_date'),
                 'end_date' => $request->input('end_date'),
-                // 'start_date' => $start_date,
-                // 'end_date' => $end_date,
                 'created_by' => $request->input('created_by')
             ]);
 
-            // TaskCreate::dispatch($task);
+            TaskCreate::dispatch($task);
 
-            return redirect()->route('task.index',['id' => $project_id])->with('status','task assigned successfully');
-      
+            return redirect()->route('task.index',['id' => $project_id])->with('status','task assigned successfully');     
     }
 
     public function edit(int $id)
@@ -99,7 +92,7 @@ class TaskController extends Controller
 
         try {
             $task = Task::where('id',$id)->select('id','project_id','name','description','start_date','end_date','project_id','user_id','status','created_by')->first();
-            // dd($task->project_id);
+
             $project = Project::findOrFail($task->project_id);
             $this->data['task'] = $task;
             $this->data['project'] = $project;
@@ -122,8 +115,6 @@ class TaskController extends Controller
         try{
             $task = Task::findOrFail($id);
             $project_id = $request->project_id;
-            // $start_date = Carbon::parse($request->input('start_date'))->setTimezone('UTC');
-            // $end_date = Carbon::parse($request->input('end_date'))->setTimezone('UTC');
 
             $task->update([
                 'name' => $request->input('name'),
@@ -132,8 +123,6 @@ class TaskController extends Controller
                 'user_id' => $request->input('user_id'),
                 'start_date' => $request->input('start_date'),
                 'end_date' => $request->input('end_date'),
-                // 'start_date' => $start_date,
-                // 'end_date' => $end_date,
                 'created_by' => $request->input('created_by'),
                 'updated_by' => $request->input('updated_by')
             ]);
@@ -153,7 +142,7 @@ class TaskController extends Controller
         $query = $request['search'];
 
         $tasksQuery = Task::onlyTrashed()->select('id','name','description','start_date','end_date','project_id','user_id','status')->where('project_id',$project_id)->with('user');
-        // dd($tasksQuery);
+
         if($query) {
             $tasksQuery->whereHas('user', function ($subQuery) use ($query) {
                 $subQuery->where('name', 'like', "%$query%");
@@ -163,7 +152,6 @@ class TaskController extends Controller
         $perPage = $request->input('perPage',5);
         $tasks = $tasksQuery->paginate($perPage)->withQueryString();
 
-        // dd($tasks);
         $this->data['header'] = 'Deleted Task List';
         $this->data['project_id'] = $project_id;
         $this->data['tasks'] = $tasks;
@@ -193,7 +181,6 @@ class TaskController extends Controller
 
         try{
             $task=Task::findOrFail($id);    
-            // dd($task);
             $task->delete();
             return back()->with('status','Task deleted successfully');  
         }
@@ -211,9 +198,7 @@ class TaskController extends Controller
 
         try{
             $project_id = Task::onlyTrashed()->where('id',$id)->pluck('project_id')->first();
-            // dd($project_id);
-            $task=Task::onlyTrashed($id);    
-            // dd($task);
+            $task=Task::onlyTrashed()->find($id);    
             $task->restore();
             return redirect()->route('task.index',['id' => $project_id])->with('status','Task restored successfully');  
         }
@@ -231,7 +216,6 @@ class TaskController extends Controller
 
         try{
             $task=Task::onlyTrashed()->find($id);    
-            // dd($task);
             $task->forceDelete();
             return back()->with('status','Task force deleted successfully');  
         }

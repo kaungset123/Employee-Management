@@ -5,7 +5,7 @@
 <div class="app-main__outer mt-4">
     <div class="mb-3 col-md-6 offset-md-3 p-5 card">
         <div class="">
-            @include('layout.flashmessage')
+            @include('layout.flash_message')
         </div>
         <h4 class="mb-3 text-info" style="font-weight:bold;">{{$data['header']}}</h4>
         <form method="post" action="{{ route('leave.store') }}" enctype="multipart/form-data">

@@ -4,7 +4,7 @@
 @section('content')
 <div class="app-main__outer">
     <div class="card mb-3 mt-5 p-5 col-md-10 offset-md-1 mt">
-        @include('layout.flashmessage')
+        @include('layout.flash_message')
         <h4 class="mb-3 text-info" style="font-weight: bold;">{{ $data['header'] }}</h4>
         <h5>{{ $data['project']->name }}</h5>
         <form class="mt-3" action="{{ route('task.store') }}" method="post">

@@ -32,17 +32,17 @@ class SalaryController extends Controller
         $created_at = $request['created_at'];
         $department_name = $request['department_name'];
 
-        $salaryQuery = SalaryDetail::select('id','ot_time','ot_amount','leave','dedution','salary','bonus','user_id','created_at','net_salary')
+        $salaryQuery = SalaryDetail::select('id','ot_time','ot_amount','leave','deduction','salary','bonus','user_id','created_at','net_salary')
                         ->with(['user' => function ($query) {
                             $query->select('id', 'name', 'img', 'department_id');
                         }]);
         
         $perPage = $request->input('perPage',10);
-        $salarys = salarySearchbar($salaryQuery, $query, $department_name, $created_at);
-        $salarys = $salarys->paginate($perPage)->withQueryString();
+        $salaries = salarySearchbar($salaryQuery, $query, $department_name, $created_at);
+        $salaries = $salaries->paginate($perPage)->withQueryString();
 
         $this->data['header'] = 'All Salary List';
-        $this->data['salarys'] = $salarys;
+        $this->data['salaries'] = $salaries;
         $this->data['search'] = $query;
         $this->data['departmentName'] = $department_name;
         $this->data['created'] = $created_at;
@@ -61,11 +61,11 @@ class SalaryController extends Controller
                         }]);
         
         $perPage = $request->input('perPage',10);
-        $salarys = salarySearchbar($salaryQuery, $query, $department_name, $created_at);
-        $salarys = $salarys->paginate($perPage)->withQueryString();
+        $salaries = salarySearchbar($salaryQuery, $query, $department_name, $created_at);
+        $salaries = $salaries->paginate($perPage)->withQueryString();
 
         $this->data['header'] = 'Deleted Salary List';
-        $this->data['salarys'] = $salarys;
+        $this->data['salaries'] = $salaries;
         $this->data['search'] = $query;
         $this->data['departmentName'] = $department_name;
         $this->data['created'] = $created_at;
@@ -94,7 +94,7 @@ class SalaryController extends Controller
     {
         $this->checkPermission('payroll delete',$id);
 
-        $salary = SalaryDetail::onlyTrashed($id);
+        $salary = SalaryDetail::onlyTrashed()->where('id',$id)->get();
         $salary->restore();
         return redirect('/admin/salary')->with('status','salary record is restored successfully');
     }

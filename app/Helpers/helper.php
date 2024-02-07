@@ -53,7 +53,7 @@ use App\Models\SalaryCriteria;
         
     }
 
-    function calculatProjectProgress($project_id)
+    function calculateProjectProgress($project_id)
     {
         $all = Task::where('project_id',$project_id)->count();
       
@@ -532,7 +532,7 @@ use App\Models\SalaryCriteria;
                 'net_salary' => $netSalary,
                 'ot_time' => $otTimes,
                 'ot_amount' => $otPay,
-                'dedution' => $deduction,
+                'deduction' => $deduction,
                 'leave' => $totalLeaveDays,
                 'bonus' => $bonus,
                 'rating' => $averageRating,

@@ -3,12 +3,10 @@
 namespace App\Http\Controllers\employee;
 
 use Exception;
-use Log;
 use App\Models\User;
 use App\Models\Rating;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use Carbon\Carbon;
 
 use function App\Helpers\calculateAverageRating;
 use function App\Helpers\ratingAvailableCheck;
@@ -34,18 +32,17 @@ class RatingController extends Controller
         $rating = ratingAvailableCheck($rater_id,$rated_id);
 
         if($rating){
-            return back()->with('failstatus','you already rated this user for this month');
+            return back()->with('fail_status','you already rated this user for this month');
         }elseif($rater_id == $rated_id) {
-            return back()->with('failstatus','you can\'t rate you own!');
+            return back()->with('fail_status','you can\'t rate you own!');
         }
         else{
             $user = User::findOrFail($id);
             $rating = calculateAverageRating($user->id);
-            // dd($rating);
+
             $this->data['user'] = $rating;
             return view('employee.rating.index')->with(['data' => $this->data]);
-        } 
-                 
+        }                 
     }
 
     public function store(Request $request)

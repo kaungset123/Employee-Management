@@ -3,7 +3,7 @@
 
 @section('content')
     <div class="app-main__outer mt-5 col-md-10 offset-md-1">
-            @include('layout.flashmessage')
+            @include('layout.flash_message')
             <form action="{{ route('permission.store') }}" method="post" class="col-md-6 " >
                 @csrf
                 <div class="form-group">

@@ -2,12 +2,10 @@
 
 namespace App\Http\Controllers\hr;
 
-use App\Events\CreateSalaryAdmin;
 use Exception;
 use Carbon\Carbon;
 use App\Models\User;
 use App\Events\SalaryCreate;
-use App\Events\SalaryCreateAdmin;
 use App\Models\SalaryDetail;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -37,9 +35,8 @@ class SalaryController extends Controller
         $user = auth()->user();
         $users = $user->department->users;
 
-        //dd($users);
         $salaryQuery = SalaryDetail::whereIn('user_id', $users->pluck('id'))->with('user');
-        // dd($salaryQuery);
+
         if($query){
             $salaryQuery->whereHas('user', function ($subQuery) use ($query) {
                 $subQuery->where('name', 'like', "%$query%");
@@ -51,10 +48,10 @@ class SalaryController extends Controller
         }
 
         $perPage = $request->input('perPage');
-        $salarys = $salaryQuery->paginate($perPage)->withQueryString();
-        // dd($salarys);
+        $salaries = $salaryQuery->paginate($perPage)->withQueryString();
+
         $this->data['header'] = 'Department Salary'; 
-        $this->data['salarys'] = $salarys;
+        $this->data['salaries'] = $salaries;
         $this->data['search'] = $query;
         $this->data['created'] = $created_at;
         return view('hr.salary.index')->with(['data' => $this->data]);
@@ -68,10 +65,9 @@ class SalaryController extends Controller
         $salary = SalaryDetail::where('user_id',$id)->whereDate('created_at',$date)->first();
 
         if($salary){
-            return redirect('hr/dashboard')->with('failstatus','This staff\'s salary is created for this month');
+            return redirect('hr/dashboard')->with('fail_status','This staff\'s salary is created for this month');
         }else{
             $user = User::select('id','name','img','basic_salary','ot_rate','hourly_rate')->where('id',$id)->first();
-            // dd($user);
             $date = Carbon::now();
             $salary = salaryCalculation($id,$date);
     
@@ -103,10 +99,6 @@ class SalaryController extends Controller
         return $pdf->download('ems.pdf');
     }
 
-    public function show()
-    {
-    }
-
     public function store(int $id)
     {  
         try {
@@ -116,11 +108,11 @@ class SalaryController extends Controller
 
             $user = User::select('id')->where('id',$id)->first();
     
-            $salarys = salaryCalculation($user->id,$date);
-            // dd($salarys);
-            $salary = SalaryDetail::create($salarys);
-            // SalaryCreate::dispatch($salary);
-            // dd($salary);
+            $salaries = salaryCalculation($user->id,$date);
+
+            $salary = SalaryDetail::create($salaries);
+            SalaryCreate::dispatch($salary);
+
             return redirect('hr/dashboard')->with('status','salary calculated successfully');
         }
         catch(ModelNotFoundException $e){

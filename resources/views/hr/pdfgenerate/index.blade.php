@@ -7,18 +7,14 @@
     <div class="app-main bg-white">
         @include('layout.sidebar')
         <div class="app-main__outer">
-        <!-- <div class="card"> -->
             <div class="card-body bg-white" id="all_emp_tb">
-                <div class="">
-                    @include('layout.flashmessage')
-                </div>
                 <div class="col-md-8 offset-md-2">
                     <div id="response"></div>
                 </div>
                 <h4 style="font-weight: bold;" class="mb-3 text-info">{{$data['header']}}</h4>
-                <form class="d-flex col-md-8 offset-md-2 mt-4" action="{{ route('pdfgenerate.index') }}" method="GET">
+                <form class="d-flex col-md-8 offset-md-2 mt-4" action="{{ route('pdf_generate.index') }}" method="GET">
                     @csrf
-                    <a href="{{ route('pdfgenerate.index', ['perPage' => $data['users']->perPage()]) }}" style="color: black;">
+                    <a href="{{ route('pdf_generate.index', ['perPage' => $data['users']->perPage()]) }}" style="color: black;">
                         <i class="fas fa-redo-alt mt-1" style="font-size: 30px;"></i>
                     </a>
                     <input type="hidden" name="perPage" value="{{ $data['users']->perPage() }}">
@@ -94,7 +90,6 @@
                     {{ $data['users']->links() }}
                 </div>
             </div>
-        <!-- </div>   -->
         </div>
     </div>
     @include('modal.attendance.pdf')

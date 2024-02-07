@@ -33,11 +33,11 @@ class RequestController extends Controller
         $user = User::findOrFail(auth()->user()->id);
         $department_id = $user->department->id;
         $department = Department::findOrFail($department_id);
-        // dd($department);
+
         // there will many user_id in userIds
         $user_id = $department->users->pluck('id')->toArray();
-        // dd($userIds);
-        // will fetcht only the user who exist in leave table 
+
+        // will fetch only the user who exist in leave table 
         $leaveQuery = Leave::whereIn('user_id', $user_id)->where('status','0')->with('user');
 
         if ($query) {
@@ -65,7 +65,7 @@ class RequestController extends Controller
         $leave = Leave::findOrFail($id);
         $leave->status = LeaveRequestStatus::ACCEPTED;
         $leave->save();
-        // RequestAccepted::dispatch($leave);
+        RequestAccepted::dispatch($leave);
         return back()->with('status','leave accepted successfully');
     }
 
@@ -74,7 +74,7 @@ class RequestController extends Controller
         $leave = Leave::findOrFail($id);
         $leave->status = LeaveRequestStatus::REJECTED;
         $leave->save();
-        // RequestRejected::dispatch($leave);
+        RequestRejected::dispatch($leave);
         return back()->with('status','leave rejected successfully');
     }
 

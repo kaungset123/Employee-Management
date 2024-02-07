@@ -37,9 +37,8 @@ class AttendanceController extends Controller
         $user = auth()->user();
         $users = $user->department->users;
 
-        //dd($users);
         $attendQuery = Attendance::whereIn('user_id', $users->pluck('id'))->with('user');
-        // dd($attendQuery);
+
         if ($query) {
             $attendQuery->whereHas('user', function ($subQuery) use ($query) {
                 $subQuery->where('name', 'like', "%$query%");
@@ -53,7 +52,6 @@ class AttendanceController extends Controller
         $perPage = $request->input('perPage',10);
         $members = $attendQuery->paginate($perPage)->withQueryString();
 
-        //dd($members);
         $this->data['attendances'] = $members;
         $this->data['search'] = $query;
         $this->data['created'] = $created_at;
@@ -71,7 +69,7 @@ class AttendanceController extends Controller
         $userAttendance = Attendance::where('user_id',$id)->whereDate('created_at',$today)->first();
         
         if($userAttendance != null) {
-            return back()->with('failstatus','You already made attendance for this staff today!');
+            return back()->with('fail_status','You already made attendance for this staff today!');
         }else {
             $this->data['user'] = $user;
             $this->data['header'] = 'CREATE ATTENDANCE';
@@ -84,7 +82,6 @@ class AttendanceController extends Controller
         $this->checkPermission('attendance create');
 
         try {
-            // dd($request);
             $created_by = auth()->user()->id;
 
             $clock_in = $request->clock_in;
@@ -100,7 +97,7 @@ class AttendanceController extends Controller
                 'overtime' => $overTime,
                 'created_by' => $created_by          
             ]);
-            // AttendanceCreate::dispatch($attendance);
+            AttendanceCreate::dispatch($attendance);
             return redirect('hr/attendance/index')->with('status','Attendance submitted successfully!');
         }
         catch(ModelNotFoundException $e){
@@ -117,7 +114,7 @@ class AttendanceController extends Controller
 
         try {
             $attendance = Attendance::findOrFail($id);
-            // dd($attendance);
+
             $this->data['attendance'] = $attendance;
             $this->data['title'] = 'Attendance Edit';
             $this->data['header'] = 'ATTENDANCE EDIT';
@@ -128,8 +125,7 @@ class AttendanceController extends Controller
         }
         catch(Exception $e){
             return back()->with('error',$e->getMessage());
-        }
-    
+        }   
     }
 
     public function update(AttendanceRequest $request, int $id)
@@ -169,35 +165,34 @@ class AttendanceController extends Controller
         $hr = auth()->user();
         $user_id = $request->input('id');
         $staff = User::findOrFail($user_id);
+        $released_date = Carbon::now();
 
-        $choosedMonth = $request->input('month');
-        $choosedYear = $request->input('year');
+        $choseMonth = $request->input('month');
+        $choseYear = $request->input('year');
 
         $attendances = Attendance::where('user_id', $user_id)
-        ->whereYear('created_at', $choosedYear)
-        ->whereMonth('created_at', $choosedMonth)
+        ->whereYear('created_at', $choseYear)
+        ->whereMonth('created_at', $choseMonth)
         ->get();
-
-        // dd($attendances);
-
-        $data = [
-            'hr' => $hr,
-            'staff' => $staff,
-            'title' => 'Attendance Data',
-            'attendances' => $attendances
-        ];
         
-        $pdf = app('dompdf.wrapper');
+        if($attendances->isEmpty()) {
+            return response()->json(['status' => 'failed', 'message' => 'There is no attendance-data for this year and month!']);
+        }else {
+            $data = [
+                'released_date' => $released_date,
+                'hr' => $hr,
+                'staff' => $staff,
+                'title' => 'Attendance Data',
+                'attendances' => $attendances
+            ];
+            
+            $pdf = app('dompdf.wrapper');
 
-        // Pass the data directly to the loadView method
-        $pdf->loadView('hr.attendance.pdf', $data)->setOptions(['defaultFont' => 'sans-serif']);
+            $pdf->loadView('hr.attendance.pdf', $data)->setOptions(['defaultFont' => 'sans-serif']);
 
-        return $pdf->download("{$staff->name}.ems.pdf");
-    }
+            return $pdf->download("{$staff->name}.ems.pdf");
 
-    public function pdfView() 
-    {
-        return view('hr.attendance.pdfView');
+        }
     }
 
     private function checkPermission($permission,$data = null ) 

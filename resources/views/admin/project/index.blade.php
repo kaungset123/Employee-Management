@@ -18,7 +18,7 @@
     <div class="card-body">
         <div class="tab-content">
             <div class="tab-pane active" id="tab-eg2-0" role="tabpanel">
-                @include('layout.flashmessage')
+                @include('layout.flash_message')
                 <form class="d-flex col-md-8 offset-md-2" action="{{ route('project.index') }}" method="GET">
                     <a href="{{ route('project.index',['perPage' => $data['projects']->perPage()]) }}" style="color: black;">
                         <i class="fas fa-redo-alt mt-1 " style="font-size: 30px;"></i>
@@ -35,7 +35,7 @@
                             <a href="{{ route('project.create') }}" class="mt-4" style="text-decoration:none;position:absolute;top:-22px;right:117px;">
                                 <i class="fa-solid fa-circle-plus" style="font-size: 30px;color:#0d6efd;"></i>
                             </a>
-                            <a href="{{ route('project.deletelist') }}" >
+                            <a href="{{ route('project.delete_list') }}" >
                                 @include('component.deleteButton')
                             </a>
                         </div>

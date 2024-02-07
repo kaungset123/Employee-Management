@@ -3,7 +3,7 @@
 
 @section('content')
         <div class="app-main__outer mt-4 col-md-10 offset-md-1" >
-            @include('layout.flashmessage')
+            @include('layout.flash_message')
             <b class="mb-5 text-info" style="font-size:30px;">All Roles</b>
             <table class="table">
                     <thead class="text-center">

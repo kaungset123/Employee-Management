@@ -4,7 +4,7 @@
 @section('content')
     <div class="app-main__outer">
             <div class="card-body" id="all_leave_tb">
-                @include('layout.flashmessage')
+                @include('layout.flash_message')
                 <h4 style="font-weight: bold;" class="mt-3 text-info">{{$data['header']}}</h4>
                 <form class="d-flex col-md-8 offset-md-2 mt-3"  action="{{ route('attendance.deleteList') }}" method="GET" >
                     @csrf

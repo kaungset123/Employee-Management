@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('salary_criterias', function (Blueprint $table) {
             $table->id();
-            $table->integer('rating_point')->unique();
+            $table->integer('rating_point');
             $table->integer('bonus_amount');
             $table->timestamps();
         });

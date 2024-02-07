@@ -5,7 +5,7 @@
 <div class="app-main__outer">
     <div class="card mb-3 col-md-10 offset-md-1 mt-3 p-5">
         <div class="">
-            @include('layout.flashmessage')
+            @include('layout.flash_message')
             <div class="d-flex relative">
                 <h4 class="mb-3 text-info" style="font-weight: bold;">{{$data['header']}}</h4>
                 <a href="{{ route('project.index') }}" class="me-2 text-info" style="font-size: 28px;margin-top:-4px;position:absolute;right:43px;">

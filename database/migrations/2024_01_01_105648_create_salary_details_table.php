@@ -16,7 +16,7 @@ return new class extends Migration
             $table->integer('ot_time');
             $table->integer('ot_amount');
             $table->float('leave');
-            $table->integer('dedution');
+            $table->integer('deduction');
             $table->integer('salary');
             $table->integer('net_salary');
             $table->integer('bonus')->nullable();

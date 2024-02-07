@@ -22,10 +22,8 @@ class RegistrationRequest extends FormRequest
      */
     public function rules(): array
     {
-        $userId = $this->route('id');
-
         return[
-            'email' => ['required', 'email',Rule::unique('users')->ignore($userId),],
+            'email' => 'required', 'email',Rule::unique('users'),
             'password' => 'required|required|min:6|confirmed:password_confirmation',
             'name' => ['required', 'min:3','string'],
             'phone' => 'required|numeric|digits:11', 

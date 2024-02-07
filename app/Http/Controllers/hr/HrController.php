@@ -38,7 +38,6 @@ class HrController extends Controller
             $userQuery->whereDate('created_at',$created_at);
         }
         
-        // dd($users);
         $perPage = $request->input('perPage',5);
         $users = $userQuery->paginate($perPage)->withQueryString();
         $rating = [];

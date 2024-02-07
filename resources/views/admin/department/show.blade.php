@@ -49,20 +49,20 @@
         @else
         <div class="row mb-3">
             @foreach($data['members'] as $member)
-            @unless($member['user']->hasRole('manager'))
-            <div class="col-md-6 text-center mb-5">
-                <a href="{{ route('profile.index',$member['user']->id) }}" style="cursor: pointer;text-decoration:none;color:#000;">
-                    <div class="dept_bg  p-2">
-                        <img class="member_img" src="{{ asset('/storage/uploads/' . $member['user']->img) }}">
-                        <div class="mt-2">
-                            <b> {{ $member['user']->name }}</b><br>
-                            <b> {{ $member['user']->getRoleNames()->first() }}</b><br>
-                            Rating <b>{{ $member['rating'] }}</b>
+                @unless($member['user']->hasRole('manager'))
+                <div class="col-md-6 text-center mb-5">
+                    <a href="{{ route('profile.index',$member['user']->id) }}" style="cursor: pointer;text-decoration:none;color:#000;">
+                        <div class="dept_bg  p-2">
+                            <img class="member_img" src="{{ asset('/storage/uploads/' . $member['user']->img) }}">
+                            <div class="mt-2">
+                                <b> {{ $member['user']->name }}</b><br>
+                                <b> {{ $member['user']->getRoleNames()->first() }}</b><br>
+                                Rating <b>{{ $member['rating'] }}</b>
+                            </div>
                         </div>
-                    </div>
-                </a>
-            </div>
-            @endunless
+                    </a>
+                </div>
+                @endunless
             @endforeach
         </div>
         @endif

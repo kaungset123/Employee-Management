@@ -8,9 +8,12 @@
 </head>
 
 <body>
-    <b>HR :</b> {{ $hr->name }}<br>
-    <b>Staff : </b> {{ $staff->name }}<br>
-    <b>Department :</b> {{ $staff->department->name }} department
+    <div style="margin-bottom:10px;">
+        <b>HR :</b> {{ $hr->name }}<br>
+        <b>Staff : </b> {{ $staff->name }}<br>
+        <b>Department :</b> {{ $staff->department->name }} department <br>
+        <b>Released Date : </b> {{ $released_date->format('F j, Y') }}
+    </div>
     <table style="width: 100%;" class="table table-hover table-bordered ">
         <thead>
             <tr class="text-center">
@@ -22,7 +25,7 @@
         </thead>
         <tbody>
             @foreach($attendances as $attendance)
-                <tr class="text-center">
+                <tr style="text-align:center;">
                     <td>{{ $attendance->date->format('F j, Y ') }}</td>
                     <td>{{ $attendance->clock_in->format('h:i A')}}</td>
                     <td>{{ $attendance->clock_out->format('h:i A')}}</td>

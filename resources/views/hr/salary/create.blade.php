@@ -4,7 +4,7 @@
 @section('content')
 <div class="app-main__outer mt-4">
     <div class="mb-3 col-md-6 offset-md-3 p-4 card">
-        @include('layout.flashmessage')
+        @include('layout.flash_message')
         <div class="">
             <h4 class="mb-4 text-center" style="font-weight:bold;">{{$data['header']}}</h4>
             <a href="{{ route('hr.dashboard') }}" class="me-2 text-info" style="font-size: 28px;margin-top:-55px;position:absolute;right:20px;">
@@ -30,7 +30,7 @@
                 <p>Rating Bonus : {{ $data['salary']['rating_bonus'] }}</p>
             @endif
             <p>Salary : {{ $data['salary']['salary'] }}</p>
-            <p>Dedution : {{ $data['salary']['dedution'] }}</p>
+            <p>Deduction : {{ $data['salary']['deduction'] }}</p>
             <p>Net Salary : {{ $data['salary']['net_salary'] }}</p>
      
             <a href="{{ route('generate.pdf',$data['user']->id) }}" style="text-decoration: none;" class="mb-2">

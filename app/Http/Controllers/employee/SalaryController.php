@@ -31,9 +31,9 @@ class SalaryController extends Controller
         }
 
         $perPage = $request->input('perPage',10);
-        $salarys = $salaryQuery->paginate($perPage)->withQueryString();
+        $salaries = $salaryQuery->paginate($perPage)->withQueryString();
 
-        $this->data['salarys'] = $salarys;
+        $this->data['salaries'] = $salaries;
         $this->data['created'] = $created_at;
         return view('employee.salary.index')->with(['data' => $this->data]);
     }

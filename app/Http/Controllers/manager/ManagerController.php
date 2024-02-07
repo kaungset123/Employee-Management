@@ -29,7 +29,7 @@ class ManagerController extends Controller
         $user = auth()->user();
         $department = Department::findOrFail($user->department->id);
         $userQuery = User::where('department_id',$department->id);
-        // dd($users);
+
         if($query){
             $userQuery->where('name', 'like', "%$query%");
         }
@@ -38,7 +38,6 @@ class ManagerController extends Controller
             $userQuery->whereDate('created_at',$created_at);
         }
         
-        // dd($users);
         $perPage = $request->input('perPage');
         $users = $userQuery->paginate($perPage)->withQueryString();
 

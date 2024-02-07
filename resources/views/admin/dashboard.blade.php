@@ -4,14 +4,11 @@
 @section('content')
 <div class="app-main__outer mt-5 col-md-10 offset-md-1">
     <div class="mb-3 card">
+        @include('layout.flash_message')
         <div class="card-header-tab card-header">
             <div class="text-info card-header-title font-size-lg text-capitalize font-weight-bold">
                 Projects
             </div>
-            <!-- <div class="btn-actions-pane-right text-capitalize">
-                    <button class="btn-wide btn-outline-2x mr-md-2 btn btn-outline-focus btn-sm">View
-                        All</button>
-                </div> -->
         </div>
         <div class="no-gutters d-flex">
             <a href="{{ route('project.index') }}" style="color:#000;text-decoration:none;">
@@ -26,13 +23,6 @@
                                 <a href="{{ route('project.index') }}" style="text-decoration:none;color:#000;">All Projects</a>
                             </div>
                             <div class="widget-numbers">{{ $data['status']['all_count'] }}</div>
-                            <!-- <div class="widget-description opacity-8 text-focus">
-                                    <div class="d-inline text-danger pr-1">
-                                        <i class="fa fa-angle-down"></i>
-                                        <span class="pl-1">54.1%</span>
-                                    </div>
-                                    less earnings
-                                </div> -->
                         </div>
                     </div>
                     <div class="divider m-0 d-md-none d-sm-block"></div>
@@ -52,13 +42,6 @@
                                 </a>
                             </div>
                             <div class="widget-numbers"><span>{{ $data['status']['run_count'] }}</span></div>
-                            <!-- <div class="widget-description opacity-8 text-focus">
-                                    Grow Rate:
-                                    <span class="text-info pl-1">
-                                        <i class="fa fa-angle-down"></i>
-                                        <span class="pl-1">14.1%</span>
-                                    </span>
-                                </div> -->
                         </div>
                     </div>
                     <div class="divider m-0 d-md-none d-sm-block"></div>
@@ -78,13 +61,6 @@
                                 </a>
                             </div>
                             <div class="widget-numbers text-success"><span>{{ $data['status']['complete_count'] }}</span></div>
-                            <!-- <div class="widget-description text-focus">
-                                    Increased by
-                                    <span class="text-warning pl-1">
-                                        <i class="fa fa-angle-up"></i>
-                                        <span class="pl-1">7.35%</span>
-                                    </span>
-                                </div> -->
                         </div>
                     </div>
                 </div>
@@ -97,10 +73,6 @@
                 <i class="header-icon lnr-charts icon-gradient bg-happy-green"> </i>
                 Departments
             </div>
-            <!-- <div class="btn-actions-pane-right text-capitalize">
-                    <button class="btn-wide btn-outline-2x mr-md-2 btn btn-outline-focus btn-sm">View
-                        All</button>
-                </div> -->
         </div>
         <div class="no-gutters row">
             @foreach($data['status']['departments'] as $dept)

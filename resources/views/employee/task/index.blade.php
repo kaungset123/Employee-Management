@@ -5,7 +5,7 @@
 <div class="app-main__outer">
     <div class="card-body" id="all_emp_tb">
         <b style="font-size: 23px;" class="mt-4 text-info">{{ $data['header'] }}</b>
-        @include('layout.flashmessage')
+        @include('layout.flash_message')
         <form class="d-flex col-md-6 offset-md-3 mt-4" action="{{ route('task.index',$data['project_id']) }}" method="GET">
             @csrf
             <a href="{{ route('task.index',$data['project_id'] ,['perPage' => $data['tasks']->perPage()]) }}" style="color: black;">
@@ -17,7 +17,7 @@
         </form>
         <div class="mt-3" style="position: relative;">
             <div class="d-flex relative align-items-start">
-                <a href="{{ route('project.myproject') }}" class="me-2 absolute text-info" style="font-size: 28px;margin-top:-4px;">
+                <a href="{{ route('project.myProject') }}" class="me-2 absolute text-info" style="font-size: 28px;margin-top:-4px;">
                     <i class="fas fa-arrow-alt-circle-left"></i>
                 </a>
                 @include('layout.pageLimit')

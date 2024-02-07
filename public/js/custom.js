@@ -5,7 +5,7 @@ function changePerPage(perPage) {
     window.location.href = currentUrl.toString();
 }
 
-///////////////// Pgae Limitation Blade View //////////////
+///////////////// Page Limitation Blade View //////////////
 
 function togglePaginationOptions() {
     const paginationOptions = document.querySelector('.pagination-options');
@@ -89,6 +89,7 @@ $(document).ready(function() {
     });
 });
 
+/////////////// department create modal ///////////////
 $(document).ready(function() {
 
     $('#create-dept-btn').click(function() {
@@ -221,7 +222,7 @@ $(document).ready(function() {
                         $('#response').html(
                             `<div class="alert alert-danger alert-dismissible">
                                 ${response.messages}
-                                <button type="button" class="btn-colse" data-bs-dismiss='alert'></button>
+                                <button type="button" class="btn-close" data-bs-dismiss='alert'></button>
                             </div>`
                         );
                     }
@@ -232,7 +233,7 @@ $(document).ready(function() {
                     $('#response').html(
                         `<div class="alert alert-danger alert-dismissible">
                             ${response.messages}
-                            <button type="button" class="btn-colse" data-dismiss='alert'></button>
+                            <button type="button" class="btn-close" data-dismiss='alert'></button>
                         </div>`
                     )
                 }
@@ -242,7 +243,7 @@ $(document).ready(function() {
 });
 
 
-///////////////// criterai edit modal //////////////////
+///////////////// criteria edit modal //////////////////
 $.ajaxSetup({
     headers: {
         "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr("content")
@@ -343,13 +344,11 @@ $(document).ready(function() {
             const formData = $(form).serialize();
             $.ajax({
                 type: 'POST',
-                url: '/attendance/pdfgenerate/' + $('#userId').val(),
+                url: '/attendance/pdfGenerate/' + $('#userId').val(),
                 data: formData,
                
                 success: function(response) {
-                    // $("#dept-edit-form")[0].reset();
                     $('#attendancePdfModal').modal('hide');
-                    // $('#dept-create-modal').modal('toggle');
 
                     if(response.status === 'success') {
                         $('#response').html(
@@ -357,17 +356,12 @@ $(document).ready(function() {
                                 ${response.message}
                             </p>`
                         );
-                        setTimeout(function() {
-                            window.location.reload();
-                        }, 500);
-                        
                     }   
-                    elseif(response.status === 'failed')
+                    if(response.status === 'failed')
                      {
                         $('#response').html(
-                            `<div class="alert alert-danger alert-dismissible">
-                                ${response.messages}
-                                <button type="button" class="btn-colse" data-bs-dismiss='alert'></button>
+                            `<div class="alert alert-danger text-center" x-data="{show: true}" x-init="setTimeout(() => show = false, 2000)" x-show="show">
+                                ${response.message}                      
                             </div>`
                         );
                     }
@@ -376,9 +370,8 @@ $(document).ready(function() {
                 },
                 error: function(error) {
                     $('#response').html(
-                        `<div class="alert alert-danger alert-dismissible">
-                            ${response.messages}
-                            <button type="button" class="btn-colse" data-dismiss='alert'></button>
+                        `<div class="alert alert-danger text-center" x-data="{show: true}" x-init="setTimeout(() => show = false, 2000)" x-show="show">
+                            ${response.messages}                           
                         </div>`
                     )
                 }
@@ -414,31 +407,24 @@ $(document).ready(function() {
             const formData = $(form).serialize();
             $.ajax({
                 type: 'POST',
-                url: '/leave/pdfgenerate/' + $('#leaveId').val(),
+                url: '/leave/pdfGenerate/' + $('#leaveId').val(),
                 data: formData,
                
                 success: function(response) {
-                    // $("#dept-edit-form")[0].reset();
                     $('#leavePdfModal').modal('hide');
-                    // $('#dept-create-modal').modal('toggle');
 
                     if(response.status === 'success') {
                         $('#response').html(
                             `<p class="alert alert-success text-center" x-data="{show: true}" x-init="setTimeout(() => show = false, 2000)" x-show="show">
                                 ${response.message}
                             </p>`
-                        );
-                        setTimeout(function() {
-                            window.location.reload();
-                        }, 500);
-                        
+                        );                        
                     }   
-                    elseif(response.status === 'failed')
+                    if(response.status === 'failed')
                      {
                         $('#response').html(
-                            `<div class="alert alert-danger alert-dismissible">
-                                ${response.messages}
-                                <button type="button" class="btn-colse" data-bs-dismiss='alert'></button>
+                            `<div class="alert alert-danger text-center" x-data="{show: true}" x-init="setTimeout(() => show = false, 2000)" x-show="show">
+                                ${response.message}
                             </div>`
                         );
                     }

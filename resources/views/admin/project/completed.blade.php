@@ -4,7 +4,7 @@
 @section('content')
 <div class="app-main__outer">
     <div>
-       @include('layout.flashmessage')
+       @include('layout.flash_message')
     </div>
     <div class="card-header p-5"><b style="font-size: 23px;" class="text-info">Completed Projects</b>
         <div class="btn-actions-pane-right">

@@ -20,7 +20,7 @@ class PermissionController extends Controller
             'name'=> 'required'
         ]);
         Permission::create($validated);
-        return redirect('admin/role/index')->with('status','new permisson added successfully');
+        return redirect('admin/role/index')->with('status','new permission added successfully');
     }
 
     public function destroy(Permission $permission)

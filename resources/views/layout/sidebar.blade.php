@@ -4,7 +4,7 @@
             <ul class="vertical-nav-menu ">
                 <li class="app-sidebar__heading  ">
                     @role('super admin')
-                        <a href="{{ route('superadmin.dashboard') }}" class="dashboard p-0 mt-3">
+                        <a href="{{ route('superAdmin.dashboard') }}" class="dashboard p-0 mt-3">
                             SUPER ADMIN DASHBOARD 
                         </a>
                     @endrole
@@ -158,14 +158,6 @@
                                 </a>
                             </li> 
                         @endrole     
-                        <!-- @role('super admin')
-                            <li class=" {{ request()->routeIs('request.index')  ? 'mm-active'  : '' }}">
-                                <a href="{{ route('request.index') }}">
-                                    <i class="metismenu-icon">
-                                    </i>admin Leave Request
-                                </a>
-                            </li> 
-                        @endrole                               -->
                     </ul>
                 </li>                                        
                 <li>
@@ -210,12 +202,10 @@
                 </li>
                 <li>
                     <a href="#">
-                        <!-- <i class="metismenu-icon pe-7s-display2"></i> -->
                         <i class="metismenu-icon ">
                             <i class="fa fa-credit-card" aria-hidden="true"></i>
                         </i>
                         Payroll
-                        <!-- <i class="metismenu-state-icon pe-7s-angle-down caret-left"></i> -->
                     </a>
                     <ul>
                         @role('HR')
@@ -243,8 +233,8 @@
                             </li>
                         @endrole
                         @role('admin|super admin|HR')
-                            <li class="{{ request()->routeIs('salarycriteria.index')  ? 'mm-active'  : '' }}">
-                                <a href="{{ route('salarycriteria.index') }}">
+                            <li class="{{ request()->routeIs('salaryCriteria.index')  ? 'mm-active'  : '' }}">
+                                <a href="{{ route('salaryCriteria.index') }}">
                                     <i class="metismenu-icon">
                                     </i>Salary Criteria
                                 </a>
@@ -259,7 +249,6 @@
                                 <i class="fa-solid fa-user"></i>
                             </i>
                             Role&Permission
-                            <!-- <i class="metismenu-state-icon pe-7s-angle-down caret-left"></i> -->
                         </a>
                         <ul>
                             <li class=" {{request()->routeIs('role.index')  ? 'mm-active'  : ''}}">
@@ -273,12 +262,11 @@
                 @endrole
                 @role('HR')
                     <li>
-                        <a href="{{ route('pdfgenerate.index') }}">
+                        <a href="{{ route('pdf_generate.index') }}">
                             <i class="metismenu-icon ">
-                                <i class="fa-solid fa-file-lines"></i>
+                                  <i class="fa-solid fa-file-lines"></i>
                             </i>
                         PDF
-                            <!-- <i class="metismenu-state-icon pe-7s-angle-down caret-left"></i> -->
                         </a>
                     </li>
                 @endrole

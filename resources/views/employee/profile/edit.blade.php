@@ -4,7 +4,7 @@
 @section('content')
     <div class="app-main__outer">
         <div class="card col-md-10 mt-4 mb-4 p-5 offset-md-1 p-3">
-            @include('layout.flashmessage')
+            @include('layout.flash_message')
             <h4 class="mb-4 text-info" style="font-weight: bold;">{{ $data['header'] }}</h4>
             <form action="{{route('profile.update',$data['user']->id)}}" method="post" enctype="multipart/form-data">
                 @csrf
@@ -61,9 +61,9 @@
                     </div>
                     <div class="col-md-6">
                         <div class="form-group">
-                            <label for="conrirmpass">Confirmed Password</label>
+                            <label for="confirm_pass">Confirmed Password</label>
                             <input type="password" class="form-control" name="password_confirmation">
-                            @error('password_contirmation')
+                            @error('password_confirmation')
                             <p class="text-danger">{{$message}}</p>
                             @enderror
                         </div>

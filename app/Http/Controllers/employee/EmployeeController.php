@@ -30,7 +30,7 @@ class EmployeeController extends Controller
         $user = auth()->user();
         $department = Department::findOrFail($user->department->id);
         $userQuery = User::where('department_id',$department->id);
-        // dd($users);
+
         if($query){
             $userQuery->where('name', 'like', "%$query%");
         }
@@ -38,8 +38,7 @@ class EmployeeController extends Controller
         if($created_at){
             $userQuery->whereDate('created_at',$created_at);
         }
-        
-        // dd($users);
+
         $perPage = $request->input('perPage',10);
         $users = $userQuery->paginate($perPage)->withQueryString();
 
@@ -58,5 +57,4 @@ class EmployeeController extends Controller
     {
         return $this->authorize($permission,$data);
     }
-
 }

@@ -4,7 +4,7 @@
 @section('content')
 <div class="app-main__outer">
     <div class="card-body" id="all_leave_tb">
-        @include('layout.flashmessage')
+        @include('layout.flash_message')
         <h4 style="font-weight: bold;" class="mt-3 text-info">{{$data['header']}}</h4>
         <form class="d-flex col-md-8 offset-md-2" action="{{ route('leave.index') }}" method="GET">
             <a href="{{ route('leave.index', ['perPage' => $data['leaves']->perPage()]) }}" style="color: black;">
@@ -85,7 +85,7 @@
         @else
         <h4 class="text-danger text-center mt-5">no leave request!</h4>
         @endif
-        <div id="paginagtion">
+        <div id="pagination">
             {{ $data['leaves']->links() }}
         </div>
     </div>

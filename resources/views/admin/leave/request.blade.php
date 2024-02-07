@@ -3,7 +3,6 @@
 
 @section('content')
 <div class="app-main__outer">
-    <!-- <div class="card mb-3 "> -->
     <div class="card-body" id="all_emp_tb">
         <h4 style="font-weight: bold;" class="mt-3 mb-4 text-info">{{ $data['header'] }}</h4>
         <form class="d-flex col-md-8 offset-md-2" action="{{ route('leave.manager') }}" method="GET">
@@ -105,6 +104,5 @@
             {{ $data['leaves']->links() }}
         </div>
     </div>
-    <!-- </div> -->
 </div>
 @endsection

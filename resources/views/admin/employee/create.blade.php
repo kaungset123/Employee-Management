@@ -6,7 +6,7 @@
     <div class="card mb-3 col-md-10 offset-md-1 mt-3 p-5">
         <div class="">
             <div class="col-md-6 offset-md-3">
-                @include('layout.flashmessage')
+                @include('layout.flash_message')
             </div>   
             <div class="d-flex">
                 <h4 class="mb-5 text-info" style="font-weight: bold;">CREATE EMPLOYEE</h4>
@@ -61,8 +61,8 @@
                         <div class="form-group">
                             <label class="department">Department</label>
                             <select class="form-control" name="department_id">
-                                @foreach($data['dpmts'] as $dpmt)
-                                    <option value="{{$dpmt->id}}" {{ old('department_id', $dpmt->id) == $dpmt->id ? 'selected' : '' }}>{{$dpmt->name}}</option>
+                                @foreach($data['departments'] as $department)
+                                    <option value="{{$department->id}}" {{ old('department_id', $department->id) == $department->id ? 'selected' : '' }}>{{$department->name}}</option>
                                 @endforeach
                             </select>
                         </div>
@@ -100,7 +100,7 @@
                     </div>
                     <div class="col-md-6">
                         <div class="form-group">
-                            <label for="hourly_rate">Horuly Rate</label>
+                            <label for="hourly_rate">Hourly Rate</label>
                             <input type="text" class="form-control" name="hourly_rate" value="{{old('hourly_rate')}}">
                             @error('hourly_rate')
                                 <p class="text-danger">{{$message}}</p>
@@ -131,9 +131,9 @@
                 <div class=" row mt-4">
                     <div class="col-md-6">
                         <div class="form-group">
-                            <label for="confirmpass">Confirmed Password</label>
+                            <label for="confirm_pass">Confirmed Password</label>
                             <input type="password" class="form-control" name="password_confirmation" value="{{ old('password_confirmation') }}">
-                            @error('password_contirmation')
+                            @error('password_confirmation')
                                 <p class="text-danger">{{$message}}</p>
                             @enderror
                         </div>

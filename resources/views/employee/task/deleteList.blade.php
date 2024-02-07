@@ -5,7 +5,7 @@
 <div class="app-main__outer">
     <div class="card-body" id="all_emp_tb">
         <b style="font-size: 23px;" class="mt-4 text-info">{{ $data['header'] }}</b>
-        @include('layout.flashmessage')
+        @include('layout.flash_message')
         <form class="d-flex col-md-6 offset-md-3 mt-4" action="{{ route('task.deleteList',$data['project_id']) }}" method="GET">
             @csrf
             <a href="{{ route('task.deleteList',$data['project_id'] ,['perPage' => $data['tasks']->perPage()]) }}" style="color: black;">
@@ -17,11 +17,9 @@
         </form>
         <div class="mt-3" style="position: relative;">
             @include('layout.pageLimit')
-            <!-- <div class="" style="position: absolute;right:1rem;top:5px;">
-                <a href="{{ route('task.deleteList',$data['project_id']) }}" >
-                    <i class="fas fa-arrow-alt-circle-left"></i>
-                </a>
-            </div> -->
+            <a href="{{ route('task.index') }}" class="me-2 text-info" style="font-size:31px;margin-top:-4px;position:absolute;right:27px;">
+                <i class="fas fa-arrow-alt-circle-left"></i>
+            </a>
         </div>
         @if(count($data['tasks']) > 0)
             <table style="width: 100%;" class="table table-hover  table-bordered mt-4 ">
