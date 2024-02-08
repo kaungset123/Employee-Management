@@ -83,9 +83,8 @@ Route::middleware(['auth'])->group(function () {
 Route::middleware('auth')->group(function () {
     Route::resource('/salaryCriteria',SalaryCriteriaController::class)->except('destroy');
     Route::get('/department/request',[RequestController::class, 'index'])->name('request.index');
-    Route::get('/pdfGenerate/index',[PdfGenerationController::class, 'index'])->name('pdf_generate.index');
-    Route::post('/attendance/pdfGenerate/{id}',[App\Http\Controllers\hr\AttendanceController::class, 'pdfGenerate'])->name('attendance.pdfGenerate');
-    
+    Route::get('/pdf/index',[PdfGenerationController::class, 'index'])->name('pdf_generate.index');
+    Route::post('/attendance/pdfGenerate/{id}',[App\Http\Controllers\hr\AttendanceController::class, 'pdfGenerate'])->name('attendance.pdfGenerate');   
     Route::post('/leave/pdfGenerate/{id}',[LeaveController::class, 'pdfGenerate'])->name('leave.pdfGenerate');
 });
 
