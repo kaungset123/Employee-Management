@@ -15,9 +15,6 @@
                     <div id="response"></div>
                 </div>
                 <h4 style="font-weight: bold;" class="mb-5 text-info" >{{$data['header']}}</h4>
-                <a href="javascript:void(0)" id="create-dept-btn" class="text-end text-info" style="position: absolute;right:1.5rem;top:76px;">
-                    <i class="fa fa-plus-circle" style="font-size:30px;" aria-hidden="true"></i>
-                </a>
                 <table style="width: 100%;" class="table table-hover table-bordered mt-5 ">
                     <thead class="text-center">
                         <th>Rating point</th>

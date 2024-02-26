@@ -84,7 +84,8 @@ Route::middleware('auth')->group(function () {
     Route::resource('/salaryCriteria',SalaryCriteriaController::class)->except('destroy');
     Route::get('/department/request',[RequestController::class, 'index'])->name('request.index');
     Route::get('/pdf/index',[PdfGenerationController::class, 'index'])->name('pdf_generate.index');
-    Route::post('/attendance/pdfGenerate/{id}',[App\Http\Controllers\hr\AttendanceController::class, 'pdfGenerate'])->name('attendance.pdfGenerate');   
+    Route::post('/attendance/pdfGenerate/{id}',[App\Http\Controllers\hr\AttendanceController::class, 'pdfGenerate'])->name('attendance.pdfGenerate');
+   
     Route::post('/leave/pdfGenerate/{id}',[LeaveController::class, 'pdfGenerate'])->name('leave.pdfGenerate');
 });
 
@@ -150,6 +151,5 @@ Route::middleware(['role:admin|super admin','auth'])->group(function () {
     Route::get('/admin/role/index',[RoleController::class, 'index'])->name('role.index');
     Route::get('/admin/role/{role}/setPermission',[RoleController::class, 'permission'])->name('role.permission');
     Route::put('/admin/role/{role}/setPermission',[RoleController::class, 'set_permission'])->name('role.set_permission');
-
 });
 
