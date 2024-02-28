@@ -38,7 +38,11 @@
                             @foreach($data['salaries'] as $salary)
                                     <tr class="text-center">
                                         <td>
-                                            <img style="width:50px; height:50px;border-radius:25px;" src="{{ asset('storage/uploads/' . $salary->user->img)}}">     
+                                            @if(!empty($salary->user->img))
+                                                <img style="width:50px; height:50px;border-radius:25px;" src="{{ asset('storage/uploads/' . $salary->user->img)}}">     
+                                            @else
+                                                <img class="manager_img" src="{{ asset('/images/user.jpg') }}">
+                                            @endif
                                         </td>
                                         <td>{{ $salary->user->name }}</td>                                   
                                         <td>

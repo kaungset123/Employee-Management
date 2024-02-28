@@ -10,7 +10,11 @@
                         <div class="menu-header-content mt-4">
                             <div class="avatar-icon-wrapper btn-hover-shine mb-2 avatar-icon-xl">
                                 <div class="">
-                                    <img src=" {{ asset('/storage/uploads/' . $data['user']['user']->img) }}" style="width:100px;height:100px;border-radius:50px;margin-bottom:5px;border:3px solid white;">
+                                    @if(!empty($data['user']['user']->img))
+                                        <img src=" {{ asset('/storage/uploads/' . $data['user']['user']->img) }}" style="width:100px;height:100px;border-radius:50px;margin-bottom:5px;border:3px solid white;">
+                                    @else
+                                        <img class="manager_img" src="{{ asset('/images/user.jpg') }}">
+                                    @endif
                                 </div>
                             </div>
                             <div>

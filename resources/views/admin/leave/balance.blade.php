@@ -34,7 +34,11 @@
                     @foreach($data['leaveCounts'] as $leave)
                     <tr class="text-center">
                         <td>
-                            <img style="width:50px; height:50px;border-radius:25px;" src="{{ asset('storage/uploads/' . $leave->user->img) }}">
+                            @if(!empty($leave->user->img))
+                                <img style="width:50px; height:50px;border-radius:25px;" src="{{ asset('storage/uploads/' . $leave->user->img) }}">
+                            @else
+                                <img class="manager_img" src="{{ asset('/images/user.jpg') }}">
+                            @endif
                         </td>
                         <td>{{ $leave->user->name}}</td>
                         <td>

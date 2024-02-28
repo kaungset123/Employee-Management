@@ -277,7 +277,7 @@ $('#criteria-edit-form').validate({
         const formData = $(form).serialize();
         $.ajax({
             type: 'PUT',
-            url: '/salarycriteria/' + $('#criteriaId').val(),
+            url: '/salaryCriteria/' + $('#criteriaId').val(),
             data: formData,
            
             success: function(response) {

@@ -26,7 +26,7 @@ class RegistrationRequest extends FormRequest
             'email' => 'required', 'email',Rule::unique('users'),
             'password' => 'required|required|min:6|confirmed:password_confirmation',
             'name' => ['required', 'min:3','string'],
-            'phone' => 'required|numeric|digits:11', 
+            'phone' => 'required|numeric', 
             'date_of_birth' => 'required|date|before_or_equal:today', 
             'gender' => 'required|in:male,female',
             'address' => 'required|string|max:255',

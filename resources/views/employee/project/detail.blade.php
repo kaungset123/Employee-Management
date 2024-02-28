@@ -30,7 +30,11 @@
                     <div class="widget-chart-content widget-chart-content-lg p-5">
                         <div class="row mb-4">
                             <div class="col-md-1">
-                                <img src="{{ asset('/storage/uploads/' . $data['project']->projectManager->img) }}" style="width:56px; height:56px;border-radius:28px;">
+                                @if(!empty($data['project']->projectManager->img))
+                                    <img src="{{ asset('/storage/uploads/' . $data['project']->projectManager->img) }}" style="width:56px; height:56px;border-radius:28px;">
+                                @else
+                                    <img class="manager_img" src="{{ asset('/images/user.jpg') }}" style="width:50px; height:50px;border-radius:25px;">
+                                @endif
                             </div>
                             <div class="col-md-4">
                                 <b>{{ $data['project']->projectManager->name }}</b><br>
@@ -68,7 +72,11 @@
                                     <div class="widget-content-wrapper">
                                         <div class="widget-content-left ">
                                             <div class="widget-subheading mt-1 opacity-10">
-                                                <img src="{{ asset('/storage/uploads/' . $userProgress['user']->img) }}" style="width:50px; height:50px;border-radius:25px;margin-right:10px;">
+                                                @if(!empty($userProgress['user']->img))
+                                                    <img src="{{ asset('/storage/uploads/' . $userProgress['user']->img) }}" style="width:50px; height:50px;border-radius:25px;margin-right:10px;">
+                                                @else
+                                                    <img class="manager_img" src="{{ asset('/images/user.jpg') }}" style="width:50px; height:50px;border-radius:25px;">
+                                                @endif
                                                 <b>{{ $userProgress['user']->name }}</b>
                                             </div>
                                             <div class="widget-heading"> </div>

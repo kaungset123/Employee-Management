@@ -52,7 +52,7 @@
                                         @endif
                                     </td>
                                     <td>{{ $salary->ot_amount }}</td>
-                                    <td>{{ $salary->dedution }}</td>
+                                    <td>{{ $salary->deduction }}</td>
                                     <td>{{ $salary->leave }}</td>
                                     <td>{{ $salary->salary }}</td>
                                     <td>{{ $salary->net_salary }}</td>

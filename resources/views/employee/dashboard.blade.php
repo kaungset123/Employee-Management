@@ -21,8 +21,8 @@
                     <i class="fas fa-redo-alt mt-1" style="font-size: 30px;"></i>
                 </a>
                 <input type="hidden" name="perPage" value="{{ $data['users']->perPage() }}">
-                <input class="form-control" type="text" name="search" value="{{ $data['search'] }}" placeholder="Search by name" aria-label="Search">
-                <input type="date" class="form-control" name="created_at" value="{{ $data['created'] }}">
+                <input class="form-control border-info" type="text" name="search" value="{{ $data['search'] }}" placeholder="Search by name" aria-label="Search">
+                <input type="date" class="form-control border-info" name="created_at" value="{{ $data['created'] }}">
                 <button class="btn btn-outline-info " type="submit">Search</button>
             </form>
             <div class="">
@@ -47,7 +47,7 @@
                                             @if($member['user']->img !== '' && !empty($member['user']->img))
                                             <img style="width:50px; height:50px;border-radius:25px;" src="{{ asset('storage/uploads/' . $member['user']->img)}}">
                                             @else
-                                            no image
+                                                <img class="manager_img" src="{{ asset('/images/user.jpg') }}">
                                             @endif
                                         </td>
                                         <td>{{ $member['user']->name }}</td>
@@ -76,7 +76,7 @@
                                             @if($member['user']->img !== '' && !empty($member['user']->img))
                                             <img style="width:50px; height:50px;border-radius:25px;" src="{{ asset('storage/uploads/' . $member['user']->img)}}">
                                             @else
-                                            no image
+                                                <img class="manager_img" src="{{ asset('/images/user.jpg') }}">
                                             @endif
                                         </td>
                                         <td>{{ $member['user']->name }}</td>

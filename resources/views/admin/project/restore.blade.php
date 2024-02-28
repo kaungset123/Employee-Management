@@ -19,18 +19,15 @@
                                                 <div class="mb-3 card ">
                                                     <div class="card-header-tab card-header">
                                                         <div class="card-header-title font-size-lg text-capitalize font-weight-normal">
-                                                            <!-- <i class="header-icon lnr-shirt mr-3 text-muted opacity-6"> </i> -->
                                                             <i class="fa fa-check-square-o" aria-hidden="true"></i>
                                                             {{$project->name}}
                                                         </div>
                                                         <div class="btn-actions-pane-right actions-icon-btn d-flex">
                                                             <a href="{{route('project.restore',$project->id)}}" style="text-decoration: none;" >Restore</a>
-                                                            <!-- <a href="{{route('project.force_delete',$project->id)}}" style="text-decoration: none;color:red;" class="col-md-2">Delete</a> -->
                                                             <form method="post" action="{{ route('project.force_delete',$project->id) }}">
                                                                 @csrf
                                                                 @method('DELETE')
                                                                 <button type="submit" style="border:none;cursor:pointer;background:none;" class="text-danger" onclick="return confirm('Are you sure you want to permanently delete this item?')">
-                                                                    <!-- <i class="fa-solid fa-trash text-danger"></i> -->
                                                                     <b>ForceDelete</b>
                                                                 </button>
                                                             </form>                                                           
@@ -55,7 +52,11 @@
                                                                         <div class="widget-content p-2">
                                                                             <div class="widget-content-wrapper">
                                                                                 <div class="widget-content-left mr-3 " id="all_pj ">
-                                                                                    <img src="{{ asset( '/storage/uploads/' . $project->projectManager->img) }}" style="width:50px; height:50px;border-radius:25px;">
+                                                                                    @if(!empty($project->projectManager->img))
+                                                                                        <img src="{{ asset( '/storage/uploads/' . $project->projectManager->img) }}" style="width:50px; height:50px;border-radius:25px;">
+                                                                                    @else
+                                                                                        <img  class="manager_img" src="{{ asset('/images/user.jpg') }}" style="width:50px; height:50px;">
+                                                                                    @endif
                                                                                 </div>
                                                                                 <div class="widget-content-left">
                                                                                     <div class="widget-heading">{{ $project->projectManager->name }}</div>
@@ -95,7 +96,11 @@
                                                                         <div class="widget-content p-2">
                                                                             <div class="widget-content-wrapper">
                                                                                 <div class="widget-content-left mr-3 " id="all_pj ">
-                                                                                    <img src="{{ asset( '/storage/uploads/' . $member->img ) }}" style="width:50px; height:50px;border-radius:25px;">
+                                                                                    @if(!empty($member->img))
+                                                                                        <img src="{{ asset( '/storage/uploads/' . $member->img ) }}" style="width:50px; height:50px;border-radius:25px;">
+                                                                                    @else
+                                                                                        <img  class="manager_img" src="{{ asset('/images/user.jpg') }}" style="width:50px; height:50px;">
+                                                                                    @endif
                                                                                 </div>
                                                                                 <div class="widget-content-left">
                                                                                     <div class="widget-heading">{{ $member->name }}</div>

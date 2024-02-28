@@ -42,7 +42,7 @@
                                         @if(!empty($attendance->user->img))
                                             <img style="width:50px; height:50px;border-radius:25px;" src="{{ asset('storage/uploads/' . $attendance->user->img)}}">
                                         @else
-                                            <b>no image</b>
+                                            <img class="manager_img" src="{{ asset('/images/user.jpg') }}">
                                         @endif     
                                     </td>
                                     <td>{{$attendance->user->name}}</td>                                   

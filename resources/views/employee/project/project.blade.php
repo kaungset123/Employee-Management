@@ -80,7 +80,11 @@
                                                                         <div class="widget-content p-2">
                                                                             <div class="widget-content-wrapper">
                                                                                 <div class="widget-content-left mr-3 " id="all_pj ">
-                                                                                    <img src="{{ asset( '/storage/uploads/' . $progress['project']->projectManager->img) }}" style="width:50px; height:50px;border-radius:25px;">
+                                                                                    @if(!empty($progress['project']->projectManager->img))
+                                                                                        <img src="{{ asset( '/storage/uploads/' . $progress['project']->projectManager->img) }}" style="width:50px; height:50px;border-radius:25px;">
+                                                                                    @else
+                                                                                        <img class="manager_img" src="{{ asset('/images/user.jpg') }}" style="width:50px; height:50px;border-radius:25px;">
+                                                                                    @endif
                                                                                 </div>
                                                                                 <div class="widget-content-left">
                                                                                     <div class="widget-heading">{{ $progress['project']->projectManager->name }}</div>
@@ -120,7 +124,11 @@
                                                                         <div class="widget-content p-2">
                                                                             <div class="widget-content-wrapper">
                                                                                 <div class="widget-content-left mr-3 " id="all_pj ">
-                                                                                    <img src="{{ asset( '/storage/uploads/' . $member->img ) }}" style="width:50px; height:50px;border-radius:25px;">
+                                                                                    @if(!empty($member->img))
+                                                                                        <img src="{{ asset( '/storage/uploads/' . $member->img ) }}" style="width:50px; height:50px;border-radius:25px;">
+                                                                                    @else
+                                                                                        <img class="manager_img" src="{{ asset('/images/user.jpg') }}" style="width:50px; height:50px;border-radius:25px;">
+                                                                                   @endif
                                                                                 </div>
                                                                                 <div class="widget-content-left">
                                                                                     <div class="widget-heading">{{ $member->name }}</div>

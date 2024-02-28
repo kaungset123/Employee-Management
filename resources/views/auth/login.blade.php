@@ -41,10 +41,8 @@
                                                 @enderror
                                             </div>
                                         </div>
-                                    </div>
-                                    <div class="position-relative form-check"><input name="check" id="exampleCheck" type="checkbox" class="form-check-input"><label for="exampleCheck" class="form-check-label">Keep me logged in</label></div>
+                                    </div>                                  
                                     <div class="modal-footer clearfix">
-                                        <div class="float-left"><a href="javascript:void(0);" class="btn-lg btn btn-link">Recover Password</a></div>
                                         <div class="float-right">
                                             <button class="btn btn-primary btn-lg" type="submit">Login</button>
                                         </div>

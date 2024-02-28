@@ -190,9 +190,7 @@ use App\Models\SalaryCriteria;
         function leaveLimitCalculation($user_id,$startDate,$endDate,$half_day)
         {
             $currentYear = now()->year;
-        //    $currentYear = Carbon::createFromFormat('Y-m-d', $startDate);
-
-
+            
             $totalDayOld = Leave::where('user_id', $user_id)
                            ->where('status',1)
                            ->whereYear('created_at', $currentYear)
@@ -242,7 +240,6 @@ use App\Models\SalaryCriteria;
             }
 
             if ($created_at) {
-                // $carbonDate =Carbon::createFromFormat('Y-m-d', $created_at);
                 $leavesQuery->whereDate('start_date', $created_at);
             }
 
@@ -267,7 +264,6 @@ use App\Models\SalaryCriteria;
             }
 
             if ($created_at) {
-                // $carbonDate =Carbon::createFromFormat('Y-m-d', $created_at);
                 $leavesQuery->whereYear('start_date', $created_at);
             }
 
@@ -462,6 +458,7 @@ use App\Models\SalaryCriteria;
             $basicSalary = $user->basic_salary;
             $otRate = $user->ot_rate;
             $hourlyRate = $user->hourly_rate;
+            $netSalary = 0;
         
             $otTimes = Attendance::withTrashed()
                 ->where('user_id', $user_id)
@@ -490,25 +487,20 @@ use App\Models\SalaryCriteria;
             $salary = $basicSalary + $otPay ;
             $netSalary = ($basicSalary + $otPay) - $deduction;
 
-          
-
             // net salary with bonus
-            $bonusTime = ($month === 2);
+            $bonusTime = ($month === 12);
             $bonus = 0 ;
             $averageRating = 0 ;
             $rating_bonus = 0;
 
             if($bonusTime) {   
                 $bonus = ($annualLeave == 0 && $totalLeaveDays == 0) ? $basicSalary : 0 ;
-                // dd($bonus);
     
                 $averageRating = Rating::where('rated_id', $user_id)
                     ->avg('rating');
                 $averageRating = number_format($averageRating, 1);
-                // dd($averageRating);
     
                 $user_rating = ceil($averageRating);
-                // dd($user_rating);
     
                 $criterias = SalaryCriteria::select('rating_point','bonus_amount')->get();
     
@@ -519,7 +511,6 @@ use App\Models\SalaryCriteria;
                         $rating_bonus = 0 ;
                     }
                 }
-                // dd($rating_bonus);
 
                 $netSalary = $netSalary + $bonus + $rating_bonus ;
             }
@@ -551,7 +542,6 @@ use App\Models\SalaryCriteria;
                 $file = $imgFile;
                 $randomStr = date('Ymshis') . Str::random(20);
                 $filename = strtolower($randomStr) . '.' . $extension;
-                // $file->move('uploads/profile', $filename);
                 $file->storeAs('uploads',$filename,'public',);
                 $img = $filename;  
                 return $img;         

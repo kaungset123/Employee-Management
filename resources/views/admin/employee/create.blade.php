@@ -158,6 +158,9 @@
                     <div class="form-group mt-4">
                         <input type="file" class="form-control" name="img" style="border: none;" value="{{ old('img') }}"  accept="image/*" onchange="displayImage(this)">
                     </div>
+                    @error('img')
+                        <p class="text-danger">{{$message}}</p>
+                    @enderror
                     <img id="preview-image" src="#" style="width: 130px;height:130px;display:none;" alt="Preview">
                 </div>          
                 <div class="mt-4">

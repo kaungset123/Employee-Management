@@ -70,7 +70,7 @@ class SalaryController extends Controller
             $user = User::select('id','name','img','basic_salary','ot_rate','hourly_rate')->where('id',$id)->first();
             $date = Carbon::now();
             $salary = salaryCalculation($id,$date);
-    
+
             $this->data['header'] = 'salary detail';
             $this->data['salary'] = $salary;
             $this->data['user'] = $user;

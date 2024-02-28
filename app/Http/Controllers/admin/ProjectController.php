@@ -91,7 +91,7 @@ class ProjectController extends Controller
         $member_name = $request['member_name'];
 
         $projectQuery = Project::select('id','start_date','end_date','status','name','project_manager_id')
-                    ->where('status',3)
+                    ->where('status', 3)
                     ->with(['members','members.department']);
 
         $projectProgress = projectSearchbar($query,$member_name,$created_at,$projectQuery);
@@ -103,7 +103,6 @@ class ProjectController extends Controller
         foreach($projects as $project){
             $projectProgress[$project->id] = calculateProjectProgress($project->id);
         }
-
         $this->data['search'] = $query;
         $this->data['memberName'] = $member_name;
         $this->data['created'] = $created_at;

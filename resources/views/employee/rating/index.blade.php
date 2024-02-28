@@ -5,11 +5,15 @@
     <div class="app-main__outer">
         <div class="card col-md-8 mt-4 offset-md-2 p-4">
             <div class="card-body" style="position: relative;">
-                <a href="{{ route('hr.dashboard') }}" class="me-2 text-info" style="font-size: 28px;margin-top:-32px;position:absolute;right:0px;">
+                <a href="{{ route('employee.dashboard') }}" class="me-2 text-info" style="font-size: 28px;margin-top:-32px;position:absolute;right:0px;">
                     <i class="fas fa-arrow-alt-circle-left"></i>
                 </a>   
                 <div class="rate_img_div">
-                    <img src="{{ asset('storage/uploads/' . $data['user']['user']->img) }}" class="rate_img">
+                    @if(!empty($data['user']['user']->img))
+                        <img src="{{ asset('storage/uploads/' . $data['user']['user']->img) }}" class="rate_img">
+                    @else
+                        <img class="manager_img" src="{{ asset('/images/user.jpg') }}">
+                    @endif
                     <p class="text-center mt-1" style="margin-bottom:3px;">{{$data['user']['user']->name}}</p>
                     <p class="text-center mt-1" style="margin-bottom:3px;">{{$data['user']['user']->department->name}} department</p>
                     <p class="text-center mt-1" style="margin-bottom:3px;">current rating {{$data['user']['rating']}} </p>

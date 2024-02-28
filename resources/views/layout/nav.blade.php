@@ -54,7 +54,7 @@
                                                                                 alt="">
                                                                         </a>
                                                                     @else
-                                                                        <b class="text-warning">No img</b>
+                                                                        <img class="manager_img" src="{{ asset('/images/user.jpg') }}" style="width: 56px;height:56px;"> 
                                                                     @endif
                                                                 </div>
                                                                 <div class="widget-content-left">

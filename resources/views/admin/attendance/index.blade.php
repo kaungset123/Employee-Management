@@ -42,7 +42,11 @@
                             @foreach($data['attendances'] as $attendance)
                                 <tr class="text-center">
                                     <td>
-                                        <img style="width:50px; height:50px;border-radius:25px;" src="{{ asset('storage/uploads/' . $attendance->user->img)}}">     
+                                        @if(!empty($attendance->user->img))
+                                            <img style="width:50px; height:50px;border-radius:25px;" src="{{ asset('storage/uploads/' . $attendance->user->img)}}"> 
+                                        @else
+                                            <img class="manager_img" src="{{ asset('/images/user.jpg') }}">
+                                        @endif     
                                     </td>
                                     <td>{{$attendance->user->name}}</td>     
                                     <td>{{$attendance->user->department->name}}</td>

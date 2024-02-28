@@ -9,7 +9,11 @@
             @if($member['user']->hasRole('manager'))
                 <a href="{{ route('profile.index',$member['user']->id) }}" style="cursor: pointer;text-decoration:none;color:#000;">
                     <div class="dept_bg mb-2 col-md-2 offset-md-5 p-3" style="text-align: center;">
-                        <img class="manager_img" src="{{ asset('/storage/uploads/' . $member['user']->img) }}">
+                        @if(!empty($member['user']->img))
+                            <img class="manager_img" src="{{ asset('/storage/uploads/' . $member['user']->img) }}">
+                        @else
+                            <img class="manager_img" src="{{ asset('/images/user.jpg') }}">
+                        @endif
                         <div class="mt-2">
                             <b> {{ $member['user']->name }}</b><br>
                             <b>
@@ -34,7 +38,11 @@
             <div class="col-md-4 text-center mb-5">
                 <a href="{{ route('user.profile',$member['user']->id) }}" style="cursor: pointer;text-decoration:none;color:#000;">
                     <div class="dept_bg  p-2">
-                        <img class="member_img" src="{{ asset('/storage/uploads/' . $member['user']->img) }}">
+                        @if(!empty($member['user']->img))
+                            <img class="member_img" src="{{ asset('/storage/uploads/' . $member['user']->img) }}">
+                        @else
+                            <img class="manager_img" src="{{ asset('/images/user.jpg') }}">
+                        @endif
                         <div class="mt-2">
                             <b> {{ $member['user']->name }}</b><br>
                             <b> {{ $member['user']->getRoleNames()->first() }}</b><br>
@@ -53,7 +61,11 @@
                 <div class="col-md-6 text-center mb-5">
                     <a href="{{ route('profile.index',$member['user']->id) }}" style="cursor: pointer;text-decoration:none;color:#000;">
                         <div class="dept_bg  p-2">
-                            <img class="member_img" src="{{ asset('/storage/uploads/' . $member['user']->img) }}">
+                            @if(!empty($member['user']->img))
+                                <img class="member_img" src="{{ asset('/storage/uploads/' . $member['user']->img) }}">
+                            @else
+                                <img class="manager_img" src="{{ asset('/images/user.jpg') }}">
+                            @endif
                             <div class="mt-2">
                                 <b> {{ $member['user']->name }}</b><br>
                                 <b> {{ $member['user']->getRoleNames()->first() }}</b><br>
