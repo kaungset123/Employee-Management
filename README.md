@@ -28,14 +28,10 @@ As an employee management system, it is likely an up to down control flow of
 - **employee**
 - **HR**
 
-**who can perform what things?**
-
-**Super Admin** And **Admin**
 >They have the access right for CRUD operations for all the features that I mentioned above
 > Most of the features that can performed by `Super Admin` and `Admin` are same.But things are left that can only performed by ***Super Admin***.
 - ***Super Admin*** can control overall roles and permissions, ***Admin*** can only control *under* his position *(manager, employee, HR)*
 
-**common features between *Super Admin* and *Admin***
 **Project**
 - As soon as a project is created, **notifications** will be sent to all project members to tell about that `now they are in a new project`
 - During project period tasks assigning and controlling are in charge of project manager
