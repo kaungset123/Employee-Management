@@ -38,7 +38,7 @@
                                     @if($member['user']->img !== '' && !empty($member['user']->img))
                                         <img style="width:50px; height:50px;border-radius:25px;" src="{{ asset('storage/uploads/' . $member['user']->img)}}">     
                                     @else
-                                        no image
+                                        <img class="manager_img" src="{{ asset('/images/user.jpg') }}">
                                     @endif
                                 </td>
                                 <td>{{ $member['user']->name }}</td>

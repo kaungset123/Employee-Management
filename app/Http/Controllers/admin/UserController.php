@@ -35,11 +35,11 @@ class UserController extends Controller
         $query = $request['search'];
         $created_at = $request['created_at'];
         $department_name = $request['department_name'];
-
+    
         $perPage = $request->input('perPage',10);
         $usersQuery = userSearchbar($query,$department_name,$created_at);
         $users = $usersQuery->paginate($perPage)->withQueryString();
-        
+       
         $this->data['users'] = $users;
         $this->data['search'] = $query;
         $this->data['created'] = $created_at;
@@ -204,11 +204,6 @@ class UserController extends Controller
             if($status) {
                 return back()->with('failstatus','you can\'t delete ,this employee\'s project is in progress');
             }else{
-                // $salarys = $user->salarys;
-                // foreach($salarys as $salary) {
-                //     $salary->delete();
-                // }
-                // dd($salarys);
                 $user->delete();
                 return redirect('admin/user')->with('status','User deleted successfully');
             }          

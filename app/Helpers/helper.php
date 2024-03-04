@@ -299,7 +299,7 @@ use App\Models\SalaryCriteria;
     {
         function userSearchbar($query,$department_name,$created_at)
         {
-            $usersQuery = User::orderBy('created_at', 'asc')->withTrashed('id', 'img', 'name', 'email', 'department_id', 'created_by', 'updated_by', 'created_at','deleted_at');
+            $usersQuery = User::orderBy('created_at', 'desc')->withTrashed('id', 'img', 'name', 'email', 'department_id', 'created_by', 'updated_by', 'created_at','deleted_at');
 
             if ($query) {
                 $usersQuery->where('users.name', 'like', "%$query%");
