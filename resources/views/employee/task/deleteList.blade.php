@@ -12,12 +12,12 @@
                 <i class="fas fa-redo-alt mt-1" style="font-size: 30px;"></i>
             </a>
             <input type="hidden" name="perPage" value="{{ $data['tasks']->perPage() }}">
-            <input class="form-control me-2" type="text" name="search" value="{{ $data['search'] }}" placeholder="Search by name" aria-label="Search">
-            <button class="btn btn-outline-success " type="submit">Search</button>
+            <input class="form-control me-2 border-info" type="text" name="search" value="{{ $data['search'] }}" placeholder="Search by name" aria-label="Search">
+            <button class="btn btn-outline-info " type="submit">Search</button>
         </form>
         <div class="mt-3" style="position: relative;">
             @include('layout.pageLimit')
-            <a href="{{ route('task.index') }}" class="me-2 text-info" style="font-size:31px;margin-top:-4px;position:absolute;right:27px;">
+            <a href="{{ route('task.index',$data['project_id']) }}" class="me-2 text-info" style="font-size:31px;margin-top:-4px;position:absolute;right:27px;">
                 <i class="fas fa-arrow-alt-circle-left"></i>
             </a>
         </div>

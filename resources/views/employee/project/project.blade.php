@@ -61,15 +61,6 @@
                                                             @endif
                                                         </div>
                                                     </div>
-                                                    <div class="widget-chart widget-chart2 text-left p-0">
-                                                        <div class="widget-chat-wrapper-outer">
-                                                            <div class="widget-chart-content widget-chart-content-lg">
-                                                                <b style="margin-bottom: 8px;">Start Date :  <i>{{ $progress['project']->start_date }}</i></b>
-                                                                <b style="margin-bottom: 8px;">End Date : <i> {{ $progress['project']->end_date }} </i> </b>
-                                                                <b>Period : <i> {{ $progress['project']->projectPeriod}} </i> </b>                                                               
-                                                            </div>
-                                                        </div>
-                                                    </div>
                                                     <div class="pt-2 pb-0 card-body">
                                                         <h6 class="text-muted text-uppercase font-size-md opacity-9 mb-2 font-weight-normal ">Team Members</h6>
                                                         <div class="scroll-area-md shadow-overflow">
@@ -95,25 +86,13 @@
                                                                                             <div class="btn-group dropdown">
                                                                                                 <button type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="btn-icon btn-icon-only btn btn-link">
                                                                                                         Project Leader
-                                                                                                </button>
-                                                                                                <div tabindex="-1" role="menu" aria-hidden="true" class="dropdown-menu-shadow dropdown-menu-hover-link dropdown-menu">
-                                                                                                    <h6 tabindex="-1" class="dropdown-header">Header</h6>
-                                                                                                    <button type="button" tabindex="0" class="dropdown-item"><i class="dropdown-icon lnr-inbox"> </i><span>Menus</span></button>
-                                                                                                    <button type="button" tabindex="0" class="dropdown-item"><i class="dropdown-icon lnr-file-empty"> </i><span>Settings</span></button>
-                                                                                                    <button type="button" tabindex="0" class="dropdown-item"><i class="dropdown-icon lnr-book"> </i><span>Actions</span></button>
-                                                                                                    <div tabindex="-1" class="dropdown-divider"></div>
-                                                                                                    <div class="p-1 text-right">
-                                                                                                        <button class="mr-2 btn-shadow btn-sm btn btn-link">View Details</button>
-                                                                                                        <button class="mr-2 btn-shadow btn-sm btn btn-primary">Action</button>
-                                                                                                    </div>
-                                                                                                </div>
+                                                                                                </button>                                                                                              
                                                                                                 <div class="main-card mb-3 card">
 
                                                                                                 </div>
                                                                                             </div>
                                                                                         </div>
                                                                                     </div>
-
                                                                                 </div>
                                                                             </div>
                                                                         </div>
@@ -137,20 +116,9 @@
                                                                                     <div class="fsize-1 text-focus">
                                                                                         <div class="btn-actions-pane-right actions-icon-btn">
                                                                                             <div class="btn-group dropdown">
-                                                                                                <button type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="btn-icon btn-icon-only btn btn-link">
+                                                                                                <button type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="btn-icon btn-icon-only btn ">
                                                                                                         Team Member
                                                                                                 </button>
-                                                                                                <div tabindex="-1" role="menu" aria-hidden="true" class="dropdown-menu-shadow dropdown-menu-hover-link dropdown-menu">
-                                                                                                    <h6 tabindex="-1" class="dropdown-header">Header</h6>
-                                                                                                    <button type="button" tabindex="0" class="dropdown-item"><i class="dropdown-icon lnr-inbox"> </i><span>Menus</span></button>
-                                                                                                    <button type="button" tabindex="0" class="dropdown-item"><i class="dropdown-icon lnr-file-empty"> </i><span>Settings</span></button>
-                                                                                                    <button type="button" tabindex="0" class="dropdown-item"><i class="dropdown-icon lnr-book"> </i><span>Actions</span></button>
-                                                                                                    <div tabindex="-1" class="dropdown-divider"></div>
-                                                                                                    <div class="p-1 text-right">
-                                                                                                        <button class="mr-2 btn-shadow btn-sm btn btn-link">View Details</button>
-                                                                                                        <button class="mr-2 btn-shadow btn-sm btn btn-primary">Action</button>
-                                                                                                    </div>
-                                                                                                </div>
                                                                                                 <div class="main-card mb-3 card">
                                                                                                 </div>
                                                                                             </div>
@@ -165,10 +133,13 @@
                                                             </div>
                                                         </div>
                                                     </div>
-                                                    <div class="progress">
-                                                        <div class="progress-bar bg-info" role="progressbar" aria-valuenow="{{$progress['progress']}}" aria-valuemin="0" aria-valuemax="100" style="width: {{$progress['progress']}}%;">
+                                                    <div class="progress" >
+                                                        <div class="progress-bar bg-info" role="progressbar" aria-valuenow="{{$progress['progress']}}" aria-valuemin="0" aria-valuemax="100" style="width:<?php echo e($progress['progress']);?>%;">
                                                             {{number_format($progress['progress'],1)}}%
                                                         </div>
+                                                        @if(number_format($progress['progress'],1) == 0.0)
+                                                            {{number_format($progress['progress'],1)}}%
+                                                        @endif
                                                     </div>  
                                                 </div>
                                             </div>

@@ -5,7 +5,7 @@
     <div class="app-main__outer">
             <div class="card-body" id="all_leave_tb">
                 @include('layout.flash_message')
-                <h4 style="font-weight: bold;" class="mt-4 text-info">{{$data['header']}}</h4>
+                <h4 style="font-weight: bold;" class="mt-3 text-info">{{$data['header']}}</h4>
                 <form class="d-flex col-md-6 offset-md-3 mt-4"  action="{{ route('employee.salary.index') }}" method="GET" >
                     @csrf
                     <a href="{{ route('employee.salary.index', ['perPage' => $data['salaries']->perPage()]) }}" style="color: black;">

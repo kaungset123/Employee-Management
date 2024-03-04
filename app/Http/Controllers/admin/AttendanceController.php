@@ -84,7 +84,7 @@ class AttendanceController extends Controller
         $this->checkPermission('attendance restore',$id);
 
         try {
-            $attendance = Attendance::withTrashed()->where('id',$id)->get();
+            $attendance = Attendance::withTrashed()->where('id',$id)->first();
             $attendance->restore();
             return redirect('admin/attendance/index')->with('status','attendance record restored successfully');
         }

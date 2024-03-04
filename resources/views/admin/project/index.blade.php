@@ -144,9 +144,12 @@
                                             </div>
                                         </div>
                                         <div class="progress">
-                                            <div class="progress-bar bg-info" role="progressbar" style="width: {{ $progress['progress'] }}%;" aria-valuenow="{{ $progress['progress'] }}" aria-valuemin="0" aria-valuemax="100">
+                                            <div class="progress-bar bg-info" role="progressbar" style=" width:<?php echo e($progress['progress']); ?>%;" aria-valuenow="{{ $progress['progress'] }}" aria-valuemin="0" aria-valuemax="100">
                                                 {{ number_format($progress['progress'],1) }}%
                                             </div>
+                                            @if(number_format($progress['progress'],1) == 0.0)
+                                                {{ number_format($progress['progress'],1) }}%
+                                            @endif
                                         </div>
                                     </div>
                                 </div>

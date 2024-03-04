@@ -55,7 +55,7 @@ class SalaryController extends Controller
         $created_at = $request['created_at'];
         $department_name = $request['department_name'];
 
-        $salaryQuery = SalaryDetail::onlyTrashed()->select('id','ot_time','ot_amount','leave','dedution','salary','bonus','user_id','created_at','net_salary')
+        $salaryQuery = SalaryDetail::onlyTrashed()->select('id','ot_time','ot_amount','leave','deduction','salary','bonus','user_id','created_at','net_salary')
                         ->with(['user' => function ($query) {
                             $query->select('id', 'name', 'img', 'department_id');
                         }]);
@@ -94,7 +94,7 @@ class SalaryController extends Controller
     {
         $this->checkPermission('payroll delete',$id);
 
-        $salary = SalaryDetail::onlyTrashed()->where('id',$id)->get();
+        $salary = SalaryDetail::onlyTrashed()->where('id',$id)->first();
         $salary->restore();
         return redirect('/admin/salary')->with('status','salary record is restored successfully');
     }

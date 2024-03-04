@@ -177,7 +177,7 @@ class LeaveRequestController extends Controller
         $this->checkPermission('leave restore',$id);
 
         try {
-            $leave = Leave::onlyTrashed()->where('id',$id)->get();
+            $leave = Leave::onlyTrashed()->where('id',$id)->first();
             $leave->restore();
             return redirect('admin/leave/index')->with('status','leave record restored successfully');
         }

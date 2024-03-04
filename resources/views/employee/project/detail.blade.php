@@ -52,11 +52,13 @@
                         </div>
                         <b>Project Completion Status</b>
                         <div class="progress mt-2">
-                            <div class="progress-bar bg-info" role="progressbar" aria-valuenow="{{$data['projectProgress']['progress'] }}" aria-valuemin="0" aria-valuemax="100" style="width: {{$data['projectProgress']['progress'] }}%;color:black;">
+                            <div class="progress-bar bg-info" role="progressbar" aria-valuenow="{{$data['projectProgress']['progress'] }}" aria-valuemin="0" aria-valuemax="100" style="width:<?php echo e($data['projectProgress']['progress']); ?>%;">
                                 {{number_format($data['projectProgress']['progress'] ,1)}}%
                             </div>
                         </div>
-                        {{number_format($data['projectProgress']['progress'] ,1)}}% 
+                        @if(number_format($data['projectProgress']['progress'] ,1) == 0.0)
+                            {{number_format($data['projectProgress']['progress'] ,1)}}% 
+                        @endif
                     </div>
                 </div>
             </div>
@@ -87,10 +89,13 @@
                                         </div>
                                     </div>
                                     <div class="progress">
-                                        <div class="progress-bar bg-info" role="progressbar" aria-valuenow=" {{ $userProgress['progressPercentage'] }}" aria-valuemin="0" aria-valuemax="100" style="width: {{ $userProgress['progressPercentage'] }}%;color:black;">
+                                        <div class="progress-bar bg-info" role="progressbar" aria-valuenow=" {{ $userProgress['progressPercentage'] }}" aria-valuemin="0" aria-valuemax="100" style="width:<?php echo e($userProgress['progressPercentage']); ?>%;">
                                             {{ number_format($userProgress['progressPercentage'], 1) }}%
                                         </div>
                                     </div>
+                                    @if(number_format($userProgress['progressPercentage'], 1) == 0.0)
+                                        {{ number_format($userProgress['progressPercentage'], 1) }}%
+                                    @endif
                                 </div>
                             </li>
                             @endforeach

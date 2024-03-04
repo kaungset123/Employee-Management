@@ -360,9 +360,9 @@ $(document).ready(function() {
                     if(response.status === 'failed')
                      {
                         $('#response').html(
-                            `<div class="alert alert-danger text-center" x-data="{show: true}" x-init="setTimeout(() => show = false, 2000)" x-show="show">
+                            `<p class="alert alert-danger text-center" x-data="{show: true}" x-init="setTimeout(() => show = false, 2000)" x-show="show">
                                 ${response.message}                      
-                            </div>`
+                            </p>`
                         );
                     }
 
@@ -423,9 +423,9 @@ $(document).ready(function() {
                     if(response.status === 'failed')
                      {
                         $('#response').html(
-                            `<div class="alert alert-danger text-center" x-data="{show: true}" x-init="setTimeout(() => show = false, 2000)" x-show="show">
+                            `<p class="alert alert-danger text-center" x-data="{show: true}" x-init="setTimeout(() => show = false, 2000)" x-show="show">
                                 ${response.message}
-                            </div>`
+                            </p>`
                         );
                     }
 

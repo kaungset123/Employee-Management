@@ -39,7 +39,7 @@ class ProjectController extends Controller
         $user = User::findOrFail(auth()->user()->id);
         $projects = $user->projects;
 
-        $projectQuery = Project::whereIn('id', $projects->pluck('id'))->with('members')->where('status',1);
+        $projectQuery = Project::whereIn('id', $projects->pluck('id'))->with('members');
 
         $projectQuery = projectSearchbar($query,$member_name,$created_at,$projectQuery);
 
@@ -76,11 +76,12 @@ class ProjectController extends Controller
 
         $perPage = $request->input('perPage',4);
         $completed = $projectQuery->paginate($perPage)->withQueryString();
-        // dd($completed);
+ 
         $this->data['search'] = $query;
         $this->data['created'] = $created_at;
         $this->data['memberName'] = $member_name;
         $this->data['completed'] = $completed; 
+        $this->data['header'] = 'Completed Projects';
         $this->data['projects'] = $projects;         
         return view('employee.project.completed')->with(['data' => $this->data]);       
     }

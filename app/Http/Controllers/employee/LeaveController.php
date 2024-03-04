@@ -11,10 +11,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Leave;
 use App\Models\User;
 use Carbon\Carbon;
-use Svg\Tag\Rect;
-
 use function App\Helpers\leaveLimitCalculation;
-use function App\Helpers\leaveBalanceQuery;
 
 class LeaveController extends Controller
 {
