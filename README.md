@@ -28,17 +28,55 @@ As an employee management system, it is likely an up to down control flow of
 - **employee**
 - **HR**
 
-<h1>who can perform what things?</h1>
+**who can perform what things?**
 
 **Super Admin** And **Admin**
-Most of the features that can performed by `Super Admin` and `Admin` are same.But things are left that can only performed by ***Super Admin***.
+>They have the access right for CRUD operations for all the features that I mentioned above
+> Most of the features that can performed by `Super Admin` and `Admin` are same.But things are left that can only performed by ***Super Admin***.
 - ***Super Admin*** can control overall roles and permissions, ***Admin*** can only control *under* his position *(manager, employee, HR)*
 
 **common features between *Super Admin* and *Admin***
+**Project**
+- As soon as a project is created, **notifications** will be sent to all project members to tell about that `now they are in a new project`
+- During project period tasks assigning and controlling are in charge of project manager
 
-- They can create, update, delete and restore projects.
-- As soon as a project is created 
+**Leave Request**
+- Users who have the roles **manager, employee, HR** can make leave request their own.
+- Leave request made by **employee** and **HR** are managed by related manager
+- But leave request of **manager** is decided by **admin** 
+
+**Attendance**
+- In a department, making attendance is in charge of HR
+
+**Payroll**
+- HR make the salary calculating process with the aid of this system
 
 
+### Notification 
+**Project**
+- Project deadline notification will be sent **ahead a week before** of actually deadline and **at the day of deadline** to `all projects members` and in addition to `Super Admin` and `Admin`.
+
+**Task**
+- When task deadline hit, notification will be sent to related project member and also to project manager
+
+**Attendance**
+- When an HR make an attendance for an employee, noti will be sent to that employee
+
+**Leave Request**
+- When a user make leave request, noti will be sent to person 
+> `Employee` and `HR` -> `Manager`
+> `Manager` -> `Admin`
+
+**Payroll**
+- When HR make the salary data, noti will be sent to that user
+- As soon as all the salary calculation processes in a department are done, notification will be sent to `Super Admin` and `Admin` for that department automatically.
+
+### Other Restrictions
+**Project**
+- The users who are in two **currently running projects** will not be shown on project creation form
+
+**Rating**
+- Rating event is available **once a month**
+* *Rating points will turn into bonus according to the **bonus criteria** at the last month of a year*
  
 
