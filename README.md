@@ -21,6 +21,10 @@
 
 ### System Flow
 
+- Both **Super Admin** and **Admin** are independent from any department.
+- They have the access right for **CRUD operations for all the features** that I mentioned above.
+- Each department is organized with one department manager, one HR and employees.
+
 As an employee management system, it is likely an up to down control flow of
 - **super admin**
 - **admin**
@@ -28,17 +32,14 @@ As an employee management system, it is likely an up to down control flow of
 - **employee**
 - **HR**
 
->They have the access right for CRUD operations for all the features that I mentioned above
-> Most of the features that can performed by `Super Admin` and `Admin` are same.But things are left that can only performed by ***Super Admin***.
-- ***Super Admin*** can control overall roles and permissions, ***Admin*** can only control *under* his position *(manager, employee, HR)*
-
 **Project**
-- As soon as a project is created, **notifications** will be sent to all project members to tell about that `now they are in a new project`
+- As soon as a project is created by **Super Admin** or **Admin**, **notifications** will be sent to all project members to tell about that `now they are in a new project`
+- Project members can check their project's status on their own page.
 - During project period tasks assigning and controlling are in charge of project manager
 
 **Leave Request**
 - Users who have the roles **manager, employee, HR** can make leave request their own.
-- Leave request made by **employee** and **HR** are managed by related manager
+- Leave request made by **employee** and **HR** are managed by related department manager
 - But leave request of **manager** is decided by **admin** 
 
 **Attendance**
@@ -47,6 +48,8 @@ As an employee management system, it is likely an up to down control flow of
 **Payroll**
 - HR make the salary calculating process with the aid of this system
 
+**Role & Permission**
+- ***Super Admin*** can control overall roles and permissions, ***Admin*** can only control *under* his position *(manager, employee, HR)*
 
 ### Notification 
 **Project**
