@@ -44,7 +44,7 @@ class TaskController extends Controller
         $tasks = $tasksQuery->paginate($perPage)->withQueryString();
 
         foreach ($tasks as $task) {
-            $deadlineWarning = taskDeadLine($task->project_id, $task->user_id);
+            $deadlineWarning = taskDeadLine($task->project_id,$task->id,$task->user_id);
             $task->deadlineWarning = $deadlineWarning;
         }
 

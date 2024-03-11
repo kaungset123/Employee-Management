@@ -3,13 +3,7 @@
 namespace App\Listeners;
 
 use App\Events\ProjectCreate;
-use App\Mail\ProjectCreateMail;
-use App\Notifications\ProjectCreateNotification;
-use App\Notifications\SalaryNotification;
-use Illuminate\Support\Facades\Mail;
-use Illuminate\Queue\InteractsWithQueue;
-use Illuminate\Contracts\Queue\ShouldQueue;
-use Illuminate\Support\Facades\Notification;
+use App\Jobs\NotifyProjectCreateJob;
 
 class NotifyProjectCreate
 {
@@ -34,7 +28,7 @@ class NotifyProjectCreate
         //     Mail::to($user)->send(new ProjectCreateMail($data));
         // });
 
-        Notification::send($members, new ProjectCreateNotification($data));
-
+        // Notification::send($members, new ProjectCreateNotification($data));
+        NotifyProjectCreateJob::dispatch($members,$data);
     }
 }

@@ -79,15 +79,15 @@ use App\Models\SalaryCriteria;
         ];
     }
 
-    function deadLineWarning($projectId,$user_id = null)
+    function deadLineWarning($projectId,$taskId = null,$user_id = null)
     {
         if ($user_id !== null) {
-            $task = Task::where('project_id', $projectId)
+            $task = Task::where('id',$taskId)->where('project_id', $projectId)
                 ->where('user_id', $user_id)
                 ->orderBy('end_date', 'desc')
                 ->firstOrFail();
     
-            $differenceInDays = Carbon::now()->diffInDays($task->end_date);
+            $differenceInDays = Carbon::now()->diffInDays($task->end_date) + 1;
         } else {
             $project = Project::findOrFail($projectId);
     
@@ -103,17 +103,14 @@ use App\Models\SalaryCriteria;
         ];
     }
 
-    function taskDeadLine($project_id,$user_id)
+    function taskDeadLine($project_id,$taskId,$user_id)
     {
-        $tasks = Task::where('project_id', $project_id)
+        $task = Task::where('id',$taskId)->where('project_id', $project_id)
         ->where('user_id', $user_id)
         ->orderBy('end_date', 'desc')
-        ->get();
-
-        $task = $tasks->first();
-
+        ->first();
         // Use $task as needed
-        $differenceInDays = Carbon::now()->diffInDays($task->end_date);
+        $differenceInDays = Carbon::now()->diffInDays($task->end_date) + 1;
         $warningThreshold = 7;
         $isDeadlineNear = $differenceInDays <= $warningThreshold;
 

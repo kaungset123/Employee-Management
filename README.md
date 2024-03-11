@@ -44,6 +44,7 @@ As an employee management system, it is likely an up to down control flow of
 
 **Attendance**
 - In a department, making attendance is in charge of HR
+- Ot time will calculate automatically and effect to the salary
 
 **Payroll**
 - HR make the salary calculating process with the aid of this system
@@ -70,9 +71,14 @@ As an employee management system, it is likely an up to down control flow of
 - When HR make the salary data, noti will be sent to that user
 - As soon as all the salary calculation processes in a department are done, notification will be sent to `Super Admin` and `Admin` for that department automatically.
 
-### Other Restrictions
+### Definition Rules
 **Project**
 - The users who are in two **currently running projects** will not be shown on project creation form
+
+**Leave Request**
+- **Full-day/half-day** and **annual leave/other leave**  options are available 
+- Each user can take **10** annul leaves and won't cut out any fine from salary
+- Beyond that limit will be **other leave** type and cut out from salary 
 
 **Rating**
 - Rating event is available **once a month**

@@ -3,14 +3,11 @@
 namespace App\Http\Controllers\employee;
 
 use App\Constants\ProjectStatus;
-use App\Constants\TaskStatus;
-use App\Events\TaskCreate;
 use App\Http\Controllers\Controller;
 use App\Models\Project;
 use App\Models\Task;
 use Illuminate\Http\Request;
 use App\Models\User;
-use Illuminate\Database\DeadlockException;
 use function App\Helpers\calculateProgress;
 use function App\Helpers\calculateProjectProgress;
 use function App\Helpers\deadLineWarning;
@@ -113,8 +110,9 @@ class ProjectController extends Controller
       
         $user_id = auth()->user()->id;
         $tasks = Task::where(['project_id'=>$project_id,'user_id'=>$user_id])->get();
+
         foreach ($tasks as $task) {
-            $deadlineWarning = deadLineWarning($task->project_id, $user_id);
+            $deadlineWarning = deadLineWarning($task->project_id,$task->id,$user_id);
             $task->deadlineWarning = $deadlineWarning;
         }
         

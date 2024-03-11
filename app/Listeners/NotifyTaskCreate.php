@@ -3,10 +3,7 @@
 namespace App\Listeners;
 
 use App\Events\TaskCreate;
-use App\Notifications\TaskCreateNotification;
-use Illuminate\Contracts\Queue\ShouldQueue;
-use Illuminate\Queue\InteractsWithQueue;
-use Illuminate\Support\Facades\Notification;
+use App\Jobs\NotifyTaskCreateJob;
 
 class NotifyTaskCreate
 {
@@ -23,12 +20,13 @@ class NotifyTaskCreate
      */
     public function handle(TaskCreate $event): void
     {
-        $members = $event->task->user()->get();
+        $member = $event->task->user()->get();
         $name = $event->task->user->name;
         $projectName = $event->task->project->name;
         $projectId = $event->task->project->id;
         $data = compact('name','projectName','projectId');
 
-        Notification::send($members, new TaskCreateNotification($data));
+        // Notification::send($members, new TaskCreateNotification($data));
+        NotifyTaskCreateJob::dispatch($member, $data);
     }
 }

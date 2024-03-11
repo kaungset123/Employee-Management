@@ -3,10 +3,7 @@
 namespace App\Listeners;
 
 use App\Events\RequestRejected;
-use App\Notifications\RequestRejectedNotification;
-use Illuminate\Contracts\Queue\ShouldQueue;
-use Illuminate\Queue\InteractsWithQueue;
-use Illuminate\Support\Facades\Notification;
+use App\Jobs\NotifyRequestRejectedJob;
 
 class NotifyRequestRejected
 {
@@ -28,6 +25,7 @@ class NotifyRequestRejected
         $date = $event->leave->created_at;
         $data = compact('name','date');
 
-        Notification::send($user, new RequestRejectedNotification($data));
+        // Notification::send($user, new RequestRejectedNotification($data));
+        NotifyRequestRejectedJob::dispatch($user, $data);
     }
 }

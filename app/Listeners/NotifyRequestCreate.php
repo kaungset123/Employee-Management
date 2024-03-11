@@ -3,9 +3,8 @@
 namespace App\Listeners;
 
 use App\Events\RequestCreate;
+use App\Jobs\NotifyRequestCreateJob;
 use App\Models\User;
-use App\Notifications\RequestCreateNotification;
-use Illuminate\Support\Facades\Notification;
 
 class NotifyRequestCreate
 {
@@ -49,6 +48,7 @@ class NotifyRequestCreate
             }
         } 
         $data = compact('requester_name','leave','requested');
-        Notification::send($victim, new RequestCreateNotification($data));
+        // Notification::send($victim, new RequestCreateNotification($data));
+        NotifyRequestCreateJob::dispatch($victim, $data);
     }
 }

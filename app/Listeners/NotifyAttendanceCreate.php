@@ -3,12 +3,7 @@
 namespace App\Listeners;
 
 use App\Events\AttendanceCreate;
-use App\Models\Attendance;
-use App\Notifications\AttendanceCreateNotification;
-use Illuminate\Contracts\Queue\ShouldQueue;
-use Illuminate\Queue\InteractsWithQueue;
-use Illuminate\Support\Facades\Notification;
-
+use App\Jobs\NotifyAttendanceCreateJob;
 class NotifyAttendanceCreate
 {
     /**
@@ -28,6 +23,7 @@ class NotifyAttendanceCreate
         $name = $event->attendance->user->name;
         $data = compact('name');
         
-        Notification::send($user, new AttendanceCreateNotification($data));
+        // Notification::send($user, new AttendanceCreateNotification($data));
+        NotifyAttendanceCreateJob::dispatch($user, $data);
     }
 }
